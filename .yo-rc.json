@@ -1,0 +1,7 @@
+{
+  "generator-react-webpack": {
+    "appName": "elliotBerman",
+    "style": "scss",
+    "postcss": true
+  }
+}
