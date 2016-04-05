@@ -11,6 +11,7 @@ export default class AppComponent extends Component {
 		this.renderer;
 		this.scene;
 		this.camera;
+		this.particles
 	}
 
 	init = () => {
@@ -21,19 +22,46 @@ export default class AppComponent extends Component {
 			this.camera.position.z = 5;
 			this.camera.position.y = 1;
 
-			let pointLight = new THREE.PointLight(0xffffff);
+			let ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+			let pointLight = new THREE.PointLight(0xffffff, 0.9);
 			pointLight.position.set(0, 5, 0);
 
 			pointLight.castShadow = true;
 
-			this.scene.add(pointLight);
+			this.scene.add(pointLight, ambientLight);
 
+			//Particle shit
 
-			let geometry = new THREE.BoxGeometry( 1, 1, 1 );
-			let material = new THREE.MeshPhongMaterial( { color: 0xff3300, specular: 0x555555, shininess: 5 } );
-			this.cube = new THREE.Mesh( geometry, material );
-			this.cube.position.y = 1;
-			this.scene.add( this.cube );
+			let particleGeometry = new THREE.BufferGeometry();
+			// create a simple square shape. We duplicate the top left and bottom right
+			// vertices because each vertex needs to appear once per triangle.
+			let vertexPositions = [
+				[-1.0, -1.0,  1.0],
+				[ 1.0, -1.0,  1.0],
+				[ 1.0,  1.0,  1.0],
+
+				[ 1.0,  1.0,  1.0],
+				[-1.0,  1.0,  1.0],
+				[-1.0, -1.0,  1.0]
+			];
+
+			let vertices = new Float32Array( vertexPositions.length * 3 ); // three components per vertex
+
+			// components of the position vector for each vertex are stored
+			// contiguously in the buffer.
+			for ( let i = 0; i < vertexPositions.length; i++ ) {
+				vertices[ i*3 + 0 ] = vertexPositions[i][0];
+				vertices[ i*3 + 1 ] = vertexPositions[i][1];
+				vertices[ i*3 + 2 ] = vertexPositions[i][2];
+			}
+
+			// itemSize = 3 because there are 3 values (components) per vertex
+			particleGeometry.addAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
+			let particleMaterial = new THREE.PointsMaterial( { color: 0xff0000, size: 0.3 } );
+			this.particles = new THREE.Points( particleGeometry, particleMaterial );
+			this.particles.position.y = 2;
+
+			this.scene.add( this.particles );
 
 			let planeGeometry = new THREE.PlaneBufferGeometry(4500, 4500, 10, 10);
 			let planeMaterial = new THREE.MeshStandardMaterial({
@@ -52,6 +80,7 @@ export default class AppComponent extends Component {
 			this.renderer.setClearColor( 0xffffff, 1);
 			this.renderer.setSize( window.innerWidth, window.innerHeight );
 			this.renderer.shadowMapEnabled = true;
+			this.renderer.shadowMapType = THREE.PCFSoftShadowMap;
 
 			document.body.appendChild( this.renderer.domElement );
 
@@ -59,8 +88,8 @@ export default class AppComponent extends Component {
 
 	animate = () => {
 
-		this.cube.rotation.x += 0.01;
-		this.cube.rotation.y += 0.01;
+		this.particles.rotation.x += 0.01;
+		this.particles.rotation.y += 0.01;
 
 		requestAnimationFrame( this.animate );
 		this.renderer.render( this.scene, this.camera );
