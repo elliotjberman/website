@@ -109,35 +109,40 @@ export default class AppComponent extends Component {
 		const circleScale = 0.03;
 
 		for (var i = 0; i < this.particleGroups.length; i++){
+			var particleExplosion = this.particleGroups[i];
+			if (particleExplosion.counter >= 300){
+				this.scene.remove(particleExplosion.particles);
+				this.particleGroups.splice(i, 1)
+			}
+			else{
+				particleExplosion.counter += 1;
 
-			var particleExplosion = this.particleGroups[i]
-			console.log(particleExplosion)
-			particleExplosion.counter += 1;
+				let x = particleExplosion.particles.position.x;
+				let y = particleExplosion.particles.position.y;
+				let z = particleExplosion.particles.position.z;
 
-			let x = particleExplosion.particles.position.x;
-			let y = particleExplosion.particles.position.y;
-			let z = particleExplosion.particles.position.z;
+				this.scene.remove(particleExplosion.particles);
 
-			this.scene.remove(particleExplosion.particles);
+				for ( let i = 0; i < 1000; i++ ) {
+					// X Position
+					particleExplosion.vertices[ i*3 + 0 ] = particleExplosion.vertices[ i*3 + 0 ] + 20*particleExplosion.particlePositions[ i*3 + 0]/particleExplosion.counter;
+					// Y Position
+					particleExplosion.vertices[ i*3 + 1 ] = particleExplosion.vertices[ i*3 + 1 ] + 20*particleExplosion.particlePositions[ i*3 + 1]/particleExplosion.counter - particleExplosion.counter/1000;
+					// Z Position
+					particleExplosion.vertices[ i*3 + 2 ] = particleExplosion.vertices[ i*3 + 2 ] + 20*particleExplosion.particlePositions[ i*3 + 2]/particleExplosion.counter;
+				}
 
-			for ( let i = 0; i < 1000; i++ ) {
-				// X Position
-				particleExplosion.vertices[ i*3 + 0 ] = particleExplosion.vertices[ i*3 + 0 ] + 20*particleExplosion.particlePositions[ i*3 + 0]/particleExplosion.counter;
-				// Y Position
-				particleExplosion.vertices[ i*3 + 1 ] = particleExplosion.vertices[ i*3 + 1 ] + 20*particleExplosion.particlePositions[ i*3 + 1]/particleExplosion.counter - particleExplosion.counter/1000;
-				// Z Position
-				particleExplosion.vertices[ i*3 + 2 ] = particleExplosion.vertices[ i*3 + 2 ] + 20*particleExplosion.particlePositions[ i*3 + 2]/particleExplosion.counter;
+				particleExplosion.particleGeometry.addAttribute( 'position', new THREE.BufferAttribute( particleExplosion.vertices, 3 ) );
+				particleExplosion.particles = new THREE.Points( particleExplosion.particleGeometry, particleExplosion.particleMaterial );
+
+				particleExplosion.particles.position.x = x;
+				particleExplosion.particles.position.y = y;
+				particleExplosion.particles.position.z = z;
+				particleExplosion.particles.castShadow = true;
+
+				this.scene.add(particleExplosion.particles);
 			}
 
-			particleExplosion.particleGeometry.addAttribute( 'position', new THREE.BufferAttribute( particleExplosion.vertices, 3 ) );
-			particleExplosion.particles = new THREE.Points( particleExplosion.particleGeometry, particleExplosion.particleMaterial );
-
-			particleExplosion.particles.position.x = x;
-			particleExplosion.particles.position.y = y;
-			particleExplosion.particles.position.z = z;
-			particleExplosion.particles.castShadow = true;
-
-			this.scene.add(particleExplosion.particles);
 		}
 
 
