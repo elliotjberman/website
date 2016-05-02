@@ -17,19 +17,13 @@ export default class AppComponent extends Component {
 		this.clock;
 		this.counter;
 		this.circle;
-
 		this.particleGroups;
-
-// Particle global variables
-		// this.vertices;
-		// this.particleMaterial;
-		// this.particleGeometry;
-		// this.particlePositions;
-		// this.particles;
 	}
 
 	init = () => {
-		this.particleGroups = [];
+			this.particleGroups = [];
+
+
 // Lights and camera
 			this.scene = new THREE.Scene();
 
@@ -115,9 +109,15 @@ export default class AppComponent extends Component {
 		const circleScale = 0.03;
 
 		for (var i = 0; i < this.particleGroups.length; i++){
+
 			var particleExplosion = this.particleGroups[i]
 			console.log(particleExplosion)
 			particleExplosion.counter += 1;
+
+			let x = particleExplosion.particles.position.x;
+			let y = particleExplosion.particles.position.y;
+			let z = particleExplosion.particles.position.z;
+
 			this.scene.remove(particleExplosion.particles);
 
 			for ( let i = 0; i < 1000; i++ ) {
@@ -131,9 +131,10 @@ export default class AppComponent extends Component {
 
 			particleExplosion.particleGeometry.addAttribute( 'position', new THREE.BufferAttribute( particleExplosion.vertices, 3 ) );
 			particleExplosion.particles = new THREE.Points( particleExplosion.particleGeometry, particleExplosion.particleMaterial );
-			particleExplosion.particles.position.y = -5;
-			particleExplosion.particles.position.z = 20;
-			particleExplosion.particles.position.x = 40 * -0.5;
+
+			particleExplosion.particles.position.x = x;
+			particleExplosion.particles.position.y = y;
+			particleExplosion.particles.position.z = z;
 			particleExplosion.particles.castShadow = true;
 
 			this.scene.add(particleExplosion.particles);
@@ -154,6 +155,7 @@ export default class AppComponent extends Component {
 		this.initParticles();
 		this.animate();
 		document.getElementById('index').appendChild( this.renderer.domElement );
+		window.addEventListener('click', this.initParticles);
 
 		window.onload = function(){
 				setTimeout(function(){
@@ -169,8 +171,12 @@ export default class AppComponent extends Component {
 			var particleExplosion = {}
 			particleExplosion.counter = 0;
 			particleExplosion.particleGeometry = new THREE.BufferGeometry();
+
 			const particleCount = 1000 ;
 			const xRange = 40;
+			const yRange = 10;
+			const zRange = 27;
+
 			particleExplosion.vertices = new Float32Array( particleCount * 3 );
 
 			particleExplosion.particlePositions = [];
@@ -201,9 +207,11 @@ export default class AppComponent extends Component {
 
 
 			particleExplosion.particles = new THREE.Points( particleExplosion.particleGeometry, particleExplosion.particleMaterial );
-			particleExplosion.particles.position.y = -5;
-			particleExplosion.particles.position.z = 20;
-			particleExplosion.particles.position.x = xRange * -0.5;
+
+			particleExplosion.particles.position.x = xRange * (Math.random() - 1);
+			particleExplosion.particles.position.y = yRange * (Math.random() - 1);
+			particleExplosion.particles.position.z = zRange * (Math.random());
+
 			particleExplosion.particles.castShadow = true;
 			this.particleGroups.push(particleExplosion);
 	}
