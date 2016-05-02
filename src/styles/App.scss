@@ -16,6 +16,13 @@
 	padding-bottom: 10px;
 	overflow: hidden;
 
+	cursor: default;
+	-webkit-user-select: none; /* Chrome/Safari */
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+ */
+	-o-user-select: none;
+	user-select: none;
+
 	h1{
 		padding-left: 30px;
 		display: block;

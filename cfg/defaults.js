@@ -30,6 +30,10 @@ function getDefaultModules() {
         test: /\.styl/,
         loader: 'style-loader!css-loader!postcss-loader!stylus-loader'
       },
+			{
+				test: /\.(wav|mp3)$/,
+				loader: 'file-loader'
+			},
       {
         test: /\.(png|jpg|gif|woff|woff2)$/,
         loader: 'url-loader?limit=8192'

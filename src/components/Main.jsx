@@ -4,6 +4,9 @@ require('styles/App.scss');
 import React, { Component } from 'react';
 import THREE from 'three';
 import PostProcessing from 'postprocessing';
+import Ping from '../audio/text.mp3';
+import Track from '../audio/homage.mp3'
+
 
 export default class AppComponent extends Component {
 
@@ -18,9 +21,18 @@ export default class AppComponent extends Component {
 		this.counter;
 		this.circle;
 		this.particleGroups;
+
+		this.ambientLight;
+
+		// Sounds
+		this.track;
+		this.ping
 	}
 
 	init = () => {
+			this.track = new Audio(Track);
+			this.track.play();
+
 			this.particleGroups = [];
 
 
@@ -30,14 +42,14 @@ export default class AppComponent extends Component {
 			this.camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 50 );
 			this.camera.position.z = 30;
 			this.camera.position.y = 10;
-			this.camera.rotation.x = -0.3
+			this.camera.rotation.x = -0.3;
 
-			let ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-			let pointLight = new THREE.PointLight(0xffffff, 0.9);
-			pointLight.position.set(0, 5, 0);
+			this.ambientLight = new THREE.AmbientLight(0xffffff, 0.0);
+			let pointLight = new THREE.PointLight(0xffffff, 0.8);
+			pointLight.position.set(5, 5, -5);
 
 			pointLight.castShadow = true;
-			this.scene.add(pointLight, ambientLight);
+			this.scene.add(pointLight, this.ambientLight);
 
 		// Circle
 			let circleGeometry = new THREE.CircleGeometry( 5, 128);
@@ -45,7 +57,7 @@ export default class AppComponent extends Component {
 				color: 0x000000,
 				emissive: 0x000000,
 				specular: 0x555555,
-  			shininess: 100,
+  			shininess: 100
 			});
 
 			this.circle = new THREE.Mesh(circleGeometry, circleMaterial)
@@ -105,8 +117,9 @@ export default class AppComponent extends Component {
 
 
 	animate = () => {
+
 		let delta = this.clock.getDelta()
-		const circleScale = 0.03;
+		const circleScale = 0.005;
 
 		for (var i = 0; i < this.particleGroups.length; i++){
 			var particleExplosion = this.particleGroups[i];
@@ -125,11 +138,11 @@ export default class AppComponent extends Component {
 
 				for ( let i = 0; i < 1000; i++ ) {
 					// X Position
-					particleExplosion.vertices[ i*3 + 0 ] = particleExplosion.vertices[ i*3 + 0 ] + 20*particleExplosion.particlePositions[ i*3 + 0]/particleExplosion.counter;
+					particleExplosion.vertices[ i*3 + 0 ] = particleExplosion.vertices[ i*3 + 0 ] + 20*particleExplosion.particleDirections[ i*3 + 0]/particleExplosion.counter;
 					// Y Position
-					particleExplosion.vertices[ i*3 + 1 ] = particleExplosion.vertices[ i*3 + 1 ] + 20*particleExplosion.particlePositions[ i*3 + 1]/particleExplosion.counter - particleExplosion.counter/1000;
+					particleExplosion.vertices[ i*3 + 1 ] = particleExplosion.vertices[ i*3 + 1 ] + 20*particleExplosion.particleDirections[ i*3 + 1]/particleExplosion.counter - particleExplosion.counter/1000;
 					// Z Position
-					particleExplosion.vertices[ i*3 + 2 ] = particleExplosion.vertices[ i*3 + 2 ] + 20*particleExplosion.particlePositions[ i*3 + 2]/particleExplosion.counter;
+					particleExplosion.vertices[ i*3 + 2 ] = particleExplosion.vertices[ i*3 + 2 ] + 20*particleExplosion.particleDirections[ i*3 + 2]/particleExplosion.counter;
 				}
 
 				particleExplosion.particleGeometry.addAttribute( 'position', new THREE.BufferAttribute( particleExplosion.vertices, 3 ) );
@@ -145,10 +158,15 @@ export default class AppComponent extends Component {
 
 		}
 
+		if (this.camera.rotation.x < 0.3){
+			this.camera.rotation.x += 0.0001;
+		}
+		if (this.ambientLight.intensity < 0.34){
+			this.ambientLight.intensity += 0.001;
+		}
 
 		this.circle.scale.x += circleScale;
 		this.circle.scale.y += circleScale;
-
 		// this.renderer.render( this.scene, this.camera );
 		this.postprocessing.composer.render( delta );
 		requestAnimationFrame( this.animate, this.renderer.domElement );
@@ -165,13 +183,17 @@ export default class AppComponent extends Component {
 		window.onload = function(){
 				setTimeout(function(){
 					document.getElementById('name').style.width = '600px';
-				}, 2000);
+				}, 32300);
 
 		}
 
 	}
 
 	initParticles = () => {
+			this.ping = new Audio(Ping);
+			this.ping.volume = 0.15;
+			this.ping.play();
+
 		//Particle shit
 			var particleExplosion = {}
 			particleExplosion.counter = 0;
@@ -184,8 +206,8 @@ export default class AppComponent extends Component {
 
 			particleExplosion.vertices = new Float32Array( particleCount * 3 );
 
-			particleExplosion.particlePositions = [];
-			particleExplosion.expirationTimes = [];
+			particleExplosion.particleDirections = [];
+
 			for ( let i = 0; i < particleCount; i++ ) {
 
 				// X Position
@@ -197,13 +219,9 @@ export default class AppComponent extends Component {
 
 
 
-				particleExplosion.particlePositions[ i*3 + 0 ] = (Math.random() - 0.5)/5;
-				particleExplosion.particlePositions[ i*3 + 1 ] = (Math.random() - 0.5)/5;
-				particleExplosion.particlePositions[ i*3 + 2 ] = (Math.random() - 0.5)/5;
-
-				particleExplosion.expirationTimes[ i*3 + 0 ] = 5*(Math.random() - 0.5);
-				particleExplosion.expirationTimes[ i*3 + 1 ] = 5*(Math.random() - 0.5);
-				particleExplosion.expirationTimes[ i*3 + 2 ] = 5*(Math.random() - 0.5);
+				particleExplosion.particleDirections[ i*3 + 0 ] = (Math.random() - 0.5)/5;
+				particleExplosion.particleDirections[ i*3 + 1 ] = (Math.random() - 0.5)/5;
+				particleExplosion.particleDirections[ i*3 + 2 ] = (Math.random() - 0.5)/5;
 			}
 
 			// itemSize = 3 because there are 3 values (components) per vertex
