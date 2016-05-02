@@ -67,7 +67,9 @@
   "dependencies": {
     "babel-preset-stage-0": "^6.5.0",
     "core-js": "^2.0.0",
+    "grunt": "^1.0.1",
     "normalize.css": "^3.0.3",
+    "postprocessing": "^1.0.7",
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
     "sparks": "0.0.49",

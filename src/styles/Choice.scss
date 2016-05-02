@@ -1,0 +1,21 @@
+#choices{
+	width:100%;
+	height: 100vh;
+	background: #C0CDDA;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+}
+.choice{
+	width: 200px;
+	height: 200px;
+	border-radius: 100%;
+	background-color: #343D46;
+	color: #C0CDDA;
+	text-align: center;
+	line-height: 200px;
+	cursor: pointer;
+	font-size: 80px;
+	font-weight: 100;
+	font-family: "Helvetica Neue";
+}
