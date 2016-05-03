@@ -35,23 +35,23 @@ export default class AppComponent extends Component {
 			const backgroundColor = 0x69cffa;
 
 			this.track = new Audio(Track);
-			this.track.play();
+			// this.track.play();
 
 			this.particleGroups = [];
 
 
 // Scene and fog
 			this.scene = new THREE.Scene();
-			this.scene.fog = new THREE.FogExp2(backgroundColor , 0.02 );
+			this.scene.fog = new THREE.FogExp2(backgroundColor , 0.01 );
 
 // Camera
-			this.camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 65 );
+			this.camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 60 );
 			this.camera.position.z = 30;
 			this.camera.position.y = 10;
 			this.camera.rotation.x = -0.3;
 
 // Lighting
-			this.ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
+			this.ambientLight = new THREE.AmbientLight(0xffffff, 1);
 			let pointLight = new THREE.PointLight(0xffffff, 0.8);
 			pointLight.position.set(5, 5, -5);
 
@@ -88,17 +88,17 @@ export default class AppComponent extends Component {
 			this.scene.add(plane);
 
 // Back Wall
-			this.wall = new THREE.Mesh( planeGeometry, planeMaterial );
-			this.wall.rotation.x = Math.PI/4;
-			this.wall.receiveShadow = true;
-			this.wall.position.z = -40;
-			this.scene.add(this.wall);
+			// this.wall = new THREE.Mesh( planeGeometry, planeMaterial );
+			// this.wall.rotation.x = Math.PI/4;
+			// this.wall.receiveShadow = true;
+			// this.wall.position.z = -40;
+			// this.scene.add(this.wall);
 
 // Rendering
 			this.renderer = new THREE.WebGLRenderer({ antialias: true, logarithmicDepthBuffer: true });
 			this.renderer.setSize( window.innerWidth, window.innerHeight );
 			this.renderer.orderObjects = false;
-			this.renderer.setClearColor( 0xffffff, 0.1);
+			this.renderer.setClearColor( backgroundColor);
 
 			this.initPostProcessing();
 
