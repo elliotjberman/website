@@ -24,34 +24,41 @@ export default class AppComponent extends Component {
 
 		this.ambientLight;
 
+		this.wall;
+
 		// Sounds
 		this.track;
 		this.ping
 	}
 
 	init = () => {
+			const backgroundColor = 0x69cffa;
+
 			this.track = new Audio(Track);
 			this.track.play();
 
 			this.particleGroups = [];
 
 
-// Lights and camera
+// Scene and fog
 			this.scene = new THREE.Scene();
+			this.scene.fog = new THREE.FogExp2(backgroundColor , 0.02 );
 
-			this.camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 50 );
+// Camera
+			this.camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 65 );
 			this.camera.position.z = 30;
 			this.camera.position.y = 10;
 			this.camera.rotation.x = -0.3;
 
-			this.ambientLight = new THREE.AmbientLight(0xffffff, 0.0);
+// Lighting
+			this.ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
 			let pointLight = new THREE.PointLight(0xffffff, 0.8);
 			pointLight.position.set(5, 5, -5);
 
 			pointLight.castShadow = true;
 			this.scene.add(pointLight, this.ambientLight);
 
-		// Circle
+// Circle
 			let circleGeometry = new THREE.CircleGeometry( 5, 128);
 			var circleMaterial = new THREE.MeshPhongMaterial({
 				color: 0x000000,
@@ -66,10 +73,10 @@ export default class AppComponent extends Component {
 
 			this.scene.add(this.circle);
 
-		// Plane
+// Plane
 			let planeGeometry = new THREE.PlaneBufferGeometry(1000, 1000, 10, 10);
 			let planeMaterial = new THREE.MeshStandardMaterial({
-					color: 0x792A86,
+					color: backgroundColor,
 					roughness: 0.7,
 					metalness: 0.2
 			});
@@ -80,13 +87,23 @@ export default class AppComponent extends Component {
 			plane.receiveShadow = true;
 			this.scene.add(plane);
 
+// Back Wall
+			this.wall = new THREE.Mesh( planeGeometry, planeMaterial );
+			this.wall.rotation.x = Math.PI/4;
+			this.wall.receiveShadow = true;
+			this.wall.position.z = -40;
+			this.scene.add(this.wall);
 
-			this.renderer = new THREE.WebGLRenderer({ antialias: true });
+// Rendering
+			this.renderer = new THREE.WebGLRenderer({ antialias: true, logarithmicDepthBuffer: true });
 			this.renderer.setSize( window.innerWidth, window.innerHeight );
 			this.renderer.orderObjects = false;
 			this.renderer.setClearColor( 0xffffff, 0.1);
 
 			this.initPostProcessing();
+
+			window.addEventListener( 'resize', this.onWindowResize, false );
+			document.getElementById('index').appendChild( this.renderer.domElement );
 
 
 		}
@@ -164,10 +181,8 @@ export default class AppComponent extends Component {
 		if (this.ambientLight.intensity < 0.34){
 			this.ambientLight.intensity += 0.001;
 		}
-
 		this.circle.scale.x += circleScale;
 		this.circle.scale.y += circleScale;
-		// this.renderer.render( this.scene, this.camera );
 		this.postprocessing.composer.render( delta );
 		requestAnimationFrame( this.animate, this.renderer.domElement );
 
@@ -177,7 +192,6 @@ export default class AppComponent extends Component {
 		this.init();
 		this.initParticles();
 		this.animate();
-		document.getElementById('index').appendChild( this.renderer.domElement );
 		window.addEventListener('click', this.initParticles);
 
 		window.onload = function(){
@@ -237,6 +251,12 @@ export default class AppComponent extends Component {
 
 			particleExplosion.particles.castShadow = true;
 			this.particleGroups.push(particleExplosion);
+	}
+
+	onWindowResize = () => {
+		this.camera.aspect = window.innerWidth / window.innerHeight;
+		this.camera.updateProjectionMatrix();
+		this.renderer.setSize( window.innerWidth, window.innerHeight );
 	}
 
 
