@@ -1,12 +1,16 @@
 require('normalize.css');
 require('styles/App.scss');
 
+import shaderParse from '../glsl/shaderparse.js';
+import particleFrag from '../glsl/particlesAdditive.frag';
+import particleVert from '../glsl/particlesAdditive.vert';
+import depthFrag from '../glsl/particlesDepth.frag';
+import depthVert from '../glsl/particlesDepth.vert';
 import React, { Component } from 'react';
 import THREE from 'three';
 import PostProcessing from 'postprocessing';
 import Ping from '../audio/text.mp3';
-import Track from '../audio/homage.mp3'
-
+import Track from '../audio/website_demo.mp3';
 
 export default class AppComponent extends Component {
 
@@ -28,24 +32,27 @@ export default class AppComponent extends Component {
 
 		// Sounds
 		this.track;
-		this.ping
+		this.ping;
+
+		//WTF
+		this.depthRenderTarget;
 	}
 
 	init = () => {
+			let track = new Audio(Track);
+			// track.play()
 			const backgroundColor = 0x69cffa;
-
-			this.track = new Audio(Track);
-			// this.track.play();
+			// const backgroundColor = 0x000000;
 
 			this.particleGroups = [];
 
 
 // Scene and fog
 			this.scene = new THREE.Scene();
-			this.scene.fog = new THREE.FogExp2(backgroundColor , 0.01 );
+			this.scene.fog = new THREE.FogExp2(backgroundColor , 0.02 );
 
 // Camera
-			this.camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 60 );
+			this.camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 50 );
 			this.camera.position.z = 30;
 			this.camera.position.y = 10;
 			this.camera.rotation.x = -0.3;
@@ -59,46 +66,66 @@ export default class AppComponent extends Component {
 			this.scene.add(pointLight, this.ambientLight);
 
 // Circle
-			let circleGeometry = new THREE.CircleGeometry( 5, 128);
+			let circleGeometry = new THREE.CircleGeometry( 0.1, 128);
 			var circleMaterial = new THREE.MeshPhongMaterial({
-				color: 0x000000,
+				color: 0x69FAA5,
 				emissive: 0x000000,
 				specular: 0x555555,
   			shininess: 100
 			});
 
 			this.circle = new THREE.Mesh(circleGeometry, circleMaterial)
-			this.circle.rotation.x = -1.57;
-			this.circle.position.y = 0.004;
+			this.circle.position.y = 10;
+			this.circle.position.z = 27;
 
-			this.scene.add(this.circle);
+			// this.scene.add(this.circle);
 
 // Plane
-			let planeGeometry = new THREE.PlaneBufferGeometry(1000, 1000, 10, 10);
+			let planeGeometry = new THREE.PlaneBufferGeometry(100, 100, 10, 10);
 			let planeMaterial = new THREE.MeshStandardMaterial({
 					color: backgroundColor,
-					roughness: 0.7,
-					metalness: 0.2
+					roughness: 1,
+					metalness: 0.1
 			});
 
 
 			let plane = new THREE.Mesh( planeGeometry, planeMaterial );
 			plane.rotation.x = -1.57;
+			plane.rotation.z = Math.PI/4;
 			plane.receiveShadow = true;
 			this.scene.add(plane);
-
-// Back Wall
-			// this.wall = new THREE.Mesh( planeGeometry, planeMaterial );
-			// this.wall.rotation.x = Math.PI/4;
-			// this.wall.receiveShadow = true;
-			// this.wall.position.z = -40;
-			// this.scene.add(this.wall);
 
 // Rendering
 			this.renderer = new THREE.WebGLRenderer({ antialias: true, logarithmicDepthBuffer: true });
 			this.renderer.setSize( window.innerWidth, window.innerHeight );
 			this.renderer.orderObjects = false;
 			this.renderer.setClearColor( backgroundColor);
+
+
+
+			// WTF
+	    var fuckMaterial = new THREE.ShaderMaterial({
+	        uniforms: {
+	            uTexturePosition: { type: 't', value: null },
+	            uParticleSize: { type: 'f', value: 1 }
+	        },
+	        vertexShader: shaderParse(depthVert),
+	        fragmentShader: shaderParse(depthFrag),
+	        blending: THREE.NoBlending
+	    });
+
+	    this.depthRenderTarget = new THREE.WebGLRenderTarget(1, 1, {
+	        minFilter: THREE.NearestFilter,
+	        magFilter: THREE.NearestFilter,
+	        type: THREE.FloatType,
+	        format: THREE.RGBAFormat,
+	        stencilBuffer: false,
+	        transparent: true
+	    });
+	    this.depthRenderTarget.material = fuckMaterial;
+
+
+
 
 			this.initPostProcessing();
 
@@ -117,8 +144,8 @@ export default class AppComponent extends Component {
 		composer.addPass(renderPass);
 
 		let bokehPass = new PostProcessing.BokehPass( renderPass.depthTexture, {
-			focus: 	 1.0,
-			aperture:	0.0075,
+			focus: 	 1,
+			aperture:	0.0,
 			maxblur:	1.0,
 			width: window.innerWidth,
 			height: window.innerHeight
@@ -134,8 +161,6 @@ export default class AppComponent extends Component {
 
 
 	animate = () => {
-
-		let delta = this.clock.getDelta()
 		const circleScale = 0.005;
 
 		for (var i = 0; i < this.particleGroups.length; i++){
@@ -157,9 +182,9 @@ export default class AppComponent extends Component {
 					// X Position
 					particleExplosion.vertices[ i*3 + 0 ] = particleExplosion.vertices[ i*3 + 0 ] + 20*particleExplosion.particleDirections[ i*3 + 0]/particleExplosion.counter;
 					// Y Position
-					particleExplosion.vertices[ i*3 + 1 ] = particleExplosion.vertices[ i*3 + 1 ] + 20*particleExplosion.particleDirections[ i*3 + 1]/particleExplosion.counter - particleExplosion.counter/1000;
+					particleExplosion.vertices[ i*3 + 1 ] = particleExplosion.vertices[ i*3 + 1 ] + 20*particleExplosion.particleDirections[ i*3 + 1]/particleExplosion.counter + particleExplosion.counter/200;
 					// Z Position
-					particleExplosion.vertices[ i*3 + 2 ] = particleExplosion.vertices[ i*3 + 2 ] + 20*particleExplosion.particleDirections[ i*3 + 2]/particleExplosion.counter;
+					particleExplosion.vertices[ i*3 + 2 ] = particleExplosion.vertices[ i*3 + 2 ] + 5*particleExplosion.particleDirections[ i*3 + 2]/particleExplosion.counter;
 				}
 
 				particleExplosion.particleGeometry.addAttribute( 'position', new THREE.BufferAttribute( particleExplosion.vertices, 3 ) );
@@ -183,21 +208,20 @@ export default class AppComponent extends Component {
 		}
 		this.circle.scale.x += circleScale;
 		this.circle.scale.y += circleScale;
-		this.postprocessing.composer.render( delta );
+		this.postprocessing.composer.render();
 		requestAnimationFrame( this.animate, this.renderer.domElement );
 
 	}
 
 	componentDidMount = () => {
 		this.init();
-		this.initParticles();
 		this.animate();
 		window.addEventListener('click', this.initParticles);
 
 		window.onload = function(){
 				setTimeout(function(){
 					document.getElementById('name').style.width = '600px';
-				}, 32300);
+				}, 14050);
 
 		}
 
@@ -238,16 +262,34 @@ export default class AppComponent extends Component {
 				particleExplosion.particleDirections[ i*3 + 2 ] = (Math.random() - 0.5)/5;
 			}
 
-			// itemSize = 3 because there are 3 values (components) per vertex
-			particleExplosion.particleMaterial = new THREE.PointsMaterial({color: 0xffffff, size: 0.035})
+			// // itemSize = 3 because there are 3 values (components) per vertex
+			// particleExplosion.particleMaterial = new THREE.PointsMaterial({color: 0xffffff, size: 0.5})
+
+			let depthRenderTarget = this.depthRenderTarget.material;
+			let resolution = new THREE.Vector2(window.innerWidth, window.innerHeight);
+			particleExplosion.particleMaterial = new THREE.ShaderMaterial({
+        uniforms: {
+            uTexturePosition: {type: 't', value: null},
+            uDepth: {type: 't', value: depthRenderTarget},
+            uResolution: {type: 'v2', value: resolution},
+            uParticleSize: { type: 'f', value: 1 }
+        },
+        vertexShader: shaderParse(particleVert),
+        fragmentShader: shaderParse(particleFrag)
+			})
+
 			particleExplosion.particleGeometry.addAttribute( 'position', new THREE.BufferAttribute( particleExplosion.vertices, 3 ) );
 
 
 			particleExplosion.particles = new THREE.Points( particleExplosion.particleGeometry, particleExplosion.particleMaterial );
 
-			particleExplosion.particles.position.x = xRange * (Math.random() - 1);
-			particleExplosion.particles.position.y = yRange * (Math.random() - 1);
-			particleExplosion.particles.position.z = zRange * (Math.random());
+			// particleExplosion.particles.position.x = xRange * (Math.random() - 1);
+			// particleExplosion.particles.position.y = yRange * (Math.random() - 1);
+			// particleExplosion.particles.position.z = zRange * (Math.random());
+
+			particleExplosion.particles.position.x = -20;
+			particleExplosion.particles.position.y = -5;
+			particleExplosion.particles.position.z = 20;
 
 			particleExplosion.particles.castShadow = true;
 			this.particleGroups.push(particleExplosion);

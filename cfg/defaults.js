@@ -37,8 +37,18 @@ function getDefaultModules() {
       {
         test: /\.(png|jpg|gif|woff|woff2)$/,
         loader: 'url-loader?limit=8192'
-      }
-    ]
+      },
+			{
+				test: /\.json$/,
+				loader: 'json-loader'
+			},
+			{
+				test: /\.(glsl|frag|vert)$/, loader: 'raw', exclude: /node_modules/
+			},
+      {
+				test: /\.(glsl|frag|vert)$/, loader: 'glslify', exclude: /node_modules/
+			}
+		]
   };
 }
 module.exports = {

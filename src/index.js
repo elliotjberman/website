@@ -6,3 +6,4 @@ import Main from './components/Main';
 
 // Render the main component into the dom
 ReactDOM.render(<Main />, document.getElementById('app'));
+// ReactDOM.render(<Choice />, document.getElementById('app'));
