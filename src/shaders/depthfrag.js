@@ -1,1 +1,0 @@
-export const depthFrag =  "out vec4 fragColor;varying float vDepth;void main() {vec2 toCenter = (gl_PointCoord.xy - 0.5) * 2.0;\nfloat isVisible = step(-1.0 + EPS, -length(toCenter));\nif(isVisible < 0.5) discard;\nfragColor = vec4(vDepth, 0.0, 0.0, 1.0);\n}"

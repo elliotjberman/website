@@ -30,6 +30,8 @@ function getDefaultModules() {
         test: /\.styl/,
         loader: 'style-loader!css-loader!postcss-loader!stylus-loader'
       },
+			// font noise
+			{ test: /\.otf$/, loader: 'url?limit=65000&mimetype=application/octet-stream&name=src/fonts/[name].[ext]' },
 			{
 				test: /\.(wav|mp3)$/,
 				loader: 'file-loader'
@@ -42,12 +44,6 @@ function getDefaultModules() {
 				test: /\.json$/,
 				loader: 'json-loader'
 			},
-			{
-				test: /\.(glsl|frag|vert)$/, loader: 'raw', exclude: /node_modules/
-			},
-      {
-				test: /\.(glsl|frag|vert)$/, loader: 'glslify', exclude: /node_modules/
-			}
 		]
   };
 }

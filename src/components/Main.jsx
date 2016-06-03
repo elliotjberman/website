@@ -1,16 +1,13 @@
 require('normalize.css');
+// require('fonts/GT-Walsheim-Pro-Trial-Regular.otf')
 require('styles/App.scss');
 
-import shaderParse from '../glsl/shaderparse.js';
-import particleFrag from '../glsl/particlesAdditive.frag';
-import particleVert from '../glsl/particlesAdditive.vert';
-import depthFrag from '../glsl/particlesDepth.frag';
-import depthVert from '../glsl/particlesDepth.vert';
 import React, { Component } from 'react';
 import THREE from 'three';
 import PostProcessing from 'postprocessing';
 import Ping from '../audio/text.mp3';
 import Track from '../audio/website_demo.mp3';
+import Disc from '../images/disc.png';
 
 export default class AppComponent extends Component {
 
@@ -21,7 +18,6 @@ export default class AppComponent extends Component {
 		this.camera;
 		this.postprocessing;
 		this.sphere;
-		this.clock;
 		this.counter;
 		this.circle;
 		this.particleGroups;
@@ -40,45 +36,30 @@ export default class AppComponent extends Component {
 
 	init = () => {
 			let track = new Audio(Track);
-			// track.play()
-			const backgroundColor = 0x69cffa;
-			// const backgroundColor = 0x000000;
+			track.play()
+			// const backgroundColor = 0x69cffa;
+			const backgroundColor = 0x454545;
 
 			this.particleGroups = [];
 
 
 // Scene and fog
 			this.scene = new THREE.Scene();
-			this.scene.fog = new THREE.FogExp2(backgroundColor , 0.02 );
+			this.scene.fog = new THREE.FogExp2(backgroundColor , 0.03 );
 
 // Camera
-			this.camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 50 );
+			this.camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 30 );
 			this.camera.position.z = 30;
 			this.camera.position.y = 10;
 			this.camera.rotation.x = -0.3;
 
 // Lighting
 			this.ambientLight = new THREE.AmbientLight(0xffffff, 1);
-			let pointLight = new THREE.PointLight(0xffffff, 0.8);
+			let pointLight = new THREE.PointLight(0xffffff, 0.4);
 			pointLight.position.set(5, 5, -5);
 
 			pointLight.castShadow = true;
 			this.scene.add(pointLight, this.ambientLight);
-
-// Circle
-			let circleGeometry = new THREE.CircleGeometry( 0.1, 128);
-			var circleMaterial = new THREE.MeshPhongMaterial({
-				color: 0x69FAA5,
-				emissive: 0x000000,
-				specular: 0x555555,
-  			shininess: 100
-			});
-
-			this.circle = new THREE.Mesh(circleGeometry, circleMaterial)
-			this.circle.position.y = 10;
-			this.circle.position.z = 27;
-
-			// this.scene.add(this.circle);
 
 // Plane
 			let planeGeometry = new THREE.PlaneBufferGeometry(100, 100, 10, 10);
@@ -101,19 +82,6 @@ export default class AppComponent extends Component {
 			this.renderer.orderObjects = false;
 			this.renderer.setClearColor( backgroundColor);
 
-
-
-			// WTF
-	    var fuckMaterial = new THREE.ShaderMaterial({
-	        uniforms: {
-	            uTexturePosition: { type: 't', value: null },
-	            uParticleSize: { type: 'f', value: 1 }
-	        },
-	        vertexShader: shaderParse(depthVert),
-	        fragmentShader: shaderParse(depthFrag),
-	        blending: THREE.NoBlending
-	    });
-
 	    this.depthRenderTarget = new THREE.WebGLRenderTarget(1, 1, {
 	        minFilter: THREE.NearestFilter,
 	        magFilter: THREE.NearestFilter,
@@ -122,7 +90,6 @@ export default class AppComponent extends Component {
 	        stencilBuffer: false,
 	        transparent: true
 	    });
-	    this.depthRenderTarget.material = fuckMaterial;
 
 
 
@@ -136,7 +103,6 @@ export default class AppComponent extends Component {
 		}
 
 	initPostProcessing = () => {
-		this.clock = new THREE.Clock()
 		this.postprocessing = {};
 
 		let composer = new PostProcessing.EffectComposer( this.renderer );
@@ -145,7 +111,7 @@ export default class AppComponent extends Component {
 
 		let bokehPass = new PostProcessing.BokehPass( renderPass.depthTexture, {
 			focus: 	 1,
-			aperture:	0.0,
+			aperture:	0.002,
 			maxblur:	1.0,
 			width: window.innerWidth,
 			height: window.innerHeight
@@ -161,11 +127,10 @@ export default class AppComponent extends Component {
 
 
 	animate = () => {
-		const circleScale = 0.005;
 
 		for (var i = 0; i < this.particleGroups.length; i++){
 			var particleExplosion = this.particleGroups[i];
-			if (particleExplosion.counter >= 300){
+			if (false){
 				this.scene.remove(particleExplosion.particles);
 				this.particleGroups.splice(i, 1)
 			}
@@ -180,11 +145,11 @@ export default class AppComponent extends Component {
 
 				for ( let i = 0; i < 1000; i++ ) {
 					// X Position
-					particleExplosion.vertices[ i*3 + 0 ] = particleExplosion.vertices[ i*3 + 0 ] + 20*particleExplosion.particleDirections[ i*3 + 0]/particleExplosion.counter;
+					particleExplosion.vertices[ i*3 + 0 ] = particleExplosion.vertices[ i*3 + 0 ] + 2*particleExplosion.particleDirections[ i*3 + 0]/particleExplosion.counter;
 					// Y Position
-					particleExplosion.vertices[ i*3 + 1 ] = particleExplosion.vertices[ i*3 + 1 ] + 20*particleExplosion.particleDirections[ i*3 + 1]/particleExplosion.counter + particleExplosion.counter/200;
-					// Z Position
-					particleExplosion.vertices[ i*3 + 2 ] = particleExplosion.vertices[ i*3 + 2 ] + 5*particleExplosion.particleDirections[ i*3 + 2]/particleExplosion.counter;
+					particleExplosion.vertices[ i*3 + 1 ] = particleExplosion.vertices[ i*3 + 1 ] + 2*particleExplosion.particleDirections[ i*3 + 1]/particleExplosion.counter;
+					// Z position
+					particleExplosion.vertices[ i*3 + 2 ] = particleExplosion.vertices[ i*3 + 2 ] + 2*particleExplosion.particleDirections[ i*3 + 2]/particleExplosion.counter;
 				}
 
 				particleExplosion.particleGeometry.addAttribute( 'position', new THREE.BufferAttribute( particleExplosion.vertices, 3 ) );
@@ -206,8 +171,6 @@ export default class AppComponent extends Component {
 		if (this.ambientLight.intensity < 0.34){
 			this.ambientLight.intensity += 0.001;
 		}
-		this.circle.scale.x += circleScale;
-		this.circle.scale.y += circleScale;
 		this.postprocessing.composer.render();
 		requestAnimationFrame( this.animate, this.renderer.domElement );
 
@@ -220,7 +183,7 @@ export default class AppComponent extends Component {
 
 		window.onload = function(){
 				setTimeout(function(){
-					document.getElementById('name').style.width = '600px';
+					document.getElementById('name').style.width = '550px';
 				}, 14050);
 
 		}
@@ -237,10 +200,10 @@ export default class AppComponent extends Component {
 			particleExplosion.counter = 0;
 			particleExplosion.particleGeometry = new THREE.BufferGeometry();
 
-			const particleCount = 1000 ;
-			const xRange = 40;
-			const yRange = 10;
-			const zRange = 27;
+			const particleCount = 100 ;
+			const xRange = 15;
+			const yRange = 7;
+			const zRange = 15;
 
 			particleExplosion.vertices = new Float32Array( particleCount * 3 );
 
@@ -263,35 +226,24 @@ export default class AppComponent extends Component {
 			}
 
 			// // itemSize = 3 because there are 3 values (components) per vertex
+			let sprite = new THREE.TextureLoader().load( Disc );
 			// particleExplosion.particleMaterial = new THREE.PointsMaterial({color: 0xffffff, size: 0.5})
+
+			particleExplosion.particleMaterial = new THREE.PointsMaterial( { size: 1, sizeAttenuation: true, map: sprite, alphaTest: 0.5, transparent: true } );
+			particleExplosion.particleMaterial.color.setHSL( 0.5, 0.5, 0.5 );
 
 			let depthRenderTarget = this.depthRenderTarget.material;
 			let resolution = new THREE.Vector2(window.innerWidth, window.innerHeight);
-			particleExplosion.particleMaterial = new THREE.ShaderMaterial({
-        uniforms: {
-            uTexturePosition: {type: 't', value: null},
-            uDepth: {type: 't', value: depthRenderTarget},
-            uResolution: {type: 'v2', value: resolution},
-            uParticleSize: { type: 'f', value: 1 }
-        },
-        vertexShader: shaderParse(particleVert),
-        fragmentShader: shaderParse(particleFrag)
-			})
 
 			particleExplosion.particleGeometry.addAttribute( 'position', new THREE.BufferAttribute( particleExplosion.vertices, 3 ) );
 
 
 			particleExplosion.particles = new THREE.Points( particleExplosion.particleGeometry, particleExplosion.particleMaterial );
 
-			// particleExplosion.particles.position.x = xRange * (Math.random() - 1);
-			// particleExplosion.particles.position.y = yRange * (Math.random() - 1);
-			// particleExplosion.particles.position.z = zRange * (Math.random());
+			particleExplosion.particles.position.x = xRange * (Math.random() - 0.5) - 20;
+			particleExplosion.particles.position.y = yRange * (Math.random() - 0.5) - 5;
+			particleExplosion.particles.position.z = zRange * (Math.random() - 0.5) + 15;
 
-			particleExplosion.particles.position.x = -20;
-			particleExplosion.particles.position.y = -5;
-			particleExplosion.particles.position.z = 20;
-
-			particleExplosion.particles.castShadow = true;
 			this.particleGroups.push(particleExplosion);
 	}
 
@@ -307,8 +259,7 @@ export default class AppComponent extends Component {
       <div className="index" id="index">
 				<div className="name-container">
 					<div id="name">
-						<h1>Elliot</h1>
-						<h1>Berman</h1>
+						<h1>Elliot<br/>Berman</h1>
 					</div>
 				</div>
       </div>

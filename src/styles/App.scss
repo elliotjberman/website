@@ -1,3 +1,15 @@
+@font-face {
+  font-family: 'GT-Walsheim';
+  src: url('../fonts/GT-Walsheim-Pro-Trial-Regular.otf');
+	font-weight: 300;
+}
+@font-face {
+  font-family: 'GT-Walsheim';
+  src: url('../fonts/GT-Walsheim-Pro-Trial-Medium.otf');
+	font-weight: 400;
+}
+
+
 /* Base Application Styles */
 .name-container{
 	position: absolute;
@@ -8,6 +20,8 @@
 	width: 100%;
 }
 #name{
+	font-family: 'GT-Walsheim';
+	font-weight: 400;
 	width: 0;
 	transition: .9s cubic-bezier(0.96, 0.05, 0.57, 1.2);
 	z-index: 0;
@@ -15,6 +29,7 @@
 	padding-top: 10px;
 	padding-bottom: 10px;
 	overflow: hidden;
+	letter-spacing: -8.5px;
 
 	cursor: default;
 	-webkit-user-select: none; /* Chrome/Safari */
@@ -28,6 +43,8 @@
 		display: block;
 		color: white;
 		font-size: 130px;
-		line-height: 30px;
+		margin: 0;
+		line-height: 0.95;
+		padding: 30px;
 	}
 }
