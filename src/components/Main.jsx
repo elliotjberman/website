@@ -7,7 +7,7 @@ import THREE from 'three';
 import PostProcessing from 'postprocessing';
 import Ping from '../audio/text.mp3';
 import Track from '../audio/website_demo.mp3';
-import Disc from '../images/disc.png';
+import Disc from '../images/disc2.png';
 
 export default class AppComponent extends Component {
 
@@ -15,12 +15,19 @@ export default class AppComponent extends Component {
 		this.mesh;
 		this.renderer;
 		this.scene;
+
+		// Camera scrim
+		this.mouseX = 0;
+		this.mouseY = 0;
+		this.windowHalfX = window.innerWidth / 2;
+		this.windowHalfY = window.innerHeight / 2;
 		this.camera;
-		this.postprocessing;
-		this.sphere;
+
+		// Particles
 		this.counter;
-		this.circle;
 		this.particleGroups;
+		this.sprite;
+		this.randomColor;
 
 		this.ambientLight;
 
@@ -36,65 +43,44 @@ export default class AppComponent extends Component {
 
 	init = () => {
 			let track = new Audio(Track);
-			track.play()
-			// const backgroundColor = 0x69cffa;
-			const backgroundColor = 0x454545;
+			// track.play()
+
+			const white = 0xffffff;
+
+			this.sprite = new THREE.TextureLoader().load( Disc );
+
+			let colors = [{particleColor: 26/360, backgroundColor: 0xfff1e7}, {particleColor: 202/360, backgroundColor: 0xccebfc}, {particleColor: 148/360, backgroundColor: 0xf1fdf7}]
+			let randomChoice = Math.floor(Math.random()*3)
+			this.randomColor = colors[randomChoice]
 
 			this.particleGroups = [];
 
 
 // Scene and fog
 			this.scene = new THREE.Scene();
-			this.scene.fog = new THREE.FogExp2(backgroundColor , 0.03 );
+			this.scene.fog = new THREE.FogExp2(white , 0.06 );
 
 // Camera
 			this.camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 30 );
 			this.camera.position.z = 30;
-			this.camera.position.y = 10;
-			this.camera.rotation.x = -0.3;
+			this.camera.position.y = 5;
 
 // Lighting
 			this.ambientLight = new THREE.AmbientLight(0xffffff, 1);
-			let pointLight = new THREE.PointLight(0xffffff, 0.4);
+			let pointLight = new THREE.PointLight(0xffffff, 0.8);
 			pointLight.position.set(5, 5, -5);
 
 			pointLight.castShadow = true;
 			this.scene.add(pointLight, this.ambientLight);
 
-// Plane
-			let planeGeometry = new THREE.PlaneBufferGeometry(100, 100, 10, 10);
-			let planeMaterial = new THREE.MeshStandardMaterial({
-					color: backgroundColor,
-					roughness: 1,
-					metalness: 0.1
-			});
-
-
-			let plane = new THREE.Mesh( planeGeometry, planeMaterial );
-			plane.rotation.x = -1.57;
-			plane.rotation.z = Math.PI/4;
-			plane.receiveShadow = true;
-			this.scene.add(plane);
-
 // Rendering
-			this.renderer = new THREE.WebGLRenderer({ antialias: true, logarithmicDepthBuffer: true });
+			this.renderer = new THREE.WebGLRenderer({ antialias: true });
+			this.renderer.setPixelRatio( window.devicePixelRatio );
 			this.renderer.setSize( window.innerWidth, window.innerHeight );
 			this.renderer.orderObjects = false;
-			this.renderer.setClearColor( backgroundColor);
+			this.renderer.setClearColor( this.randomColor.backgroundColor );
 
-	    this.depthRenderTarget = new THREE.WebGLRenderTarget(1, 1, {
-	        minFilter: THREE.NearestFilter,
-	        magFilter: THREE.NearestFilter,
-	        type: THREE.FloatType,
-	        format: THREE.RGBAFormat,
-	        stencilBuffer: false,
-	        transparent: true
-	    });
-
-
-
-
-			this.initPostProcessing();
+			// this.initPostProcessing();
 
 			window.addEventListener( 'resize', this.onWindowResize, false );
 			document.getElementById('index').appendChild( this.renderer.domElement );
@@ -111,7 +97,7 @@ export default class AppComponent extends Component {
 
 		let bokehPass = new PostProcessing.BokehPass( renderPass.depthTexture, {
 			focus: 	 1,
-			aperture:	0.002,
+			aperture:	0.0,
 			maxblur:	1.0,
 			width: window.innerWidth,
 			height: window.innerHeight
@@ -137,41 +123,45 @@ export default class AppComponent extends Component {
 			else{
 				particleExplosion.counter += 1;
 
-				let x = particleExplosion.particles.position.x;
-				let y = particleExplosion.particles.position.y;
-				let z = particleExplosion.particles.position.z;
+				let xPosition = particleExplosion.particles.position.x;
+				let yPosition = particleExplosion.particles.position.y;
+				let zPosition = particleExplosion.particles.position.z;
+
+				let xRotation = particleExplosion.particles.rotation.x;
+				let yRotation = particleExplosion.particles.rotation.y;
+				let zRotation = particleExplosion.particles.rotation.z;
 
 				this.scene.remove(particleExplosion.particles);
 
 				for ( let i = 0; i < 1000; i++ ) {
 					// X Position
-					particleExplosion.vertices[ i*3 + 0 ] = particleExplosion.vertices[ i*3 + 0 ] + 2*particleExplosion.particleDirections[ i*3 + 0]/particleExplosion.counter;
+					particleExplosion.vertices[ i*3 + 0 ] = particleExplosion.vertices[ i*3 + 0 ] + 4*particleExplosion.particleDirections[ i*3 + 0]/particleExplosion.counter;
 					// Y Position
-					particleExplosion.vertices[ i*3 + 1 ] = particleExplosion.vertices[ i*3 + 1 ] + 2*particleExplosion.particleDirections[ i*3 + 1]/particleExplosion.counter;
+					particleExplosion.vertices[ i*3 + 1 ] = particleExplosion.vertices[ i*3 + 1 ] + 4*particleExplosion.particleDirections[ i*3 + 1]/particleExplosion.counter;
 					// Z position
-					particleExplosion.vertices[ i*3 + 2 ] = particleExplosion.vertices[ i*3 + 2 ] + 2*particleExplosion.particleDirections[ i*3 + 2]/particleExplosion.counter;
+					particleExplosion.vertices[ i*3 + 2 ] = particleExplosion.vertices[ i*3 + 2 ] + 4*particleExplosion.particleDirections[ i*3 + 2]/particleExplosion.counter;
 				}
 
 				particleExplosion.particleGeometry.addAttribute( 'position', new THREE.BufferAttribute( particleExplosion.vertices, 3 ) );
 				particleExplosion.particles = new THREE.Points( particleExplosion.particleGeometry, particleExplosion.particleMaterial );
 
-				particleExplosion.particles.position.x = x;
-				particleExplosion.particles.position.y = y;
-				particleExplosion.particles.position.z = z;
-				particleExplosion.particles.castShadow = true;
+				particleExplosion.particles.position.x = xPosition - 0.0015;
+				particleExplosion.particles.position.y = yPosition - 0.0015;
+				particleExplosion.particles.position.z = zPosition + 0.0015;
+
+				particleExplosion.particles.rotation.y = yRotation + 0.0005;
+				particleExplosion.particles.rotation.x = xRotation - 0.0005;
 
 				this.scene.add(particleExplosion.particles);
 			}
 
 		}
 
-		if (this.camera.rotation.x < 0.3){
-			this.camera.rotation.x += 0.0001;
-		}
 		if (this.ambientLight.intensity < 0.34){
 			this.ambientLight.intensity += 0.001;
 		}
-		this.postprocessing.composer.render();
+
+		this.renderer.render(this.scene, this.camera);
 		requestAnimationFrame( this.animate, this.renderer.domElement );
 
 	}
@@ -180,12 +170,12 @@ export default class AppComponent extends Component {
 		this.init();
 		this.animate();
 		window.addEventListener('click', this.initParticles);
+		window.addEventListener( 'mousemove', this.onDocumentMouseMove, false );
 
 		window.onload = function(){
 				setTimeout(function(){
 					document.getElementById('name').style.width = '550px';
 				}, 14050);
-
 		}
 
 	}
@@ -200,10 +190,10 @@ export default class AppComponent extends Component {
 			particleExplosion.counter = 0;
 			particleExplosion.particleGeometry = new THREE.BufferGeometry();
 
-			const particleCount = 100 ;
-			const xRange = 15;
-			const yRange = 7;
-			const zRange = 15;
+			const particleCount = 250 ;
+			const xRange = 10;
+			const yRange = 5;
+			const zRange = 10;
 
 			particleExplosion.vertices = new Float32Array( particleCount * 3 );
 
@@ -212,9 +202,9 @@ export default class AppComponent extends Component {
 			for ( let i = 0; i < particleCount; i++ ) {
 
 				// X Position
-				particleExplosion.vertices[ i*3 + 0 ] = 20;
+				particleExplosion.vertices[ i*3 + 0 ] = 0;
 				// Y Position
-				particleExplosion.vertices[ i*3 + 1 ] = 12;
+				particleExplosion.vertices[ i*3 + 1 ] = 0;
 				// Z Position
 				particleExplosion.vertices[ i*3 + 2 ] = 0;
 
@@ -226,13 +216,12 @@ export default class AppComponent extends Component {
 			}
 
 			// // itemSize = 3 because there are 3 values (components) per vertex
-			let sprite = new THREE.TextureLoader().load( Disc );
 			// particleExplosion.particleMaterial = new THREE.PointsMaterial({color: 0xffffff, size: 0.5})
 
-			particleExplosion.particleMaterial = new THREE.PointsMaterial( { size: 1, sizeAttenuation: true, map: sprite, alphaTest: 0.5, transparent: true } );
-			particleExplosion.particleMaterial.color.setHSL( 0.5, 0.5, 0.5 );
+			particleExplosion.particleMaterial = new THREE.PointsMaterial( { size: 0.5, sizeAttenuation: true, map: this.sprite, alphaTest: 0.2, transparent: true } );
+			particleExplosion.particleMaterial.color.setHSL(this.randomColor.particleColor, 0.9, (Math.random()/2+0.5) );
 
-			let depthRenderTarget = this.depthRenderTarget.material;
+			// let depthRenderTarget = this.depthRenderTarget.material;
 			let resolution = new THREE.Vector2(window.innerWidth, window.innerHeight);
 
 			particleExplosion.particleGeometry.addAttribute( 'position', new THREE.BufferAttribute( particleExplosion.vertices, 3 ) );
@@ -240,8 +229,8 @@ export default class AppComponent extends Component {
 
 			particleExplosion.particles = new THREE.Points( particleExplosion.particleGeometry, particleExplosion.particleMaterial );
 
-			particleExplosion.particles.position.x = xRange * (Math.random() - 0.5) - 20;
-			particleExplosion.particles.position.y = yRange * (Math.random() - 0.5) - 5;
+			particleExplosion.particles.position.x = xRange * (Math.random() - 0.5);
+			particleExplosion.particles.position.y = yRange * (Math.random() - 0.5) + 5;
 			particleExplosion.particles.position.z = zRange * (Math.random() - 0.5) + 15;
 
 			this.particleGroups.push(particleExplosion);
@@ -251,6 +240,11 @@ export default class AppComponent extends Component {
 		this.camera.aspect = window.innerWidth / window.innerHeight;
 		this.camera.updateProjectionMatrix();
 		this.renderer.setSize( window.innerWidth, window.innerHeight );
+	}
+
+	onDocumentMouseMove = ( event ) => {
+		this.mouseX = event.clientX - this.windowHalfX;
+		this.mouseY = event.clientY - this.windowHalfY;
 	}
 
 
