@@ -33,7 +33,7 @@ function getDefaultModules() {
 			// font noise
 			{ test: /\.otf$/, loader: 'url?limit=65000&mimetype=application/octet-stream&name=src/fonts/[name].[ext]' },
 			{
-				test: /\.(wav|mp3)$/,
+				test: /\.(wav|mp3|m4a)$/,
 				loader: 'file-loader'
 			},
       {

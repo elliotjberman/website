@@ -67,9 +67,6 @@
   "dependencies": {
     "babel-preset-stage-0": "^6.5.0",
     "core-js": "^2.0.0",
-    "glsl-noise": "0.0.0",
-    "glslify": "^5.0.2",
-    "glslify-loader": "^1.0.2",
     "grunt": "^1.0.1",
     "normalize.css": "^3.0.3",
     "postprocessing": "^1.0.7",
