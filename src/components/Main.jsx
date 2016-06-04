@@ -49,7 +49,7 @@ export default class AppComponent extends Component {
 	init = () => {
 			this.pings = [Ping1, Ping2, Ping3, Ping4, Ping5, Ping6]
 			let track = new Audio(Track);
-			track.play()
+			// track.play();
 
 			const white = 0xffffff;
 
@@ -68,8 +68,8 @@ export default class AppComponent extends Component {
 
 // Camera
 			this.camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 30 );
-			this.camera.position.z = 30;
-			this.camera.position.y = 5;
+			this.camera.position.z = 7;
+			this.camera.position.y = 0;
 
 // Lighting
 			this.ambientLight = new THREE.AmbientLight(0xffffff, 1);
@@ -93,29 +93,6 @@ export default class AppComponent extends Component {
 
 
 		}
-
-	initPostProcessing = () => {
-		this.postprocessing = {};
-
-		let composer = new PostProcessing.EffectComposer( this.renderer );
-		let renderPass = new PostProcessing.RenderPass(this.scene, this.camera, {depth: true});
-		composer.addPass(renderPass);
-
-		let bokehPass = new PostProcessing.BokehPass( renderPass.depthTexture, {
-			focus: 	 1,
-			aperture:	0.0,
-			maxblur:	1.0,
-			width: window.innerWidth,
-			height: window.innerHeight
-
-		} );
-		bokehPass.renderToScreen = true;
-
-		composer.addPass( bokehPass );
-		this.postprocessing.composer = composer;
-		this.postprocessing.bokeh = bokehPass;
-
-	}
 
 
 	animate = () => {
@@ -169,8 +146,16 @@ export default class AppComponent extends Component {
 	componentDidMount = () => {
 		this.init();
 		this.animate();
-		window.addEventListener('click', this.initParticles);
-		window.addEventListener( 'mousemove', this.onDocumentMouseMove, false );
+		var initParticles = this.initParticles;
+		window.addEventListener('click', function(event) {
+			let mouseX = event.pageX/window.innerWidth;
+			let mouseY = 1 - event.pageY/window.innerHeight;
+			initParticles(mouseX, mouseY);
+		});
+
+		// window.setInterval(function(){
+		// 	initParticles();
+		// }, 5000)
 
 		window.onload = function(){
 				setTimeout(function(){
@@ -180,10 +165,17 @@ export default class AppComponent extends Component {
 
 	}
 
-	initParticles = () => {
-			let randomChoice = Math.floor(Math.random()*6)
-			let sound = new Audio(this.pings[randomChoice]);
-			sound.volume = 0.17;
+	initParticles = (x, y) => {
+
+
+			if (!x || !y){
+				x = Math.random();
+				y = Math.random();
+			}
+			let choice = Math.floor(x*3 + (-y + 1)*3)
+			let sound = new Audio(this.pings[choice]);
+			var randomZDepth = 0.2;
+			sound.volume = 0.8 - randomZDepth/1.2;
 			sound.play();
 
 		//Particle shit
@@ -192,9 +184,9 @@ export default class AppComponent extends Component {
 			particleExplosion.particleGeometry = new THREE.BufferGeometry();
 
 			const particleCount = 250 ;
-			const xRange = 10;
+			const xRange = 5;
 			const yRange = 5;
-			const zRange = 10;
+			const zRange = 20;
 
 			particleExplosion.vertices = new Float32Array( particleCount * 3 );
 
@@ -230,9 +222,11 @@ export default class AppComponent extends Component {
 
 			particleExplosion.particles = new THREE.Points( particleExplosion.particleGeometry, particleExplosion.particleMaterial );
 
-			particleExplosion.particles.position.x = xRange * (Math.random() - 0.5);
-			particleExplosion.particles.position.y = yRange * (Math.random() - 0.5) + 5;
-			particleExplosion.particles.position.z = zRange * (Math.random() - 0.5) + 15;
+			particleExplosion.particles.position.x = xRange * 2 * (x - 0.5) + (x - 0.5) * randomZDepth * 30;
+			particleExplosion.particles.position.y = yRange * 2 * (y - 0.5) + (y - 0.5) * randomZDepth * 0.3^y;
+			console.log(randomZDepth)
+			console.log(particleExplosion.particles.position.y)
+			particleExplosion.particles.position.z = -zRange * randomZDepth;
 
 			this.particleGroups.push(particleExplosion);
 	}
@@ -241,11 +235,6 @@ export default class AppComponent extends Component {
 		this.camera.aspect = window.innerWidth / window.innerHeight;
 		this.camera.updateProjectionMatrix();
 		this.renderer.setSize( window.innerWidth, window.innerHeight );
-	}
-
-	onDocumentMouseMove = ( event ) => {
-		this.mouseX = event.clientX - this.windowHalfX;
-		this.mouseY = event.clientY - this.windowHalfY;
 	}
 
 
