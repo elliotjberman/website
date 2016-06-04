@@ -167,14 +167,15 @@ export default class AppComponent extends Component {
 
 	initParticles = (x, y) => {
 
-
+			var randomZDepth;
 			if (!x || !y){
 				x = Math.random();
 				y = Math.random();
+				randomZDepth = Math.random();
 			}
 			let choice = Math.floor(x*3 + (-y + 1)*3)
 			let sound = new Audio(this.pings[choice]);
-			var randomZDepth = 0.7 - 0.5 * Math.random();
+			randomZDepth = 0.7 - 0.5 * Math.random();
 			sound.volume = 0.8 - randomZDepth/1.2;
 			sound.play();
 
