@@ -49,7 +49,7 @@ export default class AppComponent extends Component {
 	init = () => {
 			this.pings = [Ping1, Ping2, Ping3, Ping4, Ping5, Ping6]
 			let track = new Audio(Track);
-			// track.play();
+			track.play();
 
 			const white = 0xffffff;
 
@@ -153,9 +153,9 @@ export default class AppComponent extends Component {
 			initParticles(mouseX, mouseY);
 		});
 
-		// window.setInterval(function(){
-		// 	initParticles();
-		// }, 5000)
+		window.setInterval(function(){
+			initParticles();
+		}, 5000)
 
 		window.onload = function(){
 				setTimeout(function(){
@@ -174,7 +174,7 @@ export default class AppComponent extends Component {
 			}
 			let choice = Math.floor(x*3 + (-y + 1)*3)
 			let sound = new Audio(this.pings[choice]);
-			var randomZDepth = 0.2;
+			var randomZDepth = Math.random();
 			sound.volume = 0.8 - randomZDepth/1.2;
 			sound.play();
 
@@ -183,8 +183,10 @@ export default class AppComponent extends Component {
 			particleExplosion.counter = 0;
 			particleExplosion.particleGeometry = new THREE.BufferGeometry();
 
-			const particleCount = 250 ;
-			const xRange = 5;
+			let aspectRatio = window.innerWidth/window.innerHeight
+
+			const particleCount = 100;
+			var xRange = 4 * aspectRatio;
 			const yRange = 5;
 			const zRange = 20;
 
@@ -209,23 +211,17 @@ export default class AppComponent extends Component {
 			}
 
 			// // itemSize = 3 because there are 3 values (components) per vertex
-			// particleExplosion.particleMaterial = new THREE.PointsMaterial({color: 0xffffff, size: 0.5})
 
 			particleExplosion.particleMaterial = new THREE.PointsMaterial( { size: 0.9, sizeAttenuation: true, map: this.sprite, alphaTest: 0.2, transparent: true } );
 			particleExplosion.particleMaterial.color.setHSL(this.randomColor.particleColor, 0.9, (Math.random()/2+0.5) );
-
-			// let depthRenderTarget = this.depthRenderTarget.material;
-			let resolution = new THREE.Vector2(window.innerWidth, window.innerHeight);
 
 			particleExplosion.particleGeometry.addAttribute( 'position', new THREE.BufferAttribute( particleExplosion.vertices, 3 ) );
 
 
 			particleExplosion.particles = new THREE.Points( particleExplosion.particleGeometry, particleExplosion.particleMaterial );
 
-			particleExplosion.particles.position.x = xRange * 2 * (x - 0.5) + (x - 0.5) * randomZDepth * 30;
+			particleExplosion.particles.position.x = xRange * 2 * (x - 0.5) + (x - 0.5) * 40 * randomZDepth * (xRange)/40;
 			particleExplosion.particles.position.y = yRange * 2 * (y - 0.5) + (y - 0.5) * randomZDepth * 0.3^y;
-			console.log(randomZDepth)
-			console.log(particleExplosion.particles.position.y)
 			particleExplosion.particles.position.z = -zRange * randomZDepth;
 
 			this.particleGroups.push(particleExplosion);
