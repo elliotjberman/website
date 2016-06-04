@@ -175,7 +175,7 @@ export default class AppComponent extends Component {
 			}
 			let choice = Math.floor(x*3 + (-y + 1)*3)
 			let sound = new Audio(this.pings[choice]);
-			randomZDepth = 0.3;
+			randomZDepth = 0.2;
 			sound.volume = 0.8 - randomZDepth/1.2;
 			sound.play();
 
@@ -189,7 +189,7 @@ export default class AppComponent extends Component {
 			const particleCount = 100;
 			var xRange = 4 * aspectRatio;
 			const yRange = 5;
-			const zRange = 20;
+			const zRange = 25;
 
 			particleExplosion.vertices = new Float32Array( particleCount * 3 );
 
