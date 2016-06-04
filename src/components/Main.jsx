@@ -175,7 +175,7 @@ export default class AppComponent extends Component {
 			}
 			let choice = Math.floor(x*3 + (-y + 1)*3)
 			let sound = new Audio(this.pings[choice]);
-			randomZDepth = 0.7 - 0.5 * Math.random();
+			randomZDepth = 0.3;
 			sound.volume = 0.8 - randomZDepth/1.2;
 			sound.play();
 
