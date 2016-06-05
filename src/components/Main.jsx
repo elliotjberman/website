@@ -4,7 +4,6 @@ require('styles/App.scss');
 
 import React, { Component } from 'react';
 import THREE from 'three';
-import PostProcessing from 'postprocessing';
 import Ping1 from '../audio/1.mp3';
 import Ping2 from '../audio/2.mp3';
 import Ping3 from '../audio/3.mp3';
@@ -30,8 +29,6 @@ export default class AppComponent extends Component {
 		this.scene;
 
 		// Camera scrim
-		this.mouseX = 0;
-		this.mouseY = 0;
 		this.windowHalfX = window.innerWidth / 2;
 		this.windowHalfY = window.innerHeight / 2;
 		this.camera;
@@ -42,8 +39,6 @@ export default class AppComponent extends Component {
 		this.sprite;
 
 		this.ambientLight;
-
-		this.wall;
 
 		// Sounds
 		this.track;
@@ -110,7 +105,6 @@ export default class AppComponent extends Component {
 
 			let xRotation = particleExplosion.particles.rotation.x;
 			let yRotation = particleExplosion.particles.rotation.y;
-			let zRotation = particleExplosion.particles.rotation.z;
 
 			this.scene.remove(particleExplosion.particles);
 
