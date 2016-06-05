@@ -12,7 +12,7 @@ import Ping4 from '../audio/4.mp3';
 import Ping5 from '../audio/5.mp3';
 import Ping6 from '../audio/6.mp3';
 import Track from '../audio/demo_boy.m4a';
-import Disc from '../images/disc2.png';
+import Disc from '../images/disc_thinborder.png';
 
 export default class AppComponent extends Component {
 
