@@ -32,7 +32,6 @@ export default class AppComponent extends Component {
 		this.counter;
 		this.particleGroups;
 		this.sprite;
-		this.randomColor;
 
 		this.ambientLight;
 
@@ -54,10 +53,6 @@ export default class AppComponent extends Component {
 			const white = 0xffffff;
 
 			this.sprite = new THREE.TextureLoader().load( Disc );
-
-			let colors = [{particleColor: 26/360, backgroundColor: 0xfff1e7}, {particleColor: 202/360, backgroundColor: 0xe2f1f9}, {particleColor: 148/360, backgroundColor: 0xf1fdf7}]
-			let randomChoice = Math.floor(Math.random()*3)
-			this.randomColor = colors[randomChoice]
 
 			this.particleGroups = [];
 
@@ -84,7 +79,7 @@ export default class AppComponent extends Component {
 			this.renderer.setPixelRatio( window.devicePixelRatio );
 			this.renderer.setSize( window.innerWidth, window.innerHeight );
 			this.renderer.orderObjects = false;
-			this.renderer.setClearColor( this.randomColor.backgroundColor );
+			this.renderer.setClearColor( 0xfff1e7 );
 
 			// this.initPostProcessing();
 
@@ -214,7 +209,7 @@ export default class AppComponent extends Component {
 			// // itemSize = 3 because there are 3 values (components) per vertex
 
 			particleExplosion.particleMaterial = new THREE.PointsMaterial( { size: 0.9, sizeAttenuation: true, map: this.sprite, alphaTest: 0.2, transparent: true } );
-			particleExplosion.particleMaterial.color.setHSL(this.randomColor.particleColor, 0.9, (Math.random()/2+0.5) );
+			particleExplosion.particleMaterial.color.setHSL(26/360, 0.9, (Math.random()/2+0.5) );
 
 			particleExplosion.particleGeometry.addAttribute( 'position', new THREE.BufferAttribute( particleExplosion.vertices, 3 ) );
 
