@@ -11,8 +11,16 @@ import Ping3 from '../audio/3.mp3';
 import Ping4 from '../audio/4.mp3';
 import Ping5 from '../audio/5.mp3';
 import Ping6 from '../audio/6.mp3';
-import Track from '../audio/demo_boy.m4a';
-import Disc from '../images/disc_thinborder.png';
+
+import Bing1 from '../audio/Bing1.mp3';
+import Bing2 from '../audio/Bing2.mp3';
+import Bing3 from '../audio/Bing3.mp3';
+import Bing4 from '../audio/Bing4.mp3';
+import Bing5 from '../audio/Bing5.mp3';
+import Bing6 from '../audio/Bing6.mp3';
+
+import Track from '../audio/bass_demo.mp3';
+import Disc from '../images/disc_thick.png';
 
 export default class AppComponent extends Component {
 
@@ -46,7 +54,7 @@ export default class AppComponent extends Component {
 	}
 
 	init = () => {
-			this.pings = [Ping1, Ping2, Ping3, Ping4, Ping5, Ping6]
+			this.pings = [Bing1, Bing2, Bing3, Bing4, Bing5, Bing6]
 			let track = new Audio(Track);
 			track.play();
 
@@ -155,7 +163,7 @@ export default class AppComponent extends Component {
 		window.onload = function(){
 				setTimeout(function(){
 					document.getElementById('name').style.width = '550px';
-				}, 23800);
+				}, 14800);
 		}
 
 	}
@@ -171,7 +179,7 @@ export default class AppComponent extends Component {
 			let choice = Math.floor(x*3 + (-y + 1)*3)
 			let sound = new Audio(this.pings[choice]);
 			randomZDepth = 0.2;
-			sound.volume = 0.8 - randomZDepth/1.2;
+			sound.volume = 0.5 - randomZDepth/1.2;
 			sound.play();
 
 		//Particle shit
