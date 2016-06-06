@@ -1,16 +1,14 @@
 require('normalize.css');
-// require('fonts/GT-Walsheim-Pro-Trial-Regular.otf')
 require('styles/App.scss');
 
 import React, { Component } from 'react';
 import THREE from 'three';
-import PostProcessing from 'postprocessing';
-import Ping1 from '../audio/1.mp3';
-import Ping2 from '../audio/2.mp3';
-import Ping3 from '../audio/3.mp3';
-import Ping4 from '../audio/4.mp3';
-import Ping5 from '../audio/5.mp3';
-import Ping6 from '../audio/6.mp3';
+// import Ping1 from '../audio/1.mp3';
+// import Ping2 from '../audio/2.mp3';
+// import Ping3 from '../audio/3.mp3';
+// import Ping4 from '../audio/4.mp3';
+// import Ping5 from '../audio/5.mp3';
+// import Ping6 from '../audio/6.mp3';
 
 import Bing1 from '../audio/Bing1.mp3';
 import Bing2 from '../audio/Bing2.mp3';
@@ -21,6 +19,9 @@ import Bing6 from '../audio/Bing6.mp3';
 
 import Track from '../audio/bass_demo.mp3';
 import Disc from '../images/disc_thick.png';
+
+import Fragment from '../shaders/disc_fragment.glsl';
+import Vertex from '../shaders/disc_vertex.glsl';
 
 export default class AppComponent extends Component {
 
@@ -215,6 +216,16 @@ export default class AppComponent extends Component {
 			}
 
 			// // itemSize = 3 because there are 3 values (components) per vertex
+
+
+			// particleExplosion.particleMaterial = new THREE.ShaderMaterial({
+			// 	uniforms: {
+			// 		time: { value: 1.0 },
+			// 		resolution: { value: new THREE.Vector2() }
+			// 	},
+			// 	fragmentShader: Fragment,
+			// 	vertexShader: Vertex
+			// })
 
 			particleExplosion.particleMaterial = new THREE.PointsMaterial( { size: 0.9, sizeAttenuation: true, map: this.sprite, alphaTest: 0.2, transparent: true } );
 			particleExplosion.particleMaterial.color.setHSL(26/360, 0.9, (Math.random()/2+0.5) );
