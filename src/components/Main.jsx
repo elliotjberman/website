@@ -3,6 +3,7 @@ require('styles/App.scss');
 
 import React, { Component } from 'react';
 import THREE from 'three';
+import Stats from 'stats-js';
 // import Ping1 from '../audio/1.mp3';
 // import Ping2 from '../audio/2.mp3';
 // import Ping3 from '../audio/3.mp3';
@@ -57,7 +58,7 @@ export default class AppComponent extends Component {
 	init = () => {
 			this.pings = [Bing1, Bing2, Bing3, Bing4, Bing5, Bing6]
 			let track = new Audio(Track);
-			track.play();
+			// track.play();
 
 			const white = 0xffffff;
 
