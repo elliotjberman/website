@@ -101,11 +101,13 @@ export default class AppComponent extends Component {
 
 
 	animate = () => {
-
+		if (this.particleGroups.length > 50){
+			this.scene.remove(this.particleGroups[0].particles)
+			this.particleGroups.shift();
+		}
 		for (var i = 0; i < this.particleGroups.length; i++){
 			var particleExplosion = this.particleGroups[i];
 			particleExplosion.counter += 1;
-
 			let xPosition = particleExplosion.particles.position.x;
 			let yPosition = particleExplosion.particles.position.y;
 			let zPosition = particleExplosion.particles.position.z;
@@ -113,8 +115,6 @@ export default class AppComponent extends Component {
 			let xRotation = particleExplosion.particles.rotation.x;
 			let yRotation = particleExplosion.particles.rotation.y;
 			let zRotation = particleExplosion.particles.rotation.z;
-
-			this.scene.remove(particleExplosion.particles);
 
 			for ( let i = 0; i < 1000; i++ ) {
 				// X Position
@@ -125,9 +125,6 @@ export default class AppComponent extends Component {
 				particleExplosion.vertices[ i*3 + 2 ] = particleExplosion.vertices[ i*3 + 2 ] + 4*particleExplosion.particleDirections[ i*3 + 2]/particleExplosion.counter;
 			}
 
-			particleExplosion.particleGeometry.addAttribute( 'position', new THREE.BufferAttribute( particleExplosion.vertices, 3 ) );
-			particleExplosion.particles = new THREE.Points( particleExplosion.particleGeometry, particleExplosion.particleMaterial );
-
 			particleExplosion.particles.position.x = xPosition - 0.0015;
 			particleExplosion.particles.position.y = yPosition - 0.0015;
 			particleExplosion.particles.position.z = zPosition + 0.0015;
@@ -135,14 +132,14 @@ export default class AppComponent extends Component {
 			particleExplosion.particles.rotation.y = yRotation + 0.0006;
 			particleExplosion.particles.rotation.x = xRotation - 0.0006;
 
-			this.scene.add(particleExplosion.particles);
-
+			particleExplosion.particleGeometry.attributes.position.needsUpdate = true;
 		}
+
+
 
 		if (this.ambientLight.intensity < 0.34){
 			this.ambientLight.intensity += 0.001;
 		}
-
 		this.renderer.render(this.scene, this.camera);
 		requestAnimationFrame( this.animate, this.renderer.domElement );
 
@@ -178,9 +175,9 @@ export default class AppComponent extends Component {
 				y = Math.random();
 				randomZDepth = Math.random();
 			}
+			randomZDepth = 0.2;
 			let choice = Math.floor(x*3 + (-y + 1)*3)
 			let sound = new Audio(this.pings[choice]);
-			randomZDepth = 0.2;
 			sound.volume = 0.5 - randomZDepth/1.2;
 			sound.play();
 
@@ -241,6 +238,8 @@ export default class AppComponent extends Component {
 			particleExplosion.particles.position.z = -zRange * randomZDepth;
 
 			this.particleGroups.push(particleExplosion);
+			this.scene.add(this.particleGroups[this.particleGroups.length-1].particles);
+			console.log(this.particleGroups.length)
 	}
 
 	onWindowResize = () => {
