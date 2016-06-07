@@ -18,7 +18,7 @@ import Bing4 from '../audio/Bing4.mp3';
 import Bing5 from '../audio/Bing5.mp3';
 import Bing6 from '../audio/Bing6.mp3';
 
-import Track from '../audio/bass_demo.mp3';
+import Track from '../audio/bass_demo_3.mp3';
 import Disc from '../images/disc_thick.png';
 
 import Fragment from '../shaders/disc_fragment.glsl';
@@ -58,7 +58,7 @@ export default class AppComponent extends Component {
 	init = () => {
 			this.pings = [Bing1, Bing2, Bing3, Bing4, Bing5, Bing6]
 			let track = new Audio(Track);
-			// track.play();
+			track.play();
 
 			const white = 0xffffff;
 
@@ -175,10 +175,12 @@ export default class AppComponent extends Component {
 				y = Math.random();
 				randomZDepth = Math.random();
 			}
-			randomZDepth = 0.2;
+			else{
+				randomZDepth = 0.2;
+			}
 			let choice = Math.floor(x*3 + (-y + 1)*3)
 			let sound = new Audio(this.pings[choice]);
-			sound.volume = 0.5 - randomZDepth/1.2;
+			sound.volume = 0.5 - randomZDepth*0.45;
 			sound.play();
 
 		//Particle shit
@@ -191,7 +193,7 @@ export default class AppComponent extends Component {
 			const particleCount = 100;
 			var xRange = 4 * aspectRatio;
 			const yRange = 5;
-			const zRange = 25;
+			const zRange = 20;
 
 			particleExplosion.vertices = new Float32Array( particleCount * 3 );
 
@@ -239,7 +241,6 @@ export default class AppComponent extends Component {
 
 			this.particleGroups.push(particleExplosion);
 			this.scene.add(this.particleGroups[this.particleGroups.length-1].particles);
-			console.log(this.particleGroups.length)
 	}
 
 	onWindowResize = () => {
