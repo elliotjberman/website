@@ -44,6 +44,10 @@ function getDefaultModules() {
 				test: /\.json$/,
 				loader: 'json-loader'
 			},
+			{
+				test: /\.glsl$/,
+				loader: 'webpack-glsl'
+			}
 		]
   };
 }

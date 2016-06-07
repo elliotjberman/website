@@ -1,15 +1,15 @@
 require('normalize.css');
-// require('fonts/GT-Walsheim-Pro-Trial-Regular.otf')
 require('styles/App.scss');
 
 import React, { Component } from 'react';
 import THREE from 'three';
-import Ping1 from '../audio/1.mp3';
-import Ping2 from '../audio/2.mp3';
-import Ping3 from '../audio/3.mp3';
-import Ping4 from '../audio/4.mp3';
-import Ping5 from '../audio/5.mp3';
-import Ping6 from '../audio/6.mp3';
+import Stats from 'stats-js';
+// import Ping1 from '../audio/1.mp3';
+// import Ping2 from '../audio/2.mp3';
+// import Ping3 from '../audio/3.mp3';
+// import Ping4 from '../audio/4.mp3';
+// import Ping5 from '../audio/5.mp3';
+// import Ping6 from '../audio/6.mp3';
 
 import Bing1 from '../audio/Bing1.mp3';
 import Bing2 from '../audio/Bing2.mp3';
@@ -18,8 +18,11 @@ import Bing4 from '../audio/Bing4.mp3';
 import Bing5 from '../audio/Bing5.mp3';
 import Bing6 from '../audio/Bing6.mp3';
 
-import Track from '../audio/bass_demo.mp3';
+import Track from '../audio/bass_demo_3.mp3';
 import Disc from '../images/disc_thick.png';
+
+import Fragment from '../shaders/disc_fragment.glsl';
+import Vertex from '../shaders/disc_vertex.glsl';
 
 export default class AppComponent extends Component {
 
@@ -94,19 +97,19 @@ export default class AppComponent extends Component {
 
 
 	animate = () => {
-
+		if (this.particleGroups.length > 50){
+			this.scene.remove(this.particleGroups[0].particles)
+			this.particleGroups.shift();
+		}
 		for (var i = 0; i < this.particleGroups.length; i++){
 			var particleExplosion = this.particleGroups[i];
 			particleExplosion.counter += 1;
-
 			let xPosition = particleExplosion.particles.position.x;
 			let yPosition = particleExplosion.particles.position.y;
 			let zPosition = particleExplosion.particles.position.z;
 
 			let xRotation = particleExplosion.particles.rotation.x;
 			let yRotation = particleExplosion.particles.rotation.y;
-
-			this.scene.remove(particleExplosion.particles);
 
 			for ( let i = 0; i < 1000; i++ ) {
 				// X Position
@@ -117,9 +120,6 @@ export default class AppComponent extends Component {
 				particleExplosion.vertices[ i*3 + 2 ] = particleExplosion.vertices[ i*3 + 2 ] + 4*particleExplosion.particleDirections[ i*3 + 2]/particleExplosion.counter;
 			}
 
-			particleExplosion.particleGeometry.addAttribute( 'position', new THREE.BufferAttribute( particleExplosion.vertices, 3 ) );
-			particleExplosion.particles = new THREE.Points( particleExplosion.particleGeometry, particleExplosion.particleMaterial );
-
 			particleExplosion.particles.position.x = xPosition - 0.0015;
 			particleExplosion.particles.position.y = yPosition - 0.0015;
 			particleExplosion.particles.position.z = zPosition + 0.0015;
@@ -127,14 +127,14 @@ export default class AppComponent extends Component {
 			particleExplosion.particles.rotation.y = yRotation + 0.0006;
 			particleExplosion.particles.rotation.x = xRotation - 0.0006;
 
-			this.scene.add(particleExplosion.particles);
-
+			particleExplosion.particleGeometry.attributes.position.needsUpdate = true;
 		}
+
+
 
 		if (this.ambientLight.intensity < 0.34){
 			this.ambientLight.intensity += 0.001;
 		}
-
 		this.renderer.render(this.scene, this.camera);
 		requestAnimationFrame( this.animate, this.renderer.domElement );
 
@@ -170,10 +170,12 @@ export default class AppComponent extends Component {
 				y = Math.random();
 				randomZDepth = Math.random();
 			}
+			else{
+				randomZDepth = 0.2;
+			}
 			let choice = Math.floor(x*3 + (-y + 1)*3)
 			let sound = new Audio(this.pings[choice]);
-			randomZDepth = 0.2;
-			sound.volume = 0.5 - randomZDepth/1.2;
+			sound.volume = 0.5 - randomZDepth*0.45;
 			sound.play();
 
 		//Particle shit
@@ -186,7 +188,7 @@ export default class AppComponent extends Component {
 			const particleCount = 100;
 			var xRange = 4 * aspectRatio;
 			const yRange = 5;
-			const zRange = 25;
+			const zRange = 20;
 
 			particleExplosion.vertices = new Float32Array( particleCount * 3 );
 
@@ -210,6 +212,16 @@ export default class AppComponent extends Component {
 
 			// // itemSize = 3 because there are 3 values (components) per vertex
 
+
+			// particleExplosion.particleMaterial = new THREE.ShaderMaterial({
+			// 	uniforms: {
+			// 		time: { value: 1.0 },
+			// 		resolution: { value: new THREE.Vector2() }
+			// 	},
+			// 	fragmentShader: Fragment,
+			// 	vertexShader: Vertex
+			// })
+
 			particleExplosion.particleMaterial = new THREE.PointsMaterial( { size: 0.9, sizeAttenuation: true, map: this.sprite, alphaTest: 0.2, transparent: true } );
 			particleExplosion.particleMaterial.color.setHSL(26/360, 0.9, (Math.random()/2+0.5) );
 
@@ -223,6 +235,7 @@ export default class AppComponent extends Component {
 			particleExplosion.particles.position.z = -zRange * randomZDepth;
 
 			this.particleGroups.push(particleExplosion);
+			this.scene.add(this.particleGroups[this.particleGroups.length-1].particles);
 	}
 
 	onWindowResize = () => {
