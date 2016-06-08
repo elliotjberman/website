@@ -94,14 +94,7 @@ export default class AppComponent extends Component {
 			this.renderer.setSize( window.innerWidth, window.innerHeight );
 			this.renderer.setClearColor( 0xfff1e7 );
 //Postprocessing
-			this.composer = new EffectComposer(this.renderer);
-			this.composer.addPass(new EffectComposer.RenderPass(this.scene, this.camera));
-
-			// And another shader, drawing to the screen at this point
-			var effect = new EffectComposer.ShaderPass( THREE.RGBShiftShader );
-		  effect.uniforms[ 'amount' ].value = 0.001;
-		  effect.renderToScreen = true;
-		  this.composer.addPass( effect );
+			this.initPostprocessing();
 
 			window.addEventListener( 'resize', this.onWindowResize, false );
 			document.getElementById('index').appendChild( this.renderer.domElement );
@@ -258,7 +251,18 @@ export default class AppComponent extends Component {
 		this.camera.aspect = window.innerWidth / window.innerHeight;
 		this.camera.updateProjectionMatrix();
 		this.renderer.setSize( window.innerWidth, window.innerHeight );
-		console.log(this.composer)
+		this.initPostprocessing();
+	}
+
+	initPostprocessing = () => {
+		this.composer = new EffectComposer(this.renderer);
+		this.composer.addPass(new EffectComposer.RenderPass(this.scene, this.camera));
+
+		// And another shader, drawing to the screen at this point
+		var effect = new EffectComposer.ShaderPass( THREE.RGBShiftShader );
+		effect.uniforms[ 'amount' ].value = 0.005;
+		effect.renderToScreen = true;
+		this.composer.addPass( effect );
 	}
 
 
