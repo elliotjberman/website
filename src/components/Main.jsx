@@ -1,8 +1,11 @@
 require('normalize.css');
 require('styles/App.scss');
+import THREE from 'three';
+var EffectComposer = require('three-effectcomposer')(THREE)
+import RGBShiftShader from '../shaders/RGBShiftShader.js';
 
 import React, { Component } from 'react';
-import THREE from 'three';
+
 import Stats from 'stats-js';
 
 import Bing0_0 from '../audio/bing0_0.mp3';
@@ -32,6 +35,7 @@ export default class AppComponent extends Component {
 		this.mesh;
 		this.renderer;
 		this.scene;
+		this.composer
 
 		// Camera scrim
 		this.windowHalfX = window.innerWidth / 2;
@@ -89,11 +93,18 @@ export default class AppComponent extends Component {
 			this.renderer.setPixelRatio( window.devicePixelRatio );
 			this.renderer.setSize( window.innerWidth, window.innerHeight );
 			this.renderer.setClearColor( 0xfff1e7 );
+//Postprocessing
+			this.composer = new EffectComposer(this.renderer);
+			this.composer.addPass(new EffectComposer.RenderPass(this.scene, this.camera));
 
+			// And another shader, drawing to the screen at this point
+			var effect = new EffectComposer.ShaderPass( THREE.RGBShiftShader );
+		  effect.uniforms[ 'amount' ].value = 0.001;
+		  effect.renderToScreen = true;
+		  this.composer.addPass( effect );
 
 			window.addEventListener( 'resize', this.onWindowResize, false );
 			document.getElementById('index').appendChild( this.renderer.domElement );
-
 
 		}
 
@@ -137,7 +148,8 @@ export default class AppComponent extends Component {
 		if (this.ambientLight.intensity < 0.34){
 			this.ambientLight.intensity += 0.001;
 		}
-		this.renderer.render(this.scene, this.camera);
+		// this.renderer.render(this.scene, this.camera);
+		this.composer.render(this.scene, this.camera)
 		requestAnimationFrame( this.animate, this.renderer.domElement );
 
 	}
@@ -246,6 +258,7 @@ export default class AppComponent extends Component {
 		this.camera.aspect = window.innerWidth / window.innerHeight;
 		this.camera.updateProjectionMatrix();
 		this.renderer.setSize( window.innerWidth, window.innerHeight );
+		console.log(this.composer)
 	}
 
 
