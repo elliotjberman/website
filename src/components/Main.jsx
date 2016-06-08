@@ -4,19 +4,21 @@ require('styles/App.scss');
 import React, { Component } from 'react';
 import THREE from 'three';
 import Stats from 'stats-js';
-// import Ping1 from '../audio/1.mp3';
-// import Ping2 from '../audio/2.mp3';
-// import Ping3 from '../audio/3.mp3';
-// import Ping4 from '../audio/4.mp3';
-// import Ping5 from '../audio/5.mp3';
-// import Ping6 from '../audio/6.mp3';
 
-import Bing1 from '../audio/Bing1.mp3';
-import Bing2 from '../audio/Bing2.mp3';
-import Bing3 from '../audio/Bing3.mp3';
-import Bing4 from '../audio/Bing4.mp3';
-import Bing5 from '../audio/Bing5.mp3';
-import Bing6 from '../audio/Bing6.mp3';
+import Bing0_0 from '../audio/bing0_0.mp3';
+import Bing0_1 from '../audio/bing0_1.mp3';
+import Bing0_2 from '../audio/bing0_2.mp3';
+import Bing0_3 from '../audio/bing0_3.mp3';
+
+import Bing1_0 from '../audio/bing1_0.mp3';
+import Bing1_1 from '../audio/bing1_1.mp3';
+import Bing1_2 from '../audio/bing1_2.mp3';
+import Bing1_3 from '../audio/bing1_3.mp3';
+
+import Bing2_0 from '../audio/bing2_0.mp3';
+import Bing2_1 from '../audio/bing2_1.mp3';
+import Bing2_2 from '../audio/bing2_2.mp3';
+import Bing2_3 from '../audio/bing2_3.mp3';
 
 import Track from '../audio/bass_demo_3.mp3';
 import Disc from '../images/disc_thick.png';
@@ -49,15 +51,17 @@ export default class AppComponent extends Component {
 
 		// Sounds
 		this.track;
-		this.pings;
-
-		//WTF
-		this.depthRenderTarget;
+		this.bings;
 	}
 
 	init = () => {
-			this.pings = [Bing1, Bing2, Bing3, Bing4, Bing5, Bing6]
+			this.pings = [];
+			this.pings.push([Bing0_0, Bing0_1, Bing0_2, Bing0_3]);
+			this.pings.push([Bing1_0, Bing1_1, Bing1_2, Bing1_3]);
+			this.pings.push([Bing2_0, Bing2_1, Bing2_2, Bing2_3]);
+
 			let track = new Audio(Track);
+			track.volume=0.8;
 			track.play();
 
 			const white = 0xffffff;
@@ -88,10 +92,8 @@ export default class AppComponent extends Component {
 			this.renderer = new THREE.WebGLRenderer({ antialias: true });
 			this.renderer.setPixelRatio( window.devicePixelRatio );
 			this.renderer.setSize( window.innerWidth, window.innerHeight );
-			this.renderer.orderObjects = false;
 			this.renderer.setClearColor( 0xfff1e7 );
 
-			// this.initPostProcessing();
 
 			window.addEventListener( 'resize', this.onWindowResize, false );
 			document.getElementById('index').appendChild( this.renderer.domElement );
@@ -178,8 +180,9 @@ export default class AppComponent extends Component {
 			else{
 				randomZDepth = 0.2;
 			}
-			let choice = Math.floor(x*3 + (-y + 1)*3)
-			let sound = new Audio(this.pings[choice]);
+			let xChoice = Math.floor(x * 4);
+			let yChoice = Math.floor(y* 3)
+			let sound = new Audio(this.pings[yChoice][xChoice]);
 			sound.volume = 0.5 - randomZDepth*0.45;
 			sound.play();
 
@@ -230,10 +233,11 @@ export default class AppComponent extends Component {
 			particleExplosion.particleMaterial = new THREE.PointsMaterial( { size: 0.9, sizeAttenuation: true, map: this.sprite, alphaTest: 0.2, transparent: true } );
 			particleExplosion.particleMaterial.color.setHSL(26/360, 0.9, (Math.random()/2+0.5) );
 
-			particleExplosion.particleGeometry.addAttribute( 'position', new THREE.BufferAttribute( particleExplosion.vertices, 3 ) );
+			particleExplosion.particleGeometry.addAttribute( 'position', new THREE.BufferAttribute( particleExplosion.vertices, 3 , false) );
 
 
 			particleExplosion.particles = new THREE.Points( particleExplosion.particleGeometry, particleExplosion.particleMaterial );
+			particleExplosion.frustumCulled = false;
 
 			particleExplosion.particles.position.x = xRange * 2 * (x - 0.5) + (x - 0.5) * 40 * randomZDepth * (xRange)/40;
 			particleExplosion.particles.position.y = yRange * 2 * (y - 0.5) + (y - 0.5) * randomZDepth * 0.3^y;
