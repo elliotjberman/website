@@ -34,8 +34,6 @@ export default class AppComponent extends Component {
 		this.scene;
 
 		// Camera scrim
-		this.mouseX = 0;
-		this.mouseY = 0;
 		this.windowHalfX = window.innerWidth / 2;
 		this.windowHalfY = window.innerHeight / 2;
 		this.camera;
@@ -46,8 +44,6 @@ export default class AppComponent extends Component {
 		this.sprite;
 
 		this.ambientLight;
-
-		this.wall;
 
 		// Sounds
 		this.track;
@@ -116,7 +112,6 @@ export default class AppComponent extends Component {
 
 			let xRotation = particleExplosion.particles.rotation.x;
 			let yRotation = particleExplosion.particles.rotation.y;
-			let zRotation = particleExplosion.particles.rotation.z;
 
 			for ( let i = 0; i < 1000; i++ ) {
 				// X Position

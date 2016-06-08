@@ -42,7 +42,6 @@ canvas{
 	-ms-user-select: none; /* IE10+ */
 	-o-user-select: none;
 	user-select: none;
-
 	h1{
 		padding-left: 30px;
 		display: block;
@@ -53,4 +52,8 @@ canvas{
 		padding: 20px 30px;
 		font-weight: 400;
 	}
+}
+#name.expanded {
+    width: 85%;
+    height: 85%;
 }
