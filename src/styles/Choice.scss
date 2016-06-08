@@ -1,19 +1,11 @@
 /* Base Application Styles */
-#choices-container{
-	position: absolute;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	height: 100vh;
-	width: 100%;
-}
+$paleOrange: #fff1e7;
+$darkGray: #2d2d2d;
+
 #choices{
-	background: #222;
-	padding-top: 10px;
-	padding-bottom: 10px;
+	flex: 1 1 auto;
 	overflow: hidden;
-	width: 80%;
-	height: 80%;
+	width: 100%;
 	display: flex;
 	align-items: center;
 	justify-content: space-around;
@@ -23,12 +15,17 @@
 	width: 200px;
 	height: 200px;
 	border-radius: 100%;
-	background-color: #343D46;
-	color: #C0CDDA;
+	background-color: $darkGray;
+	color: $paleOrange;
 	text-align: center;
 	line-height: 200px;
 	cursor: pointer;
 	font-size: 80px;
-	font-weight: 100;
-	font-family: "Helvetica Neue";
+	letter-spacing: -5px;
+	transition: .4s cubic-bezier(0, 1, 0.65, 0.99);
+
+	&:hover{
+		background-color: $paleOrange;
+		color: $darkGray;
+	}
 }

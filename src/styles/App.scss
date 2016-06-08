@@ -9,12 +9,13 @@
 	font-weight: 400;
 }
 
+$paleOrange: #fff1e7;
 
 /* Base Application Styles */
 canvas{
 	cursor: pointer;
 }
-.name-container{
+.gray-box-container{
 	position: absolute;
 	display: flex;
 	align-items: center;
@@ -23,37 +24,53 @@ canvas{
 	width: 100%;
 	cursor: pointer;
 }
-#name{
+#gray-box{
+	display: flex;
+  flex-flow: column;
 	font-family: 'GT-Walsheim';
 	font-weight: 400;
 	width: 0;
 	transition: 1.5s cubic-bezier(0.96, 0.05, 0.57, 1.2);
 	z-index: 0;
   background: #444444;
-	padding-top: 10px;
-	padding-bottom: 10px;
+	padding-top: 30px;
+	padding-bottom: 30px;
 	overflow: hidden;
-	letter-spacing: -8.5px;
-	cursor: default;
+	cursor: pointer;
 
-	cursor: default;
 	-webkit-user-select: none; /* Chrome/Safari */
 	-moz-user-select: none; /* Firefox */
 	-ms-user-select: none; /* IE10+ */
 	-o-user-select: none;
 	user-select: none;
+
 	h1{
+		flex: 0 1 auto;
 		padding-left: 30px;
 		display: block;
 		color: white;
 		font-size: 140px;
 		margin: 0;
 		line-height: .9;
-		padding: 20px 30px;
+		padding: 0px 30px 0px 30px;
 		font-weight: 400;
+		letter-spacing: -0.06em;
+		transition: 1.5s;
+
 	}
-}
-#name.expanded {
-    width: 85%;
-    height: 85%;
+
+	&.solo-name{
+		width: 550px;
+		height: 252px;
+	}
+
+	&.expanded {
+		width: 85%;
+		height: 85%;
+
+		h1{
+			font-size: 90px;
+			color: $paleOrange;
+		}
+	}
 }

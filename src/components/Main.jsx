@@ -1,12 +1,17 @@
 require('normalize.css');
 require('styles/App.scss');
+
+// Three.js + Postprocessing
 import THREE from 'three';
 var EffectComposer = require('three-effectcomposer')(THREE)
 import RGBShiftShader from '../shaders/RGBShiftShader.js';
 
 import React, { Component } from 'react';
 
-import Stats from 'stats-js';
+import GrayBox from './GrayBox';
+
+// Audio
+import Track from '../audio/bass_demo_3.mp3';
 
 import Bing0_0 from '../audio/bing0_0.mp3';
 import Bing0_1 from '../audio/bing0_1.mp3';
@@ -23,11 +28,7 @@ import Bing2_1 from '../audio/bing2_1.mp3';
 import Bing2_2 from '../audio/bing2_2.mp3';
 import Bing2_3 from '../audio/bing2_3.mp3';
 
-import Track from '../audio/bass_demo_3.mp3';
 import Disc from '../images/disc_thick.png';
-
-import Fragment from '../shaders/disc_fragment.glsl';
-import Vertex from '../shaders/disc_vertex.glsl';
 
 export default class AppComponent extends Component {
 
@@ -35,7 +36,8 @@ export default class AppComponent extends Component {
 		this.mesh;
 		this.renderer;
 		this.scene;
-		this.composer
+
+		this.composer;
 
 		// Camera scrim
 		this.windowHalfX = window.innerWidth / 2;
@@ -161,12 +163,6 @@ export default class AppComponent extends Component {
 			initParticles();
 		}, 5000)
 
-		window.onload = function(){
-				setTimeout(function(){
-					document.getElementById('name').style.width = '550px';
-				}, 14800);
-		}
-
 	}
 
 	initParticles = (x, y) => {
@@ -245,6 +241,11 @@ export default class AppComponent extends Component {
 
 			this.particleGroups.push(particleExplosion);
 			this.scene.add(this.particleGroups[this.particleGroups.length-1].particles);
+			this.addGrimeLevel(0.0005);
+	}
+
+	addGrimeLevel = (level) => {
+		this.composer.passes[1].uniforms.amount.value += level
 	}
 
 	onWindowResize = () => {
@@ -255,25 +256,25 @@ export default class AppComponent extends Component {
 	}
 
 	initPostprocessing = () => {
+		var amount = 0.0;
+		if (this.composer) {
+			amount = this.composer.passes[1].uniforms.amount.value;
+		}
 		this.composer = new EffectComposer(this.renderer);
 		this.composer.addPass(new EffectComposer.RenderPass(this.scene, this.camera));
 
 		// And another shader, drawing to the screen at this point
 		var effect = new EffectComposer.ShaderPass( THREE.RGBShiftShader );
-		effect.uniforms[ 'amount' ].value = 0.005;
+		effect.uniforms['amount'].value = amount;
 		effect.renderToScreen = true;
 		this.composer.addPass( effect );
 	}
 
 
-	render() {
+	render = () => {
     return (
       <div className="index" id="index">
-				<div className="name-container">
-					<div id="name">
-						<h1>Elliot<br/>Berman</h1>
-					</div>
-				</div>
+				<GrayBox />
       </div>
     );
   }
