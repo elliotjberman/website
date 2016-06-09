@@ -8,11 +8,6 @@ export default class AppComponent extends Component {
 	}
 
 	componentDidMount = () => {
-		window.onload = function(){
-				setTimeout(function(){
-					document.getElementById('gray-box').className = 'solo-name';
-				}, 14800);
-		}
 	}
 
 	handleClick = () => {

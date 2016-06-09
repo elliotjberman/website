@@ -5,6 +5,7 @@ require('styles/App.scss');
 import THREE from 'three';
 var EffectComposer = require('three-effectcomposer')(THREE)
 import RGBShiftShader from '../shaders/RGBShiftShader.js';
+import FXAA from '../shaders/FXAA.js';
 
 import React, { Component } from 'react';
 
@@ -66,7 +67,7 @@ export default class AppComponent extends Component {
 				chunkSize: 200, // size of chunks to stream in (in seconds)
 				bitRate: 40000
 			})
-			this.stream.setStartTime(14);
+			this.stream.setStartTime(0);
 			this.stream.play();
 
 			this.pings = [];
@@ -119,7 +120,9 @@ export default class AppComponent extends Component {
 		let bump = (frequencyArray[2] + frequencyArray[3])/2;
 		let grimeAdd = -(0.85 - bump/255);
 		grimeAdd = grimeAdd < 0 ? 0 : grimeAdd;
-
+		if (bump > 240){
+			document.getElementById('gray-box').className = 'solo-name';
+		}
 		this.addGrimeLevel(grimeAdd);
 
 
@@ -234,7 +237,7 @@ export default class AppComponent extends Component {
 
 			// // itemSize = 3 because there are 3 values (components) per vertex
 
-			particleExplosion.particleMaterial = new THREE.PointsMaterial( { size: 0.6, sizeAttenuation: true, map: this.sprite, alphaTest: 0.3, transparent: true } );
+			particleExplosion.particleMaterial = new THREE.PointsMaterial( { size: 0.5, sizeAttenuation: true, map: this.sprite, alphaTest: 0.3, transparent: true } );
 			particleExplosion.particleMaterial.color.setHSL(26/360, 0.9, (Math.random()/2+0.5) );
 
 			particleExplosion.particleGeometry.addAttribute( 'position', new THREE.BufferAttribute( particleExplosion.vertices, 3 , false) );
@@ -249,7 +252,6 @@ export default class AppComponent extends Component {
 
 			this.particleGroups.push(particleExplosion);
 			this.scene.add(this.particleGroups[this.particleGroups.length-1].particles);
-			// this.addGrimeLevel(0.0005);
 	}
 
 	addGrimeLevel = (level) => {
@@ -266,17 +268,29 @@ export default class AppComponent extends Component {
 	}
 
 	initPostprocessing = () => {
-		var amount = 0.0;
+		let amount = 0.0;
 		if (this.composer) {
 			amount = this.composer.passes[1].uniforms.amount.value;
 		}
 		this.composer = new EffectComposer(this.renderer);
 		this.composer.addPass(new EffectComposer.RenderPass(this.scene, this.camera));
 
-		var effect = new EffectComposer.ShaderPass( THREE.RGBShiftShader );
+		let effect = new EffectComposer.ShaderPass( THREE.RGBShiftShader );
 		effect.uniforms['amount'].value = amount;
-		effect.renderToScreen = true;
 		this.composer.addPass( effect );
+
+		let dpr = 1;
+		if (window.devicePixelRatio !== undefined) {
+		  dpr = window.devicePixelRatio;
+		}
+
+		let fxaa = new EffectComposer.ShaderPass( THREE.FXAAShader );
+		fxaa.uniforms.resolution.value = new THREE.Vector2(1/(window.innerWidth*dpr), 1/(window.innerHeight*dpr));
+		fxaa.renderToScreen = true;
+		this.composer.addPass( fxaa );
+		console.log(this.composer);
+		console.log(this.renderer);
+		// this.composer.setSize(window.innerWidth * dpr, window.innerHeight * dpr);
 	}
 
 
