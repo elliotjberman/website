@@ -103,11 +103,12 @@ export default class AppComponent extends Component {
 			this.renderer.setPixelRatio( window.devicePixelRatio );
 			this.renderer.setSize( window.innerWidth, window.innerHeight );
 			this.renderer.setClearColor( 0xfff1e7 );
-//Postprocessing
-			this.initPostprocessing();
 
 			window.addEventListener( 'resize', this.onWindowResize, false );
 			document.getElementById('index').appendChild( this.renderer.domElement );
+
+	//Postprocessing
+			this.initPostprocessing();
 
 		}
 
@@ -115,8 +116,9 @@ export default class AppComponent extends Component {
 	animate = () => {
 
 		let frequencyArray = this.stream.getFrequencies();
-		let bump = frequencyArray[1];
+		let bump = (frequencyArray[2] + frequencyArray[3])/2;
 		let grimeAdd = -(0.85 - bump/255);
+		grimeAdd = grimeAdd < 0 ? 0 : grimeAdd;
 
 		this.addGrimeLevel(grimeAdd);
 
@@ -160,7 +162,7 @@ export default class AppComponent extends Component {
 			this.ambientLight.intensity += 0.001;
 		}
 		// this.renderer.render(this.scene, this.camera);
-		this.composer.render(this.scene, this.camera)
+		this.composer.render(this.scene, this.camera);
 		requestAnimationFrame( this.animate, this.renderer.domElement );
 
 	}
@@ -175,9 +177,9 @@ export default class AppComponent extends Component {
 			initParticles(mouseX, mouseY);
 		});
 
-		// window.setInterval(function(){
-		// 	initParticles();
-		// }, 5000)
+		window.setInterval(function(){
+			initParticles();
+		}, 5000)
 
 	}
 
@@ -252,7 +254,7 @@ export default class AppComponent extends Component {
 
 	addGrimeLevel = (level) => {
 		if (!isNaN(level) && this.composer.passes[1].uniforms.amount.value != undefined){
-			this.composer.passes[1].uniforms.amount.value = level/50;
+			this.composer.passes[1].uniforms.amount.value = level/25;
 		}
 	}
 
