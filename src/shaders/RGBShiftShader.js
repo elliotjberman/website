@@ -2,7 +2,7 @@ import THREE from 'three';
 THREE.RGBShiftShader = {
   uniforms: {
     "tDiffuse": { type: "t", value: null },
-    "amount":   { type: "f", value: 0.005 },
+    "amount":   { type: "f", value: 0.05 },
     "angle":    { type: "f", value: 0.0 }
   },
   vertexShader: [

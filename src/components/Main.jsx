@@ -11,6 +11,8 @@ import React, { Component } from 'react';
 import GrayBox from './GrayBox';
 
 // Audio
+import StreamTeam from '../streamteam/index.js';
+
 import Track from '../audio/bass_demo_3.mp3';
 
 import Bing0_0 from '../audio/bing0_0.mp3';
@@ -54,17 +56,23 @@ export default class AppComponent extends Component {
 		// Sounds
 		this.track;
 		this.bings;
+
+		this.stream
 	}
 
 	init = () => {
+			this.stream  = new StreamTeam({
+				url: "https://s3.amazonaws.com/elliot-berman-media/bass_demo_3.mp3",
+				chunkSize: 200, // size of chunks to stream in (in seconds)
+				bitRate: 40000
+			})
+			this.stream.setStartTime(14);
+			this.stream.play();
+
 			this.pings = [];
 			this.pings.push([Bing0_0, Bing0_1, Bing0_2, Bing0_3]);
 			this.pings.push([Bing1_0, Bing1_1, Bing1_2, Bing1_3]);
 			this.pings.push([Bing2_0, Bing2_1, Bing2_2, Bing2_3]);
-
-			let track = new Audio(Track);
-			track.volume=0.8;
-			track.play();
 
 			const white = 0xffffff;
 
@@ -105,6 +113,14 @@ export default class AppComponent extends Component {
 
 
 	animate = () => {
+
+		let frequencyArray = this.stream.getFrequencies();
+		let bump = frequencyArray[1];
+		let grimeAdd = -(0.85 - bump/255);
+
+		this.addGrimeLevel(grimeAdd);
+
+
 		if (this.particleGroups.length > 50){
 			this.scene.remove(this.particleGroups[0].particles)
 			this.particleGroups.shift();
@@ -159,9 +175,9 @@ export default class AppComponent extends Component {
 			initParticles(mouseX, mouseY);
 		});
 
-		window.setInterval(function(){
-			initParticles();
-		}, 5000)
+		// window.setInterval(function(){
+		// 	initParticles();
+		// }, 5000)
 
 	}
 
@@ -216,17 +232,7 @@ export default class AppComponent extends Component {
 
 			// // itemSize = 3 because there are 3 values (components) per vertex
 
-
-			// particleExplosion.particleMaterial = new THREE.ShaderMaterial({
-			// 	uniforms: {
-			// 		time: { value: 1.0 },
-			// 		resolution: { value: new THREE.Vector2() }
-			// 	},
-			// 	fragmentShader: Fragment,
-			// 	vertexShader: Vertex
-			// })
-
-			particleExplosion.particleMaterial = new THREE.PointsMaterial( { size: 0.9, sizeAttenuation: true, map: this.sprite, alphaTest: 0.2, transparent: true } );
+			particleExplosion.particleMaterial = new THREE.PointsMaterial( { size: 0.6, sizeAttenuation: true, map: this.sprite, alphaTest: 0.3, transparent: true } );
 			particleExplosion.particleMaterial.color.setHSL(26/360, 0.9, (Math.random()/2+0.5) );
 
 			particleExplosion.particleGeometry.addAttribute( 'position', new THREE.BufferAttribute( particleExplosion.vertices, 3 , false) );
@@ -241,11 +247,13 @@ export default class AppComponent extends Component {
 
 			this.particleGroups.push(particleExplosion);
 			this.scene.add(this.particleGroups[this.particleGroups.length-1].particles);
-			this.addGrimeLevel(0.0005);
+			// this.addGrimeLevel(0.0005);
 	}
 
 	addGrimeLevel = (level) => {
-		this.composer.passes[1].uniforms.amount.value += level
+		if (!isNaN(level) && this.composer.passes[1].uniforms.amount.value != undefined){
+			this.composer.passes[1].uniforms.amount.value = level/50;
+		}
 	}
 
 	onWindowResize = () => {
@@ -263,7 +271,6 @@ export default class AppComponent extends Component {
 		this.composer = new EffectComposer(this.renderer);
 		this.composer.addPass(new EffectComposer.RenderPass(this.scene, this.camera));
 
-		// And another shader, drawing to the screen at this point
 		var effect = new EffectComposer.ShaderPass( THREE.RGBShiftShader );
 		effect.uniforms['amount'].value = amount;
 		effect.renderToScreen = true;

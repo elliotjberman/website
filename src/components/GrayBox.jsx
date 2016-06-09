@@ -24,7 +24,7 @@ export default class AppComponent extends Component {
 			<div className="gray-box-container">
 				<div id="gray-box">
 					<h1 onClick={this.handleClick}>Elliot<br/>Berman</h1>
-					{/*<Choice />*/}
+					<Choice />
 				</div>
 			</div>
 		)

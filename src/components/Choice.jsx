@@ -8,10 +8,11 @@ export default class AppComponent extends Component {
 
 	handleClick = (group) => {
 		if (group) {
-			console.log('fck');
+			document.getElementById('gray-box').className = 'solo-name';
 		}
 		else {
-			console.log("sick boolean");
+			document.getElementById('gray-box').className -= 'expanded';
+			document.getElementById('gray-box').className -= 'solo-name';
 		}
 	}
 
