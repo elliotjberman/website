@@ -87,7 +87,7 @@ export default class AppComponent extends Component {
 
 // Scene and fog
 			this.scene = new THREE.Scene();
-			this.scene.fog = new THREE.FogExp2(white , 0.06 );
+			this.scene.fog = new THREE.FogExp2(white , 0.05 );
 
 // Camera
 			this.camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 30 );
@@ -106,7 +106,8 @@ export default class AppComponent extends Component {
 			this.renderer = new THREE.WebGLRenderer({ antialias: true });
 			this.renderer.setPixelRatio( window.devicePixelRatio );
 			this.renderer.setSize( window.innerWidth, window.innerHeight );
-			this.renderer.setClearColor( 0xfff1e7 );
+			// this.renderer.setClearColor( 0xfff1e7 );
+			this.renderer.setClearColor( 0xfbe1c4);
 
 			window.addEventListener( 'resize', this.onWindowResize, false );
 			document.getElementById('index').appendChild( this.renderer.domElement );
@@ -130,9 +131,10 @@ export default class AppComponent extends Component {
 
 
 		this.composer.passes[1].uniforms['time'].value += 1/60;
-		// if (this.composer.passes[1].uniforms['time'].value > 3.60 && this.composer.passes[1].uniforms['grayscaleIntensity'].value < 1.2){
-		// 	this.composer.passes[1].uniforms['grayscaleIntensity'].value += 0.01;
-		// }
+		console.log(this.composer.passes[1].uniforms['time'].value)
+		if (this.composer.passes[1].uniforms['time'].value > 60 && this.composer.passes[1].uniforms['grayscaleIntensity'].value < 1.1){
+			this.composer.passes[1].uniforms['grayscaleIntensity'].value += 0.005;
+		}
 
 		if (this.particleGroups.length > 50){
 			this.scene.remove(this.particleGroups[0].particles)
@@ -208,7 +210,7 @@ export default class AppComponent extends Component {
 			let xChoice = Math.floor(x * 4);
 			let yChoice = Math.floor(y* 3)
 			let sound = new Audio(this.pings[yChoice][xChoice]);
-			sound.volume = 0.3 - randomZDepth*0.25;
+			sound.volume = 0.3 - randomZDepth*0.2;
 			sound.play();
 
 		//Particle shit
@@ -266,7 +268,7 @@ export default class AppComponent extends Component {
 		if (!isNaN(level) && this.composer.passes[2].uniforms.amount.value != undefined){
 			this.composer.passes[2].uniforms['amount'].value = level/120 + 0.0015;
 			this.composer.passes[1].uniforms['noiseIntensity'].value = level/4 + 0.3;
-			this.composer.passes[1].uniforms['scanlineIntensity'].value = level/2;
+			this.composer.passes[1].uniforms['scanlineIntensity'].value = level + 0.05;
 		}
 	}
 
