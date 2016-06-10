@@ -68,10 +68,9 @@ export default class AppComponent extends Component {
 				chunkSize: 200, // size of chunks to stream in (in seconds)
 				bitRate: 40000
 			})
-			this.stream.setStartTime(0);
+			this.stream.setStartTime(14);
 			this.stream.gainNode.gain.value = -0.25;
 			this.stream.play();
-			console.log(this.stream);
 
 			this.pings = [];
 			this.pings.push([Bing0_0, Bing0_1, Bing0_2, Bing0_3]);
@@ -124,14 +123,15 @@ export default class AppComponent extends Component {
 		let bump = (frequencyArray[2] + frequencyArray[3])/2;
 		let grimeLevel = -(0.85 - bump/255);
 		grimeLevel = grimeLevel < 0 ? 0 : grimeLevel;
-		if (bump > 240){
-			document.getElementById('gray-box').className = 'solo-name';
+
+		let grayBox = document.getElementById('gray-box');
+		if (bump > 240 && !grayBox.className){
+			grayBox.className = 'solo-name';
 		}
 		this.addGrimeLevel(grimeLevel);
 
 
 		this.composer.passes[1].uniforms['time'].value += 1/60;
-		console.log(this.composer.passes[1].uniforms['time'].value)
 		if (this.composer.passes[1].uniforms['time'].value > 60 && this.composer.passes[1].uniforms['grayscaleIntensity'].value < 1.1){
 			this.composer.passes[1].uniforms['grayscaleIntensity'].value += 0.005;
 		}

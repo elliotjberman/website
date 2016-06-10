@@ -9,6 +9,7 @@ export default class AppComponent extends Component {
 	handleClick = (group) => {
 		if (group) {
 			document.getElementById('gray-box').className = 'solo-name';
+			document.getElementById('gray-box-container').className -= 'containing';
 		}
 		else {
 			document.getElementById('gray-box').className -= 'expanded';
