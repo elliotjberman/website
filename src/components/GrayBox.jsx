@@ -18,7 +18,7 @@ export default class AppComponent extends Component {
 	render = () => {
 		return(
 			<div id="gray-box-container">
-				<div id="gray-box">
+				<div id="gray-box" className="solo-name">
 					<h1 onClick={this.handleClick}>Elliot<br/>Berman</h1>
 					<Choice />
 				</div>
