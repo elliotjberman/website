@@ -68,8 +68,10 @@ export default class AppComponent extends Component {
 				chunkSize: 200, // size of chunks to stream in (in seconds)
 				bitRate: 40000
 			})
-			this.stream.setStartTime(10);
+			this.stream.setStartTime(0);
+			this.stream.gainNode.gain.value = -0.25;
 			this.stream.play();
+			console.log(this.stream);
 
 			this.pings = [];
 			this.pings.push([Bing0_0, Bing0_1, Bing0_2, Bing0_3]);
@@ -206,7 +208,7 @@ export default class AppComponent extends Component {
 			let xChoice = Math.floor(x * 4);
 			let yChoice = Math.floor(y* 3)
 			let sound = new Audio(this.pings[yChoice][xChoice]);
-			sound.volume = 0.5 - randomZDepth*0.45;
+			sound.volume = 0.3 - randomZDepth*0.25;
 			sound.play();
 
 		//Particle shit
