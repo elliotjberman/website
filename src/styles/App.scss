@@ -32,15 +32,20 @@ canvas{
 	font-family: 'GT-Walsheim';
 	font-weight: 400;
 	width: 0;
-	height: 312px;
+	height: 202px;
 	transition: 1.5s cubic-bezier(0.96, 0.05, 0.57, 1.2);
 	z-index: 0;
   background: #444444;
-	padding-top: 30px;
-	padding-bottom: 30px;
+	padding-top: 20px;
+	padding-bottom: 20px;
 	overflow: hidden;
 	cursor: pointer;
 	box-sizing: border-box;
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	right: 20px;
+	bottom: 20px;
 
 	-webkit-user-select: none; /* Chrome/Safari */
 	-moz-user-select: none; /* Firefox */
@@ -50,13 +55,12 @@ canvas{
 
 	h1{
 		flex: 0 1 auto;
-		padding-left: 30px;
 		display: block;
 		color: white;
-		font-size: 140px;
+		font-size: 90px;
 		margin: 0;
 		line-height: .9;
-		padding: 0px 30px 0px 30px;
+		padding: 0px 20px 0px 20px;
 		font-weight: 400;
 		letter-spacing: -0.06em;
 		transition: 1.5s;
@@ -64,7 +68,7 @@ canvas{
 	}
 
 	&.solo-name{
-		width: 550px;
+		width: 352px;
 	}
 
 	&.expanded {
@@ -72,7 +76,6 @@ canvas{
 		height: 100%;
 
 		h1{
-			font-size: 90px;
 			color: $paleOrange;
 		}
 
