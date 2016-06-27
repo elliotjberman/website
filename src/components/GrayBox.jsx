@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import Choice from './Choice';
 
-export default class AppComponent extends Component {
+import { Link } from 'react-router';
+
+
+export default class GrayBox extends Component {
 
 	constructor = () => {
-		this.props.className = "regular";
+		this.expanded = false;
 	}
 
 	componentDidMount = () => {
@@ -16,13 +18,15 @@ export default class AppComponent extends Component {
 	}
 
 	render = () => {
-		return(
-			<div id="gray-box-container">
-				<div id="gray-box" className="solo-name">
-					<h1 onClick={this.handleClick}>Elliot<br/>Berman</h1>
-					<Choice />
+		return (
+			<div id="gray-box-container" className = 'containing'>
+				<div id="gray-box" className="expanded">
+					<Link onClick={this.handleClick} to="choice">
+						Elliot<br/>Berman
+					</Link>
+					{this.props.children}
 				</div>
 			</div>
-		)
+		);
 	}
 }

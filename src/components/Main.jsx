@@ -1,6 +1,3 @@
-require('normalize.css');
-require('styles/App.scss');
-
 // Three.js + Postprocessing
 import THREE from 'three';
 var EffectComposer = require('three-effectcomposer')(THREE)
@@ -9,6 +6,7 @@ import Film from '../shaders/Film.js'
 import FXAA from '../shaders/FXAA.js';
 
 import React, { Component } from 'react';
+import Link from 'react-router';
 
 import GrayBox from './GrayBox';
 
@@ -65,12 +63,12 @@ export default class AppComponent extends Component {
 	init = () => {
 			this.stream  = new StreamTeam({
 				url: "https://s3.amazonaws.com/elliot-berman-media/bass_demo_3.mp3",
-				chunkSize: 200, // size of chunks to stream in (in seconds)
+				chunkSize: 79, // size of chunks to stream in (in seconds)
 				bitRate: 40000
 			})
 			this.stream.setStartTime(0);
 			this.stream.gainNode.gain.value = -0.25;
-			// this.stream.play();
+			this.stream.play();
 
 			this.pings = [];
 			this.pings.push([Bing0_0, Bing0_1, Bing0_2, Bing0_3]);
@@ -211,7 +209,7 @@ export default class AppComponent extends Component {
 			let yChoice = Math.floor(y* 3)
 			let sound = new Audio(this.pings[yChoice][xChoice]);
 			sound.volume = 0.3 - randomZDepth*0.2;
-			sound.play();
+			// sound.play();
 
 		//Particle shit
 			var particleExplosion = {}
@@ -267,8 +265,8 @@ export default class AppComponent extends Component {
 	addGrimeLevel = (level) => {
 		if (!isNaN(level) && this.composer.passes[2].uniforms.amount.value != undefined){
 			this.composer.passes[2].uniforms['amount'].value = level/100 + 0.0015;
-			this.composer.passes[1].uniforms['noiseIntensity'].value = level/4 + 0.3;
-			this.composer.passes[1].uniforms['scanlineIntensity'].value = level*1.5 + 0.05;
+			this.composer.passes[1].uniforms['noiseIntensity'].value = level/3 + 0.3;
+			this.composer.passes[1].uniforms['scanlineIntensity'].value = level*1.3 + 0.05;
 		}
 	}
 
@@ -314,7 +312,7 @@ export default class AppComponent extends Component {
 	render = () => {
     return (
       <div className="index" id="index">
-				<GrayBox />
+					{this.props.children}
       </div>
     );
   }
