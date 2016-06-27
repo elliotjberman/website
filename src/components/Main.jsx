@@ -68,7 +68,7 @@ export default class AppComponent extends Component {
 			})
 			this.stream.setStartTime(0);
 			this.stream.gainNode.gain.value = -0.25;
-			this.stream.play();
+			// this.stream.play();
 
 			this.pings = [];
 			this.pings.push([Bing0_0, Bing0_1, Bing0_2, Bing0_3]);

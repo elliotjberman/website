@@ -50,7 +50,7 @@ $transition: 1.5s cubic-bezier(0.59, 0.14, 0.57, 1.2);
 	-o-user-select: none;
 	user-select: none;
 
-	a{
+	a#name{
 		flex: 0 1 auto;
 		display: block;
 		color: white;
@@ -79,7 +79,7 @@ $transition: 1.5s cubic-bezier(0.59, 0.14, 0.57, 1.2);
 		top: 0;
 		left: 0;
 
-		a{
+		a#name{
 			color: $paleOrange;
 		}
 

@@ -3,6 +3,7 @@ require('styles/App.scss');
 require('styles/Choice.scss')
 
 import React, { Component } from 'react';
+import { Link } from 'react-router';
 
 // Audio
 import StreamTeam from '../streamteam/index.js';
@@ -16,8 +17,8 @@ export default class Choice extends Component {
 	render = () => {
 		return (
 			<div id="choices">
-				<div className="choice">VS</div>
-				<div className="choice">EB</div>
+				<Link to="solo" className="choice">VS</Link>
+				<Link to="multiplayer" className="choice">EB</Link>
 			</div>
 		);
 	}

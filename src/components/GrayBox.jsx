@@ -1,15 +1,18 @@
+require('normalize.css');
+require('styles/App.scss');
+require('styles/Choice.scss')
+
 import React, { Component } from 'react';
-
 import { Link } from 'react-router';
-
 
 export default class GrayBox extends Component {
 
 	constructor = () => {
-		this.expanded = false;
+
 	}
 
 	componentDidMount = () => {
+
 	}
 
 	handleClick = () => {
@@ -21,7 +24,7 @@ export default class GrayBox extends Component {
 		return (
 			<div id="gray-box-container" className = 'containing'>
 				<div id="gray-box" className="expanded">
-					<Link onClick={this.handleClick} to="choice">
+					<Link onClick={this.handleClick} to="choice" id="name">
 						Elliot<br/>Berman
 					</Link>
 					{this.props.children}
