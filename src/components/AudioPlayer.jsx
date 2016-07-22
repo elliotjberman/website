@@ -17,10 +17,14 @@ export default class Choice extends Component {
 	handleClick = () => {
 		if (this.stream){
 			if (this.stream.paused){
-				this.stream.play();
+				this.props.stopStreams(function(){
+					this.stream.play();
+					console.log('playing');
+				});
 			}
 			else {
 				this.stream.pause();
+				console.log("paused");
 			}
 		}
 		else {
@@ -31,7 +35,10 @@ export default class Choice extends Component {
 			})
 			this.stream.setStartTime(0);
 			this.stream.gainNode.gain.value = 0;
-			this.stream.play();
+			this.props.stopStreams(function(){
+				this.stream.play();
+				console.log('playing');
+			});
 
 			window.requestAnimationFrame(this.visualize)
 		}
@@ -65,9 +72,9 @@ export default class Choice extends Component {
 
 		return (
 			<div id="audio-player">
-				<div onClick={this.handleClick} id="ghosts" className="song">
-
-				</div>
+				<div className="chevron">Back</div>
+				<div onClick={this.handleClick} id="ghosts" className="song"></div>
+				<div className="chevron">Next</div>
 			</div>
 		);
 	}

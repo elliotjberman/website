@@ -56,6 +56,7 @@ export default class AppComponent extends Component {
 		// Sounds
 		this.track;
 		this.bings;
+		this.pingsOn;
 
 		this.stream
 	}
@@ -68,12 +69,13 @@ export default class AppComponent extends Component {
 			})
 			this.stream.setStartTime(0);
 			this.stream.gainNode.gain.value = -0.25;
-			// this.stream.play();
+			this.stream.play();
 
 			this.pings = [];
 			this.pings.push([Bing0_0, Bing0_1, Bing0_2, Bing0_3]);
 			this.pings.push([Bing1_0, Bing1_1, Bing1_2, Bing1_3]);
 			this.pings.push([Bing2_0, Bing2_1, Bing2_2, Bing2_3]);
+			this.pingsOn = true;
 
 			const white = 0xffffff;
 
@@ -205,11 +207,14 @@ export default class AppComponent extends Component {
 			else{
 				randomZDepth = 0.2;
 			}
-			let xChoice = Math.floor(x * 4);
-			let yChoice = Math.floor(y* 3)
-			let sound = new Audio(this.pings[yChoice][xChoice]);
-			sound.volume = 0.3 - randomZDepth*0.2;
-			// sound.play();
+
+			if (this.pingsOn){
+				let xChoice = Math.floor(x * 4);
+				let yChoice = Math.floor(y* 3);
+				let sound = new Audio(this.pings[yChoice][xChoice]);
+				sound.volume = 0.3 - randomZDepth*0.2;
+				sound.play();
+			}
 
 		//Particle shit
 			var particleExplosion = {}
@@ -308,11 +313,23 @@ export default class AppComponent extends Component {
 		// this.composer.setSize(window.innerWidth * dpr, window.innerHeight * dpr);
 	}
 
+	stopStreams = (callback) => {
+		console.warn('stopStreams() called')
+		this.pingsOn = false;
+		this.stream.pause();
+		return callback;
+	}
+
 
 	render = () => {
+		const childrenWithProps = React.Children.map(this.props.children,
+		 (child) => React.cloneElement(child, {
+			 stopStreams: this.stopStreams
+		 })
+	 	)
     return (
       <div className="index" id="index">
-					{this.props.children}
+					{childrenWithProps}
       </div>
     );
   }

@@ -1,12 +1,16 @@
-#audio-player{
+#audio-player {
 	flex: 1 1 auto;
 	overflow: hidden;
 	width: 100%;
 	display: flex;
 	align-items: center;
-	justify-content: space-around;
+	justify-content: center;
 }
-.song{
+.chevron {
+	color: white;
+	margin: 5%;
+}
+.song {
 	background-size: cover;
 	background-position: center;
 	border-radius: 50%;
@@ -15,9 +19,9 @@
 	cursor: pointer;
 	transition: 0.065s;
 }
-#umbrella{
+#umbrella {
 	background-image: url(../images/umbrella.jpg);
 }
-#ghosts{
+#ghosts {
 	background-image: url(../images/ghosts.png);
 }
