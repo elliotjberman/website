@@ -14,6 +14,10 @@ export default class Choice extends Component {
 		this.stream;
 	}
 
+	componentDidMount = () => {
+		this.props.setGrayscale(true);
+	}
+
 	render = () => {
 		return (
 			<div id="choices">

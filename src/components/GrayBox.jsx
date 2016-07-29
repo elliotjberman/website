@@ -23,7 +23,8 @@ export default class GrayBox extends Component {
 	render = () => {
 		const childrenWithProps = React.Children.map(this.props.children,
 		 (child) => React.cloneElement(child, {
-			 stopStreams: this.props.stopStreams
+			 stopStreams: this.props.stopStreams,
+			 setGrayscale: this.props.setGrayscale
 		 })
 	 	)
 

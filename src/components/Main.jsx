@@ -40,6 +40,7 @@ export default class AppComponent extends Component {
 		this.scene;
 
 		this.composer;
+		this.grayscale;
 
 		// Camera scrim
 		this.windowHalfX = window.innerWidth / 2;
@@ -82,7 +83,6 @@ export default class AppComponent extends Component {
 			this.sprite = new THREE.TextureLoader().load( Disc );
 
 			this.particleGroups = [];
-
 
 // Scene and fog
 			this.scene = new THREE.Scene();
@@ -132,8 +132,11 @@ export default class AppComponent extends Component {
 
 
 		this.composer.passes[1].uniforms['time'].value += 1/60;
-		if (this.composer.passes[1].uniforms['time'].value > 60 && this.composer.passes[1].uniforms['grayscaleIntensity'].value < 1.1){
+		if (this.grayscale && this.composer.passes[1].uniforms['grayscaleIntensity'].value < 1.1){
 			this.composer.passes[1].uniforms['grayscaleIntensity'].value += 0.005;
+		}
+		else if (!this.grayscale && this.composer.passes[1].uniforms['grayscaleIntensity'].value > 0){
+			this.composer.passes[1].uniforms['grayscaleIntensity'].value -= 0.005;
 		}
 
 		if (this.particleGroups.length > 50){
@@ -283,16 +286,19 @@ export default class AppComponent extends Component {
 	}
 
 	initPostprocessing = () => {
-		let amount = 0.0;
+		var amount = 0.0;
+		var grayscaleIntensity = 0.0
 		if (this.composer) {
 			amount = this.composer.passes[2].uniforms.amount.value;
+			grayscaleIntensity = this.composer.passes[1].uniforms['grayscaleIntensity'].value;
+
 		}
 		this.composer = new EffectComposer(this.renderer);
 		this.composer.addPass(new EffectComposer.RenderPass(this.scene, this.camera));
 
 		let film = new EffectComposer.ShaderPass( THREE.Film );
 		film.uniforms['noiseIntensity'].value = 0.4;
-		film.uniforms['grayscaleIntensity'].value = 0.0;
+		film.uniforms['grayscaleIntensity'].value = grayscaleIntensity;
 		film.uniforms['scanlineIntensity'].value = 0.0;
 		this.composer.addPass( film );
 
@@ -314,17 +320,21 @@ export default class AppComponent extends Component {
 	}
 
 	stopStreams = (callback) => {
-		console.warn('stopStreams() called')
+		console.log('stopStreams() called');
 		this.pingsOn = false;
 		this.stream.pause();
 		return callback;
+	}
+	setGrayscale = (grayscale) => {
+		this.grayscale = grayscale;
 	}
 
 
 	render = () => {
 		const childrenWithProps = React.Children.map(this.props.children,
 		 (child) => React.cloneElement(child, {
-			 stopStreams: this.stopStreams
+			 stopStreams: this.stopStreams,
+			 setGrayscale: this.setGrayscale
 		 })
 	 	)
     return (
