@@ -9,5 +9,121 @@
 	font-weight: 400;
 }
 body{
-	background-image: url("preview.png")
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+	min-height: 100vh;
+
+	 #app{
+		width: 100%;
+		height: 100%;
+	}
 }
+a{
+	cursor: pointer;
+}
+
+#background{
+	transition: 3.0s cubic-bezier(0.59, 0.14, 0.54, 1.67);
+	top: 0;
+	z-index: -1;
+	display: block;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+
+	background-image: url("../images/background.png");
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	&.loaded{
+		-webkit-filter: blur(4px) brightness(63%);
+	}
+}
+
+#pic-container{
+	float: left;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+}
+
+#pic{
+	cursor: pointer;
+	height: 400px;
+	width: 400px;
+	opacity: 0;
+	transition: opacity 3.0s cubic-bezier(0.59, 0.14, 0.54, 1.67), -webkit-filter 0.25s;
+	display: block;
+	background-color: black;
+	border-radius: 50%;
+
+	background-image: url('../images/fashion.jpg');
+	background-size: cover;
+	background-position: 0% 0%;
+
+	border: 10px solid #fffdfb;
+	&.loaded{
+		opacity: 1;
+	}
+	&:hover{
+		-webkit-filter: brightness(120%)
+	}
+}
+
+
+#gray-box{
+	display: flex;
+  flex-flow: column;
+	font-family: 'GT-Walsheim';
+	font-weight: 400;
+	width: 360px;
+	// height: 202px;
+	z-index: 0;
+  background: #2c2c2e;
+	padding-top: 20px;
+	padding-bottom: 0px;
+	overflow: hidden;
+	box-sizing: border-box;
+
+	position: absolute;
+	top: 20px;
+	left: 20px;
+
+	#name{
+			transition: .7s;
+			display: block;
+			color: white;
+			font-size: 90px;
+			margin: 0;
+			line-height: .9;
+			padding: 0px 20px 0px 20px;
+			font-weight: 400;
+			transition: .4s;
+			text-decoration: none;
+		}
+	h2 {
+		transition: .7s;
+		color: whitesmoke;
+		font-weight: 300;
+		font-size: 18px;
+		margin: 2px 20px 10px 0px;
+		opacity: 0;
+		letter-spacing: -0.06em;
+	}
+
+	&.loaded{
+		h2{
+			opacity: 1;
+			margin-left: 25px;
+		}
+		#name{
+			letter-spacing: -0.06em;
+		}
+	}
+
+	}
