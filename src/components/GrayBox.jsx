@@ -29,8 +29,8 @@ export default class GrayBox extends Component {
 	 	)
 
 		return (
-			<div id="gray-box-container" className="containing">
-				<div id="gray-box" className="expanded">
+			<div id="gray-box-container">
+				<div id="gray-box" >
 					<Link onClick={this.handleClick} to="choice" id="name">
 						Elliot<br/>Berman
 					</Link>
