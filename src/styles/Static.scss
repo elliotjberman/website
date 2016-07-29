@@ -57,7 +57,7 @@ a{
 	height: 400px;
 	width: 400px;
 	opacity: 0;
-	transition: opacity 3.0s cubic-bezier(0.59, 0.14, 0.54, 1.67), -webkit-filter 0.25s;
+	transition: opacity 3.0s cubic-bezier(0.59, 0.14, 0.54, 1.67), -webkit-filter 0.25s, border-width .15s;
 	display: block;
 	background-color: black;
 	border-radius: 50%;
@@ -71,7 +71,8 @@ a{
 		opacity: 1;
 	}
 	&:hover{
-		-webkit-filter: brightness(120%)
+		-webkit-filter: brightness(120%);
+		border-width: 4px;
 	}
 }
 
@@ -114,6 +115,7 @@ a{
 		margin: 2px 20px 10px 0px;
 		opacity: 0;
 		letter-spacing: -0.06em;
+		cursor: progress;
 	}
 
 	&.loaded{
