@@ -7,7 +7,7 @@ const config = require('./webpack.config');
 const open = require('open');
 
 new WebpackDevServer(webpack(config), config.devServer)
-.listen(config.port, 'local.livamp.test', (err) => {
+.listen(config.port, 'localhost', (err) => {
   if (err) {
     console.log(err);
   }
