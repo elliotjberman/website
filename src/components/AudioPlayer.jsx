@@ -18,7 +18,7 @@ let umbrella = {
 	artwork: "/images/umbrella.jpg"
 }
 
-songs = [ghosts, umbrella]
+var songs = [ghosts, umbrella]
 
 export default class Choice extends Component {
 
