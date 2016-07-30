@@ -46,6 +46,10 @@ a{
 	&.loaded{
 		-webkit-filter: blur(4px) brightness(63%);
 	}
+
+	@media screen and (max-width: 480px){
+		min-height: 736px;
+	}
 }
 
 #pic-container{
