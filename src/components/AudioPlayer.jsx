@@ -68,8 +68,10 @@ export default class Choice extends Component {
 	}
 
 	visualize = () => {
+		// Ghosts kick is at
 		let frequencyArray = this.stream.getFrequencies();
-		let bassVolume = (frequencyArray[3] + frequencyArray[4])/2;
+		let bassVolume = (frequencyArray[3]);
+		console.log(bassVolume);
 
 		let albumArt = document.getElementById('ghosts');
 

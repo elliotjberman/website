@@ -31,11 +31,13 @@ $darkGray: #2d2d2d;
 	&:hover{
 		background-color: #eac3a7;
 		color: $darkGray;
+		justify-content: left !important;
 		&:nth-of-type(2) {
-			background-color: #5c5c8c;
+			background-color: #8497c7;
 		}
 	}
 	span{
+		text-align: right;
 		text-align: left;
 		display: inline-block;
 	}
