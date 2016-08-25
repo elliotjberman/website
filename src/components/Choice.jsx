@@ -21,8 +21,12 @@ export default class Choice extends Component {
 	render = () => {
 		return (
 			<div id="choices">
-				<Link to="solo" className="choice">VS</Link>
-				<Link to="multiplayer" className="choice">EB</Link>
+				<Link to="solo" className="choice">
+					<span>Varsity<br/>Star</span>
+				</Link>
+				<Link to="multiplayer" className="choice">
+					<span>Elliot<br/>Berman</span>
+				</Link>
 			</div>
 		);
 	}

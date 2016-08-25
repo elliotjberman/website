@@ -12,22 +12,31 @@ $darkGray: #2d2d2d;
 }
 
 .choice{
-	display: block;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	width: 200px;
 	height: 200px;
 	border-radius: 100%;
 	background-color: $darkGray;
 	color: $paleOrange;
 	text-align: center;
-	line-height: 200px;
+	line-height: 0.9;
 	cursor: pointer;
-	font-size: 80px;
+	font-size: 50px;
 	letter-spacing: -5px;
 	transition: .4s cubic-bezier(0, 1, 0.65, 0.99);
 	text-decoration: none;
 
 	&:hover{
-		background-color: $paleOrange;
+		background-color: #eac3a7;
 		color: $darkGray;
+		&:nth-of-type(2) {
+			background-color: #5c5c8c;
+		}
+	}
+	span{
+		text-align: left;
+		display: inline-block;
 	}
 }
