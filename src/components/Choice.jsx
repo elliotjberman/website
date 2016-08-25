@@ -27,6 +27,9 @@ export default class Choice extends Component {
 				<Link to="multiplayer" className="choice">
 					<span>Elliot<br/>Berman</span>
 				</Link>
+				<Link to="contact" className="choice">
+					<span>Contact</span>
+				</Link>
 			</div>
 		);
 	}

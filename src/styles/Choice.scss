@@ -24,21 +24,29 @@ $darkGray: #2d2d2d;
 	line-height: 0.9;
 	cursor: pointer;
 	font-size: 50px;
-	letter-spacing: -5px;
+	letter-spacing: -4px;
 	transition: .4s cubic-bezier(0, 1, 0.65, 0.99);
 	text-decoration: none;
+	border: 5px solid $darkGray;
+	-webkit-transform: rotate(-30deg);
 
 	&:hover{
 		background-color: #eac3a7;
 		color: $darkGray;
 		justify-content: left !important;
+		// border-color: $paleOrange;
 		&:nth-of-type(2) {
+			background-color: #c78584;
+		}
+		&:nth-of-type(3) {
 			background-color: #8497c7;
 		}
+		-webkit-transform: rotate(0deg);
 	}
 	span{
 		text-align: right;
 		text-align: left;
 		display: inline-block;
+
 	}
 }

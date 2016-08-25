@@ -84,11 +84,11 @@ export default class Choice extends Component {
 
 		return (
 			<div id="audio-player">
-				<Link to="/" className="chevron">Back</Link>
+				<Link to="/choice" className="chevron">Back</Link>
 				<div id="song-container">
 					<div onClick={this.handleClick} id="ghosts" className="song"></div>
 				</div>
-				<Link to="/" className="chevron">Next</Link>
+				<Link to="/multiplayer" className="chevron">Next</Link>
 			</div>
 		);
 	}

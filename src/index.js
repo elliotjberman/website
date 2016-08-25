@@ -11,6 +11,7 @@ import Main from './components/Main';
 import GrayBox from './components/GrayBox';
 import Choice from './components/Choice';
 import AudioPlayer from './components/AudioPlayer';
+import Contact from './components/Contact';
 
 
 // Render the main component into the dom
@@ -22,6 +23,7 @@ ReactDOM.render((
 				<Route path="choice" component={Choice}></Route>
 				<Route path="solo" component={AudioPlayer}></Route>
 				<Route path="multiplayer" component={AudioPlayer}></Route>
+				<Route path="contact" component={Contact}></Route>
 			</Route>
 		</Route>
 
