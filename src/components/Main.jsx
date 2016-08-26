@@ -304,9 +304,11 @@ export default class AppComponent extends Component {
 		this.composer.addPass(new EffectComposer.RenderPass(this.scene, this.camera));
 
 		let film = new EffectComposer.ShaderPass( THREE.Film );
-		film.uniforms['noiseIntensity'].value = 0.4;
+		film.uniforms['noiseIntensity'].value = 0.5;
 		film.uniforms['grayscaleIntensity'].value = grayscaleIntensity;
 		film.uniforms['scanlineIntensity'].value = 0.0;
+		film.uniforms['scanlineCount'].value = window.innerHeight*8.5;
+		console.log(film.uniforms['scanlineCount'].value);
 		this.composer.addPass( film );
 
 		let effect = new EffectComposer.ShaderPass( THREE.RGBShiftShader );

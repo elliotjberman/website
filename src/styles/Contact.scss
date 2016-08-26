@@ -17,6 +17,7 @@ $transition: 1.5s cubic-bezier(0.59, 0.14, 0.57, 1.2);
 		font-weight: normal;
 	}
 	h2 {
+		font-weight: normal;
 		font-size: 40px;
 		position: absolute;
 		bottom: 0;
@@ -24,6 +25,10 @@ $transition: 1.5s cubic-bezier(0.59, 0.14, 0.57, 1.2);
 		color: $paleOrange;
 		font-weight: normal;
 		letter-spacing: -2px;
+		a {
+			color: #a7856b;
+			text-decoration: none;
+		}
 	}
 
 

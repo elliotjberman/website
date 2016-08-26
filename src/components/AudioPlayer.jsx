@@ -29,6 +29,8 @@ export default class Choice extends Component {
 		this.state = {
 			songIndex: 0
 		}
+		this.header = "This is music I made by myself";
+		this.routes;
 	}
 
 	handleClick = () => {
@@ -59,7 +61,10 @@ export default class Choice extends Component {
 	}
 
 	componentDidMount = () => {
-		document.getElementById('name').style.display = "none";
+			document.getElementById('gray-box').className = 'expanded';
+			document.getElementById('gray-box-container').className = 'containing';
+			document.getElementById('name').style.display = "none";
+			console.log(this)
 	}
 
 	componentWillUnmount = () => {
@@ -85,7 +90,7 @@ export default class Choice extends Component {
 	}
 
 	visualize = () => {
-		window.requestAnimationFrame(this.visualize)
+		window.requestAnimationFrame(this.visualize);
 	}
 	render = () => {
 

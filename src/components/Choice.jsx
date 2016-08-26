@@ -16,6 +16,8 @@ export default class Choice extends Component {
 
 	componentDidMount = () => {
 		this.props.setGrayscale(true);
+		document.getElementById('gray-box').className = 'expanded';
+		document.getElementById('gray-box-container').className = 'containing';
 		document.getElementById('name').style.display = "block";
 	}
 
@@ -26,7 +28,7 @@ export default class Choice extends Component {
 					<span>Varsity<br/>Star</span>
 				</Link>
 				<Link to="multiplayer" className="choice">
-					<span>Elliot<br/>Berman</span>
+					<span>Elliot<br/>Berman<br/></span>
 				</Link>
 				<Link to="contact" className="choice">
 					<span>Contact</span>

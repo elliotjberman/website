@@ -15,10 +15,10 @@ export default class GrayBox extends Component {
 
 	}
 
-	handleClick = () => {
-		document.getElementById('gray-box').className = 'expanded';
-		document.getElementById('gray-box-container').className = 'containing';
-	}
+	// handleClick = () => {
+	// 	document.getElementById('gray-box').className = 'expanded';
+	// 	document.getElementById('gray-box-container').className = 'containing';
+	// }
 
 	render = () => {
 		const childrenWithProps = React.Children.map(this.props.children,

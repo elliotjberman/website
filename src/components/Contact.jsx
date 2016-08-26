@@ -11,7 +11,7 @@ class Contact extends React.Component {
 				<h2>
 					978.729.3655
 					<br/>
-					elliotjberman (at) gmail.com
+					<a href="mailto:elliotjberman@gmail.com">elliotjberman_at_gmail.com</a>
 				</h2>
 				<h1>Contact</h1>
       </div>
