@@ -68,9 +68,11 @@ export default class AppComponent extends Component {
 				chunkSize: 79, // size of chunks to stream in (in seconds)
 				bitRate: 40000
 			})
-			this.stream.setStartTime(0);
-			this.stream.gainNode.gain.value = -0.25;
-			this.stream.play();
+			if (this.pingsOn){
+				this.stream.setStartTime(0);
+				this.stream.gainNode.gain.value = -0.25;
+				this.stream.play();
+			}
 
 			this.pings = [];
 			this.pings.push([Bing0_0, Bing0_1, Bing0_2, Bing0_3]);

@@ -2,6 +2,7 @@ require('normalize.css');
 require('styles/App.scss');
 require('styles/AudioPlayer.scss')
 
+import ghostsArtwork from '../images/ghosts.png'
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 
@@ -10,7 +11,7 @@ import StreamTeam from '../streamteam/index.js';
 
 let ghosts = {
 	url: "https://s3.amazonaws.com/elliot-berman-media/solo/ghosts_mix_4.1.mp3",
-	artwork: "/images/ghosts.png"
+	artwork: ghostsArtwork
 }
 
 let umbrella = {
@@ -22,9 +23,12 @@ var songs = [ghosts, umbrella]
 
 export default class Choice extends Component {
 
-	constructor = () => {
+	constructor(props) {
+		super(props)
 		this.stream;
-		this.song;
+		this.state = {
+			songIndex: 0
+		}
 	}
 
 	handleClick = () => {
@@ -41,7 +45,7 @@ export default class Choice extends Component {
 		}
 		else {
 			this.stream  = new StreamTeam({
-				url: this.song.url,
+				url: songs[this.state.songIndex].url,
 				chunkSize: 300, // size of chunks to stream in (in seconds)
 				bitRate: 40000
 			})
@@ -49,7 +53,6 @@ export default class Choice extends Component {
 			this.stream.gainNode.gain.value = 0;
 			this.props.stopStreams();
 			this.stream.play();
-			console.log('playing');
 
 			window.requestAnimationFrame(this.visualize)
 		}
@@ -57,7 +60,6 @@ export default class Choice extends Component {
 
 	componentDidMount = () => {
 		document.getElementById('name').style.display = "none";
-		this.song = songs[0]
 	}
 
 	componentWillUnmount = () => {
@@ -67,28 +69,29 @@ export default class Choice extends Component {
 		}
 	}
 
+	nextSong = () => {
+		this.setState({
+			songIndex: this.state.songIndex + 1
+		})
+		this.stream = null;
+	}
+
 	visualize = () => {
-		// Ghosts kick is at
-		let frequencyArray = this.stream.getFrequencies();
-		let bassVolume = (frequencyArray[3]);
-		console.log(bassVolume);
-
-		let albumArt = document.getElementById('ghosts');
-
-		albumArt.style.width = 300 + (bassVolume) + "px";
-		albumArt.style.height = 300 + (bassVolume) + "px";
-
 		window.requestAnimationFrame(this.visualize)
 	}
 	render = () => {
+
+		let audioStyle = {
+			backgroundImage: 'url(' + songs[this.state.songIndex].artwork + ')',
+		}
 
 		return (
 			<div id="audio-player">
 				<Link to="/choice" className="chevron">Back</Link>
 				<div id="song-container">
-					<div onClick={this.handleClick} id="ghosts" className="song"></div>
+					<div onClick={this.handleClick} style={audioStyle} className="song"></div>
 				</div>
-				<Link to="/multiplayer" className="chevron">Next</Link>
+				<span onClick={this.nextSong} className="chevron">Next</span>
 			</div>
 		);
 	}

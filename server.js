@@ -13,5 +13,5 @@ new WebpackDevServer(webpack(config), config.devServer)
   }
   console.log('Listening at local.livamp.test:' + config.port);
   console.log('Opening your system browser...');
-  open('http://local.livamp.test:' + config.port + '/webpack-dev-server/');
+  open('http://localhost:' + config.port);
 });
