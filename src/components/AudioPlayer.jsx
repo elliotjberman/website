@@ -73,6 +73,14 @@ export default class Choice extends Component {
 		this.setState({
 			songIndex: this.state.songIndex + 1
 		})
+		this.stream.pause()
+		this.stream = null;
+	}
+	prevSong = () => {
+		this.setState({
+			songIndex: this.state.songIndex - 1
+		})
+		this.stream.pause()
 		this.stream = null;
 	}
 
@@ -87,7 +95,7 @@ export default class Choice extends Component {
 
 		return (
 			<div id="audio-player">
-				<Link to="/choice" className="chevron">Back</Link>
+				<span onClick={this.prevSong} className="chevron">Back</span>
 				<div id="song-container">
 					<div onClick={this.handleClick} style={audioStyle} className="song"></div>
 				</div>

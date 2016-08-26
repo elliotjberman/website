@@ -16,6 +16,7 @@ export default class Choice extends Component {
 
 	componentDidMount = () => {
 		this.props.setGrayscale(true);
+		document.getElementById('name').style.display = "block";
 	}
 
 	render = () => {

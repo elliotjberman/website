@@ -63,22 +63,23 @@ export default class AppComponent extends Component {
 	}
 
 	init = () => {
+			this.pingsOn = true;
 			this.stream  = new StreamTeam({
 				url: "https://s3.amazonaws.com/elliot-berman-media/bass_demo_3.mp3",
 				chunkSize: 79, // size of chunks to stream in (in seconds)
 				bitRate: 40000
 			})
-			if (this.pingsOn){
+
+			if (this.pingsOn) {
+				this.stream.play();
 				this.stream.setStartTime(0);
 				this.stream.gainNode.gain.value = -0.25;
-				this.stream.play();
 			}
 
 			this.pings = [];
 			this.pings.push([Bing0_0, Bing0_1, Bing0_2, Bing0_3]);
 			this.pings.push([Bing1_0, Bing1_1, Bing1_2, Bing1_3]);
 			this.pings.push([Bing2_0, Bing2_1, Bing2_2, Bing2_3]);
-			this.pingsOn = true;
 
 			const white = 0xffffff;
 
@@ -178,6 +179,10 @@ export default class AppComponent extends Component {
 
 		if (this.ambientLight.intensity < 0.34){
 			this.ambientLight.intensity += 0.001;
+		}
+
+		if (!this.pingsOn){
+			this.stream.pause();
 		}
 		// this.renderer.render(this.scene, this.camera);
 		this.composer.render(this.scene, this.camera);
@@ -322,7 +327,6 @@ export default class AppComponent extends Component {
 	}
 
 	stopStreams = (callback) => {
-		console.log('stopStreams() called');
 		this.pingsOn = false;
 		this.stream.pause();
 		return callback;
