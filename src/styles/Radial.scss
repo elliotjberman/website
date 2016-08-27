@@ -1,0 +1,82 @@
+.radial-progress {
+	$circle-size: 360px;
+	$circle-background: #d6dadc;
+	$circle-color: #f19d3e;
+	$inset-size: 350px;
+	$inset-color: #fbfbfb;
+	$transition-length: 1s;
+
+
+	margin: 0 auto;
+	width:  $circle-size;
+	height: $circle-size;
+
+	background-color: $circle-background;
+	border-radius: 50%;
+	.circle {
+		.mask, .fill, {
+			width:    $circle-size;
+			height:   $circle-size;
+			position: absolute;
+			border-radius: 50%;
+		}
+		.mask, .fill {
+			-webkit-backface-visibility: hidden;
+			transition: -webkit-transform $transition-length;
+			transition: -ms-transform $transition-length;
+			transition: transform $transition-length;
+			border-radius: 50%;
+		}
+		.mask {
+			clip: rect(0px, $circle-size, $circle-size, $circle-size/2);
+			.fill {
+				clip: rect(0px, $circle-size/2, $circle-size, 0px);
+				background-color: $circle-color;
+			}
+		}
+	}
+	.inset {
+		width:       $inset-size;
+		height:      $inset-size;
+		position:    absolute;
+		margin-left: ($circle-size - $inset-size)/2;
+		margin-top:  ($circle-size - $inset-size)/2;
+
+		background-color: $inset-color;
+		border-radius: 50%;
+	}
+
+	$i: 0;
+	$resolution: 1000;
+	$increment: 180deg / $resolution;
+		@while $i <= $resolution {
+			&[data-progress="#{$i}"] {
+				.circle {
+					.mask.full, .fill {
+						-webkit-transform: rotate($increment * $i);
+						-ms-transform: rotate($increment * $i);
+						transform: rotate($increment * $i);
+					}
+					.fill.fix {
+						-webkit-transform: rotate($increment * $i * 2);
+						-ms-transform: rotate($increment * $i * 2);
+						transform: rotate($increment * $i * 2);
+					}
+				}
+		  $i: $i + 1;
+		}
+	}
+}
+
+
+.radial-progress [data-progress="10"] .circle .mask.full, .radial-progress [data-progress="10"] .circle .fill {
+  -webkit-transform: rotate(18deg);
+  -ms-transform: rotate(18deg);
+  transform: rotate(18deg);
+}
+
+.radial-progress [data-progress="10"] .circle .fill.fix {
+  -webkit-transform: rotate(36deg);
+  -ms-transform: rotate(36deg);
+  transform: rotate(36deg);
+}

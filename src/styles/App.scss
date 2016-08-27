@@ -20,12 +20,14 @@ $transition: 1.5s cubic-bezier(0.59, 0.14, 0.57, 1.2);
 	width: 100%;
 	box-sizing: border-box;
 	padding: 0;
+	cursor: pointer;
 	&.containing{
 		padding: 60px;
 	}
 
 }
 #gray-box{
+	cursor: default;
 	display: flex;
   flex-flow: column;
 	font-family: 'GT-Walsheim';

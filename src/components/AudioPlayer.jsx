@@ -3,34 +3,43 @@ require('styles/App.scss');
 require('styles/AudioPlayer.scss')
 
 import ghostsArtwork from '../images/ghosts.png'
+import umbrellaArtwork from '../images/umbrella.jpg'
+
 import React, { Component } from 'react';
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
+
+import Radial from './Radial.jsx';
 
 // Audio
 import StreamTeam from '../streamteam/index.js';
 
 let ghosts = {
 	url: "https://s3.amazonaws.com/elliot-berman-media/solo/ghosts_mix_4.1.mp3",
-	artwork: ghostsArtwork
+	artwork: ghostsArtwork,
+	runningTime: 201
 }
 
 let umbrella = {
 	url: "https://s3.amazonaws.com/elliot-berman-media/solo/UmbrellaFinal_3.mp3",
-	artwork: "/images/umbrella.jpg"
+	artwork: umbrellaArtwork,
+	runningTime: 319
 }
 
 var songs = [ghosts, umbrella]
 
-export default class Choice extends Component {
+export default class AudioPlayer extends Component {
 
 	constructor(props) {
 		super(props)
 		this.stream;
 		this.state = {
-			songIndex: 0
+			songIndex: 0,
+			progress: 0,
+			button: 'Play'
 		}
 		this.header = "This is music I made by myself";
 		this.routes;
+		this.counter= 0;
 	}
 
 	handleClick = () => {
@@ -38,11 +47,12 @@ export default class Choice extends Component {
 			if (this.stream.paused){
 				this.props.stopStreams();
 				this.stream.play();
-				console.log('playing');
+				this.setState({button: 'Pause'})
 			}
 			else {
+				console.log('what the fuck')
 				this.stream.pause();
-				console.log("paused");
+				this.setState({button: 'Play'})
 			}
 		}
 		else {
@@ -55,8 +65,11 @@ export default class Choice extends Component {
 			this.stream.gainNode.gain.value = 0;
 			this.props.stopStreams();
 			this.stream.play();
+			this.setState({button: 'Pause'});
+			window.setInterval(function() {
+				this.visualize();
+			}.bind(this), 100)
 
-			window.requestAnimationFrame(this.visualize)
 		}
 	}
 
@@ -64,7 +77,6 @@ export default class Choice extends Component {
 			document.getElementById('gray-box').className = 'expanded';
 			document.getElementById('gray-box-container').className = 'containing';
 			document.getElementById('name').style.display = "none";
-			console.log(this)
 	}
 
 	componentWillUnmount = () => {
@@ -75,23 +87,48 @@ export default class Choice extends Component {
 	}
 
 	nextSong = () => {
-		this.setState({
-			songIndex: this.state.songIndex + 1
-		})
-		this.stream.pause()
-		this.stream = null;
+		this.reset();
+		if (this.state.songIndex + 1 >= songs.length) {
+			browserHistory.push('/choice');
+		}
+		else{
+			this.setState({
+				songIndex: this.state.songIndex + 1
+			})
+		}
 	}
 	prevSong = () => {
-		this.setState({
-			songIndex: this.state.songIndex - 1
-		})
-		this.stream.pause()
-		this.stream = null;
+		this.reset();
+		if (this.state.songIndex - 1 < 0) {
+			browserHistory.push('/choice');
+		}
+		else{
+			this.setState({
+				songIndex: this.state.songIndex - 1
+			})
+		}
+	}
+
+	reset = () => {
+		if (this.stream){
+			this.stream.pause()
+			this.stream = null;
+		}
+		this.counter = 0;
+		this.setState({progress: 0, button: 'Play'})
 	}
 
 	visualize = () => {
-		window.requestAnimationFrame(this.visualize);
+		if (this.stream && !this.stream.paused){
+			this.counter ++;
+			var progress = this.counter/songs[this.state.songIndex].runningTime
+			console.log(this.counter);
+			console.log(progress)
+			progress = progress*100
+			this.setState({progress: Math.round(progress)});
+		}
 	}
+
 	render = () => {
 
 		let audioStyle = {
@@ -99,12 +136,21 @@ export default class Choice extends Component {
 		}
 
 		return (
-			<div id="audio-player">
-				<span onClick={this.prevSong} className="chevron">Back</span>
-				<div id="song-container">
-					<div onClick={this.handleClick} style={audioStyle} className="song"></div>
+			<div id="audio-container">
+				<h1 id="audio-header">{this.header}</h1>
+				<div id="audio-player">
+					<span onClick={this.prevSong} className="chevron">Back</span>
+
+					<div id="song-container">
+						<Radial progress={this.state.progress}>
+							<div onClick={this.handleClick} style={audioStyle} className="song">
+								<div id="control-overlay">{this.state.button}</div>
+							</div>
+						</Radial>
+					</div>
+
+					<span onClick={this.nextSong} className="chevron">Next</span>
 				</div>
-				<span onClick={this.nextSong} className="chevron">Next</span>
 			</div>
 		);
 	}

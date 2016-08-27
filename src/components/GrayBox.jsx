@@ -7,8 +7,8 @@ import { Link } from 'react-router';
 
 export default class GrayBox extends Component {
 
-	constructor = () => {
-
+	constructor(props) {
+		super(props);
 	}
 
 	componentDidMount = () => {
@@ -20,6 +20,7 @@ export default class GrayBox extends Component {
 	// 	document.getElementById('gray-box-container').className = 'containing';
 	// }
 
+
 	render = () => {
 		const childrenWithProps = React.Children.map(this.props.children,
 		 (child) => React.cloneElement(child, {
@@ -29,8 +30,8 @@ export default class GrayBox extends Component {
 	 	)
 
 		return (
-			<div id="gray-box-container" className="containing">
-				<div id="gray-box" className="expanded">
+			<div id="gray-box-container">
+				<div id="gray-box">
 					<Link onClick={this.handleClick} to="choice" id="name">
 						Elliot<br/>Berman
 					</Link>

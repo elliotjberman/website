@@ -194,16 +194,16 @@ export default class AppComponent extends Component {
 		this.init();
 		this.animate();
 		var initParticles = this.initParticles;
-		window.addEventListener('click', function(event) {
-			let mouseX = event.pageX/window.innerWidth;
-			let mouseY = 1 - event.pageY/window.innerHeight;
-			initParticles(mouseX, mouseY);
-		});
-
 		window.setInterval(function(){
 			initParticles();
 		}, 5000)
 
+	}
+
+	clickPing = (event) => {
+		let mouseX = event.pageX/window.innerWidth;
+		let mouseY = 1 - event.pageY/window.innerHeight;
+		this.initParticles(mouseX, mouseY);
 	}
 
 	initParticles = (x, y) => {
@@ -304,11 +304,13 @@ export default class AppComponent extends Component {
 		this.composer.addPass(new EffectComposer.RenderPass(this.scene, this.camera));
 
 		let film = new EffectComposer.ShaderPass( THREE.Film );
+
 		film.uniforms['noiseIntensity'].value = 0.5;
 		film.uniforms['grayscaleIntensity'].value = grayscaleIntensity;
+
 		film.uniforms['scanlineIntensity'].value = 0.0;
 		film.uniforms['scanlineCount'].value = window.innerHeight*8.5;
-		console.log(film.uniforms['scanlineCount'].value);
+
 		this.composer.addPass( film );
 
 		let effect = new EffectComposer.ShaderPass( THREE.RGBShiftShader );
@@ -346,7 +348,7 @@ export default class AppComponent extends Component {
 		 })
 	 	)
     return (
-      <div className="index" id="index">
+      <div onClick={this.clickPing} className="index" id="index">
 					{childrenWithProps}
       </div>
     );
