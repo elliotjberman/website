@@ -37,7 +37,16 @@ export default class AudioPlayer extends Component {
 			progress: 0,
 			button: 'Play'
 		}
-		this.header = "This is music I made by myself";
+		if (this.props.location.pathname.includes('solo')) {
+			this.color = "#eac3a7";
+			this.collab = "alone";
+			this.soundcloud = "https://www.soundcloud.com/varsity-star";
+		}
+		else{
+			this.color = "#c78584";
+			this.collab = "with some friends";
+			this.soundcloud = "https://www.soundcloud.com/elliotberman";
+		}
 		this.routes;
 		this.counter= 0;
 	}
@@ -135,9 +144,11 @@ export default class AudioPlayer extends Component {
 			backgroundImage: 'url(' + songs[this.state.songIndex].artwork + ')',
 		}
 
+		let style = {color: this.color}
+
 		return (
 			<div id="audio-container">
-				<h1 id="audio-header">{this.header}</h1>
+				<h1 id="audio-header">This is music I made <a target="_blank" href={this.soundcloud} style={style}>{this.collab}</a></h1>
 				<div id="audio-player">
 					<span onClick={this.prevSong} className="chevron">Back</span>
 
