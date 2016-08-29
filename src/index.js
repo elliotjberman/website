@@ -1,10 +1,12 @@
 require('normalize.css');
 require('styles/App.scss');
+require('styles/Transitions.scss')
 
 import 'core-js/fn/object/assign';
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, IndexRoute, Link, browserHistory } from 'react-router';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 // Boys
 import Main from './components/Main';

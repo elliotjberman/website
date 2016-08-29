@@ -8,7 +8,7 @@ THREE.Film = {
 		"scanlineIntensity": { type: "f", value: 0.1 },
 		"scanlineCount": { type: "f", value: 3000.0 },
 
-		"grayscaleIntensity": { type: "f", value: 1.0 },
+		"grayscaleIntensity": { type: "f", value: 1.0 }
   },
   vertexShader: [
     "varying vec2 vUv;",

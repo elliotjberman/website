@@ -5,9 +5,6 @@ require('styles/Choice.scss')
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 
-// Audio
-import StreamTeam from '../streamteam/index.js';
-
 export default class Choice extends Component {
 
 	constructor = () => {

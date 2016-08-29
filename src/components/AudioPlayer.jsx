@@ -6,7 +6,7 @@ import ghostsArtwork from '../images/ghosts.png'
 import umbrellaArtwork from '../images/umbrella.jpg'
 
 import React, { Component } from 'react';
-import { Link, browserHistory } from 'react-router';
+import { browserHistory } from 'react-router';
 
 import Radial from './Radial.jsx';
 
@@ -39,7 +39,7 @@ export default class AudioPlayer extends Component {
 		}
 		if (this.props.location.pathname.includes('solo')) {
 			this.color = "#eac3a7";
-			this.collab = "alone";
+			this.collab = "by myself";
 			this.soundcloud = "https://www.soundcloud.com/varsity-star";
 		}
 		else{
@@ -59,7 +59,6 @@ export default class AudioPlayer extends Component {
 				this.setState({button: 'Pause'})
 			}
 			else {
-				console.log('what the fuck')
 				this.stream.pause();
 				this.setState({button: 'Play'})
 			}
@@ -75,9 +74,7 @@ export default class AudioPlayer extends Component {
 			this.props.stopStreams();
 			this.stream.play();
 			this.setState({button: 'Pause'});
-			window.setInterval(function() {
-				this.visualize();
-			}.bind(this), 100)
+			this.visualize();
 
 		}
 	}
@@ -128,20 +125,17 @@ export default class AudioPlayer extends Component {
 	}
 
 	visualize = () => {
-		if (this.stream && !this.stream.paused){
-			this.counter ++;
-			var progress = this.counter/songs[this.state.songIndex].runningTime
-			console.log(this.counter);
-			console.log(progress)
-			progress = progress*100
+			console.log(this.stream.getCurrentTime())
+			var progress = this.stream.getCurrentTime()/songs[this.state.songIndex].runningTime
+			progress = progress*1000
 			this.setState({progress: Math.round(progress)});
-		}
+			window.requestAnimationFrame(this.visualize);
 	}
 
 	render = () => {
 
 		let audioStyle = {
-			backgroundImage: 'url(' + songs[this.state.songIndex].artwork + ')',
+			backgroundImage: 'url(' + songs[this.state.songIndex].artwork + ')'
 		}
 
 		let style = {color: this.color}
