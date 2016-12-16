@@ -78,6 +78,7 @@
     "react-router": "^2.4.1",
     "sparks": "0.0.49",
     "stats-js": "^1.0.0-alpha1",
+    "streamteam": "git+https://github.com/thomaswall/streamteam.git#one-stop-shop",
     "three": "^0.75.0",
     "three-effectcomposer": "0.0.1",
     "three-shader-fxaa": "^5.1.1"

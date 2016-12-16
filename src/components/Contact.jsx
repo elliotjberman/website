@@ -1,14 +1,17 @@
 'use strict';
 
 import React from 'react';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 require('styles//Contact.scss');
 
 class Contact extends React.Component {
-  render() {
+	componentDidMount = () => {
+
+	}
+
+  render = () => {
+		var path = this.props.location.pathname;
     return (
-			<ReactCSSTransitionGroup transitionName="example" transitionEnterTimeout={1000} transitionLeaveTimeout={1000}>
 	      <div id="contact">
 					<h2>
 						978.729.3655
@@ -17,7 +20,6 @@ class Contact extends React.Component {
 					</h2>
 					<h1>Contact</h1>
 	      </div>
-			</ReactCSSTransitionGroup>
     );
   }
 }

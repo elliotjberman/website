@@ -11,7 +11,7 @@ import { browserHistory } from 'react-router';
 import Radial from './Radial.jsx';
 
 // Audio
-import StreamTeam from '../streamteam/index.js';
+import StreamTeam from 'streamteam';
 
 let ghosts = {
 	url: "https://s3.amazonaws.com/elliot-berman-media/solo/ghosts_mix_4.1.mp3",
@@ -67,7 +67,8 @@ export default class AudioPlayer extends Component {
 			this.stream  = new StreamTeam({
 				url: songs[this.state.songIndex].url,
 				chunkSize: 300, // size of chunks to stream in (in seconds)
-				bitRate: 40000
+				bitRate: 40000,
+				smoothTime: true
 			})
 			this.stream.setStartTime(0);
 			this.stream.gainNode.gain.value = 0;
@@ -82,7 +83,7 @@ export default class AudioPlayer extends Component {
 	componentDidMount = () => {
 			document.getElementById('gray-box').className = 'expanded';
 			document.getElementById('gray-box-container').className = 'containing';
-			document.getElementById('name').style.display = "none";
+			document.getElementById('name').style.opacity = 0;
 	}
 
 	componentWillUnmount = () => {
@@ -125,7 +126,6 @@ export default class AudioPlayer extends Component {
 	}
 
 	visualize = () => {
-			console.log(this.stream.getCurrentTime())
 			var progress = this.stream.getCurrentTime()/songs[this.state.songIndex].runningTime
 			progress = progress*1000
 			this.setState({progress: Math.round(progress)});

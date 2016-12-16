@@ -4,6 +4,8 @@ require('styles/Choice.scss')
 
 import React, { Component } from 'react';
 import { Link } from 'react-router';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+
 
 export default class GrayBox extends Component {
 
@@ -22,10 +24,13 @@ export default class GrayBox extends Component {
 
 
 	render = () => {
+
+		let path = this.props.location.pathname;
 		const childrenWithProps = React.Children.map(this.props.children,
 		 (child) => React.cloneElement(child, {
 			 stopStreams: this.props.stopStreams,
-			 setGrayscale: this.props.setGrayscale
+			 setGrayscale: this.props.setGrayscale,
+			 key: path
 		 })
 	 	)
 
@@ -35,7 +40,10 @@ export default class GrayBox extends Component {
 					<Link onClick={this.handleClick} to="choice" id="name">
 						Elliot<br/>Berman
 					</Link>
-					{childrenWithProps}
+					<ReactCSSTransitionGroup transitionName="example"
+						transitionEnterTimeout={500} transitionLeaveTimeout={500}>
+						{childrenWithProps}
+					</ReactCSSTransitionGroup>
 				</div>
 			</div>
 		);

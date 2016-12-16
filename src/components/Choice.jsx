@@ -7,27 +7,31 @@ import { Link } from 'react-router';
 
 export default class Choice extends Component {
 
-	constructor = () => {
-		this.stream;
+	constructor() {
+		super();
 	}
 
 	componentDidMount = () => {
 		this.props.setGrayscale(true);
 		document.getElementById('gray-box').className = 'expanded';
 		document.getElementById('gray-box-container').className = 'containing';
-		document.getElementById('name').style.display = "block";
+		document.getElementById('name').style.opacity = 1;
+	}
+
+	toggleLeaving = (event) => {
+		event.target.className = 'choice leaving';
 	}
 
 	render = () => {
 		return (
 			<div id="choices">
-				<Link to="solo" className="choice">
+				<Link onClick={this.toggleLeaving} to="solo" className="choice">
 					<span>Varsity<br/>Star</span>
 				</Link>
-				<Link to="multiplayer" className="choice">
-					<span>Elliot<br/>Berman<br/></span>
+				<Link onClick={this.toggleLeaving} to="multiplayer" className="choice">
+					<span>Multi-<br/>player</span>
 				</Link>
-				<Link to="contact" className="choice">
+				<Link onClick={this.toggleLeaving} to="contact" className="choice">
 					<span>Contact</span>
 				</Link>
 			</div>

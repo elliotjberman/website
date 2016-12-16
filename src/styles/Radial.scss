@@ -6,6 +6,8 @@
 	$inset-color: #fbfbfb;
 	$transition-length: 1s;
 
+	transition: opacity 500ms ease-in:
+
 
 	margin: 0 auto;
 	width:  $circle-size;
@@ -18,6 +20,7 @@
 			width:    $circle-size;
 			height:   $circle-size;
 			position: absolute;
+			z-index: 1;
 			border-radius: 50%;
 		}
 		.mask, .fill {
@@ -39,6 +42,7 @@
 		width:       $inset-size;
 		height:      $inset-size;
 		position:    absolute;
+		z-index: 1;
 		margin-left: ($circle-size - $inset-size)/2;
 		margin-top:  ($circle-size - $inset-size)/2;
 

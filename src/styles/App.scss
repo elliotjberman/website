@@ -22,14 +22,12 @@ $transition: 1.5s cubic-bezier(0.59, 0.14, 0.57, 1.2);
 	padding: 0;
 	cursor: pointer;
 	&.containing{
-		padding: 60px;
+		padding: 40px;
 	}
 
 }
 #gray-box{
 	cursor: default;
-	display: flex;
-  flex-flow: column;
 	font-family: 'GT-Walsheim';
 	font-weight: 400;
 	width: 0;
@@ -53,7 +51,6 @@ $transition: 1.5s cubic-bezier(0.59, 0.14, 0.57, 1.2);
 	user-select: none;
 
 	a#name{
-		flex: 0 1 auto;
 		display: block;
 		color: white;
 		font-size: 90px;
@@ -67,6 +64,7 @@ $transition: 1.5s cubic-bezier(0.59, 0.14, 0.57, 1.2);
 		&:hover{
 			color: #ffd6b9;
 		}
+		z-index: 2;
 
 	}
 
@@ -80,8 +78,11 @@ $transition: 1.5s cubic-bezier(0.59, 0.14, 0.57, 1.2);
 		height: 100%;
 		top: 0;
 		left: 0;
+		display: flex;
 
 		a#name{
+			position: absolute;
+			top: 20px;
 			color: $paleOrange;
 			&:hover{
 				color: #eac3a7;

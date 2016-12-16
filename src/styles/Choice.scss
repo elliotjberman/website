@@ -3,12 +3,13 @@ $paleOrange: #fff1e7;
 $darkGray: #2d2d2d;
 
 #choices{
-	flex: 1 1 auto;
 	overflow: hidden;
-	width: 100%;
+	width: 100% !important;
 	display: flex;
 	align-items: center;
 	justify-content: space-around;
+	position: absolute !important;
+	height: 100% !important;
 }
 
 .choice{
@@ -47,7 +48,6 @@ $darkGray: #2d2d2d;
 		-webkit-transform: rotate(0deg);
 	}
 	span{
-		text-align: right;
 		text-align: left;
 		display: inline-block;
 

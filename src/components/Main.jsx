@@ -11,7 +11,7 @@ import Link from 'react-router';
 import GrayBox from './GrayBox';
 
 // Audio
-import StreamTeam from '../streamteam/index.js';
+import StreamTeam from 'streamteam';
 
 import Track from '../audio/bass_demo_3.mp3';
 
@@ -73,7 +73,7 @@ export default class AppComponent extends Component {
 			if (this.pingsOn) {
 				this.stream.play();
 				this.stream.setStartTime(0);
-				this.stream.gainNode.gain.value = -0.25;
+				this.stream.gainNode.gain.value = -1;
 			}
 
 			this.pings = [];
@@ -89,7 +89,7 @@ export default class AppComponent extends Component {
 
 // Scene and fog
 			this.scene = new THREE.Scene();
-			this.scene.fog = new THREE.FogExp2(white , 0.05 );
+			this.scene.fog = new THREE.FogExp2(white, 0.05 );
 
 // Camera
 			this.camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 30 );
@@ -222,7 +222,8 @@ export default class AppComponent extends Component {
 				let xChoice = Math.floor(x * 4);
 				let yChoice = Math.floor(y* 3);
 				let sound = new Audio(this.pings[yChoice][xChoice]);
-				sound.volume = 0.3 - randomZDepth*0.2;
+				// sound.volume = 0.3 - randomZDepth*0.2;
+				sound.volume = 0;
 				sound.play();
 			}
 
@@ -279,9 +280,9 @@ export default class AppComponent extends Component {
 
 	addGrimeLevel = (level) => {
 		if (!isNaN(level) && this.composer.passes[2].uniforms.amount.value != undefined){
-			this.composer.passes[2].uniforms['amount'].value = level/100 + 0.0015;
-			this.composer.passes[1].uniforms['noiseIntensity'].value = level/3 + 0.3;
-			this.composer.passes[1].uniforms['scanlineIntensity'].value = level*1.3 + 0.05;
+			this.composer.passes[2].uniforms['amount'].value = level/30 + 0.0015;
+			this.composer.passes[1].uniforms['noiseIntensity'].value = level/2 + 0.3;
+			this.composer.passes[1].uniforms['scanlineIntensity'].value = level * 1.5 + 0.05;
 		}
 	}
 
