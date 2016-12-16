@@ -73,7 +73,7 @@ export default class AppComponent extends Component {
 			if (this.pingsOn) {
 				this.stream.play();
 				this.stream.setStartTime(0);
-				this.stream.gainNode.gain.value = -1;
+				this.stream.gainNode.gain.value = 0.75;
 			}
 
 			this.pings = [];
@@ -222,8 +222,8 @@ export default class AppComponent extends Component {
 				let xChoice = Math.floor(x * 4);
 				let yChoice = Math.floor(y* 3);
 				let sound = new Audio(this.pings[yChoice][xChoice]);
-				// sound.volume = 0.3 - randomZDepth*0.2;
-				sound.volume = 0;
+				sound.volume = 0.3 - randomZDepth*0.2;
+				// sound.volume = 0;
 				sound.play();
 			}
 
