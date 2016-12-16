@@ -4,11 +4,11 @@ $darkGray: #2d2d2d;
 
 #choices{
 	overflow: hidden;
-	width: 100% !important;
+	// width: 100% !important;
 	display: flex;
 	align-items: center;
 	justify-content: space-around;
-	position: absolute !important;
+	// position: absolute !important;
 	height: 100% !important;
 }
 
@@ -16,20 +16,22 @@ $darkGray: #2d2d2d;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	width: 200px;
-	height: 200px;
+	width: 150px;
+	height: 150px;
 	border-radius: 100%;
 	background-color: $darkGray;
 	color: $paleOrange;
 	text-align: center;
 	line-height: 0.9;
 	cursor: pointer;
-	font-size: 50px;
-	letter-spacing: -4px;
+	font-size: 40px;
+	letter-spacing: -3px;
 	transition: .4s cubic-bezier(0, 1, 0.65, 0.99);
 	text-decoration: none;
 	border: 5px solid $darkGray;
 	-webkit-transform: rotate(-30deg);
+	margin-left: 40px;
+	margin-right: 20px;
 
 	&:hover{
 		color: $darkGray;

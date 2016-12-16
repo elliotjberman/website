@@ -81,7 +81,8 @@ export default class AudioPlayer extends Component {
 	}
 
 	componentDidMount = () => {
-			document.getElementById('gray-box').className = 'expanded';
+			this.props.setGrayscale(true);
+			document.getElementById('gray-box').className = 'full';
 			document.getElementById('gray-box-container').className = 'containing';
 			document.getElementById('name').style.opacity = 0;
 	}
