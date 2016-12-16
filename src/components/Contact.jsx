@@ -6,7 +6,7 @@ require('styles//Contact.scss');
 
 class Contact extends React.Component {
 	componentDidMount = () => {
-
+		document.getElementById('gray-box').className = 'full';
 	}
 
   render = () => {

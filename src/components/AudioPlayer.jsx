@@ -39,16 +39,19 @@ export default class AudioPlayer extends Component {
 		}
 		if (this.props.location.pathname.includes('solo')) {
 			this.color = "#eac3a7";
+			this.textColor = "#7d7066";
 			this.collab = "by myself";
 			this.soundcloud = "https://www.soundcloud.com/varsity-star";
 		}
 		else{
 			this.color = "#c78584";
+			this.textColor = "#563939";
 			this.collab = "with some friends";
 			this.soundcloud = "https://www.soundcloud.com/elliotberman";
 		}
 		this.routes;
 		this.counter= 0;
+		this.props.setGrayscale(false);
 	}
 
 	handleClick = () => {
@@ -81,7 +84,7 @@ export default class AudioPlayer extends Component {
 	}
 
 	componentDidMount = () => {
-			document.getElementById('gray-box').className = 'expanded';
+			document.getElementById('gray-box').className = 'full';
 			document.getElementById('gray-box-container').className = 'containing';
 			document.getElementById('name').style.opacity = 0;
 	}
@@ -138,10 +141,11 @@ export default class AudioPlayer extends Component {
 			backgroundImage: 'url(' + songs[this.state.songIndex].artwork + ')'
 		}
 
-		let style = {color: this.color}
+		let style = {color: this.textColor};
+		let big = {background: this.color};
 
 		return (
-			<div id="audio-container">
+			<div style={big} id="audio-container">
 				<h1 id="audio-header">This is music I made <a target="_blank" href={this.soundcloud} style={style}>{this.collab}</a></h1>
 				<div id="audio-player">
 					<span onClick={this.prevSong} className="chevron">Back</span>
