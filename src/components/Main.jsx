@@ -136,10 +136,10 @@ export default class AppComponent extends Component {
 
 		this.composer.passes[1].uniforms['time'].value += 1/60;
 		if (this.grayscale && this.composer.passes[1].uniforms['grayscaleIntensity'].value < 1.1){
-			this.composer.passes[1].uniforms['grayscaleIntensity'].value += 0.005;
+			this.composer.passes[1].uniforms['grayscaleIntensity'].value += 0.015;
 		}
 		else if (!this.grayscale && this.composer.passes[1].uniforms['grayscaleIntensity'].value > 0){
-			this.composer.passes[1].uniforms['grayscaleIntensity'].value -= 0.005;
+			this.composer.passes[1].uniforms['grayscaleIntensity'].value -= 0.015	;
 		}
 
 		if (this.particleGroups.length > 50){

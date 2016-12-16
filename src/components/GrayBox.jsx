@@ -14,7 +14,7 @@ export default class GrayBox extends Component {
 	}
 
 	componentDidMount = () => {
-		document.getElementById('gray-box').className = 'expanded';
+		
 	}
 
 	// handleClick = () => {
