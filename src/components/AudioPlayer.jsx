@@ -30,7 +30,7 @@ var songs = [ghosts, umbrella]
 export default class AudioPlayer extends Component {
 
 	constructor(props) {
-		super(props)
+		super(props);
 		this.stream;
 		this.state = {
 			songIndex: 0,
@@ -38,17 +38,19 @@ export default class AudioPlayer extends Component {
 			button: 'Play'
 		}
 		if (this.props.location.pathname.includes('solo')) {
-			this.color = "#eac3a7";
+			this.color = "#98bd98";
 			this.collab = "by myself";
 			this.soundcloud = "https://www.soundcloud.com/varsity-star";
+			this.props.setHue(120/360);
 		}
 		else{
 			this.color = "#c78584";
 			this.collab = "with some friends";
 			this.soundcloud = "https://www.soundcloud.com/elliotberman";
+			this.props.setHue(1/360);
 		}
 		this.routes;
-		this.counter= 0;
+		this.counter = 0;
 	}
 
 	handleClick = () => {
@@ -81,7 +83,7 @@ export default class AudioPlayer extends Component {
 	}
 
 	componentDidMount = () => {
-			this.props.setGrayscale(true);
+			// this.props.setGrayscale(true);
 			document.getElementById('gray-box').className = 'full';
 			document.getElementById('gray-box-container').className = 'containing';
 			document.getElementById('name').style.opacity = 0;

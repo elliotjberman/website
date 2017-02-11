@@ -14,7 +14,7 @@ export default class GrayBox extends Component {
 	}
 
 	componentDidMount = () => {
-		
+
 	}
 
 	// handleClick = () => {
@@ -30,6 +30,7 @@ export default class GrayBox extends Component {
 		 (child) => React.cloneElement(child, {
 			 stopStreams: this.props.stopStreams,
 			 setGrayscale: this.props.setGrayscale,
+			 setHue: this.props.setHue,
 			 key: path
 		 })
 	 	)

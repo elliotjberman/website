@@ -13,6 +13,7 @@ export default class Choice extends Component {
 
 	componentDidMount = () => {
 		this.props.setGrayscale(false);
+		this.props.setHue(26/360);
 		document.getElementById('gray-box').className = 'expanded';
 		document.getElementById('gray-box-container').className = 'containing';
 		document.getElementById('name').style.opacity = 1;

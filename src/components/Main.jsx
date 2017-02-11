@@ -34,18 +34,23 @@ import Disc from '../images/disc_thick.png';
 
 export default class AppComponent extends Component {
 
-	constructor = () => {
+	constructor () {
+		super();
 		this.mesh;
 		this.renderer;
 		this.scene;
 
 		this.composer;
 		this.grayscale;
+		this.hue = 26/360;
 
 		// Camera scrim
 		this.windowHalfX = window.innerWidth / 2;
 		this.windowHalfY = window.innerHeight / 2;
 		this.camera;
+
+		// Utility
+		this.clickCounter = 0;
 
 		// Particles
 		this.counter;
@@ -57,23 +62,29 @@ export default class AppComponent extends Component {
 		// Sounds
 		this.track;
 		this.bings;
-		this.pingsOn;
+		// this.state.pingsOn;
 
-		this.stream
+		this.stream;
+
+		this.state = {
+			audioOn: true
+		};
+
 	}
 
 	init = () => {
-			this.pingsOn = true;
 			this.stream  = new StreamTeam({
 				url: "https://s3.amazonaws.com/elliot-berman-media/bass_demo_3.mp3",
 				chunkSize: 79, // size of chunks to stream in (in seconds)
-				bitRate: 40000
+				bitRate: 40000,
+				fftSize: 2048
 			})
 
-			if (this.pingsOn) {
+			if (this.state.audioOn) {
+				this.stream.gainNode.gain.value = -0.5;
 				this.stream.play();
 				this.stream.setStartTime(0);
-				this.stream.gainNode.gain.value = 0.75;
+
 			}
 
 			this.pings = [];
@@ -122,10 +133,12 @@ export default class AppComponent extends Component {
 
 	animate = () => {
 
+		// frequencyArray should be of length
 		let frequencyArray = this.stream.getFrequencies();
 		let bump = (frequencyArray[2] + frequencyArray[3])/2;
 		let grimeLevel = -(0.85 - bump/255);
 		grimeLevel = grimeLevel < 0 ? 0 : grimeLevel;
+
 
 		let grayBox = document.getElementById('gray-box');
 		if (bump > 240 && !grayBox.className){
@@ -172,6 +185,31 @@ export default class AppComponent extends Component {
 			particleExplosion.particles.rotation.y = yRotation + 0.0006;
 			particleExplosion.particles.rotation.x = xRotation - 0.0006;
 
+			// Adjust colors
+			let pColor = particleExplosion.particleMaterial.color.getHSL();
+			let cColor = this.renderer.getClearColor().getHSL();
+
+				if (pColor.h > this.hue) {
+						pColor.h -= 1/360;
+				}
+				else if (pColor.h < this.hue) {
+					pColor.h += 1/360;
+				}
+
+				if (cColor.h > this.hue) {
+					cColor.h -= 1/360;
+				}
+				else if (cColor.h < this.hue) {
+					cColor.h += 1/360;
+				}
+
+				var clear = new THREE.Color();
+				clear.setHSL(cColor.h, cColor.s, cColor.l);
+
+				this.renderer.setClearColor(clear);
+				particleExplosion.particleMaterial.color.setHSL(pColor.h, pColor.s, pColor.l);
+
+
 			particleExplosion.particleGeometry.attributes.position.needsUpdate = true;
 		}
 
@@ -181,9 +219,11 @@ export default class AppComponent extends Component {
 			this.ambientLight.intensity += 0.001;
 		}
 
-		if (!this.pingsOn){
+		if (!this.state.audioOn){
 			this.stream.pause();
 		}
+
+
 		// this.renderer.render(this.scene, this.camera);
 		this.composer.render(this.scene, this.camera);
 		requestAnimationFrame( this.animate, this.renderer.domElement );
@@ -201,6 +241,14 @@ export default class AppComponent extends Component {
 	}
 
 	clickPing = (event) => {
+		this.clickCounter++;
+		let grayBox = document.getElementById('gray-box');
+		if (this.clickCounter > 6  && !grayBox.className) {
+			grayBox.className = 'solo-name';
+			// this.hue = 100/360;
+		}
+
+
 		let mouseX = event.pageX/window.innerWidth;
 		let mouseY = 1 - event.pageY/window.innerHeight;
 		this.initParticles(mouseX, mouseY);
@@ -218,7 +266,7 @@ export default class AppComponent extends Component {
 				randomZDepth = 0.2;
 			}
 
-			if (this.pingsOn){
+			if (this.state.audioOn){
 				let xChoice = Math.floor(x * 4);
 				let yChoice = Math.floor(y* 3);
 				let sound = new Audio(this.pings[yChoice][xChoice]);
@@ -262,7 +310,7 @@ export default class AppComponent extends Component {
 			// // itemSize = 3 because there are 3 values (components) per vertex
 
 			particleExplosion.particleMaterial = new THREE.PointsMaterial( { size: 0.65, sizeAttenuation: true, map: this.sprite, alphaTest: 0.3, transparent: true } );
-			particleExplosion.particleMaterial.color.setHSL(26/360, 0.9, (Math.random()/2+0.5) );
+			particleExplosion.particleMaterial.color.setHSL(this.hue, 0.9, (Math.random()/2+0.5) );
 
 			particleExplosion.particleGeometry.addAttribute( 'position', new THREE.BufferAttribute( particleExplosion.vertices, 3 , false) );
 
@@ -331,13 +379,25 @@ export default class AppComponent extends Component {
 		// this.composer.setSize(window.innerWidth * dpr, window.innerHeight * dpr);
 	}
 
+	toggleAudio = () => {
+		this.setState({audioOn: !this.state.audioOn});
+		if (this.stream.paused)
+			this.stream.play();
+	}
 	stopStreams = (callback) => {
-		this.pingsOn = false;
+		this.setState({audioOn: false});
 		this.stream.pause();
 		return callback;
 	}
 	setGrayscale = (grayscale) => {
 		this.grayscale = grayscale;
+	}
+	setGrayscale = (grayscale) => {
+		this.grayscale = grayscale;
+	}
+
+	setHue = (hue) => {
+		this.hue = hue;
 	}
 
 
@@ -345,11 +405,15 @@ export default class AppComponent extends Component {
 		const childrenWithProps = React.Children.map(this.props.children,
 		 (child) => React.cloneElement(child, {
 			 stopStreams: this.stopStreams,
-			 setGrayscale: this.setGrayscale
+			 setGrayscale: this.setGrayscale,
+			 setHue: this.setHue
 		 })
 	 	)
     return (
       <div onClick={this.clickPing} className="index" id="index">
+					<span id="audio-toggle" onClick={this.toggleAudio}>
+						{this.state.audioOn ? "On" :  "Off"}
+					</span>
 					{childrenWithProps}
       </div>
     );
