@@ -80,7 +80,7 @@ class Contact extends React.Component {
 						<div className="grid fifth">
 
 							<div className="circle-container">
-								<a href="http://www.soundcloud.com/varsity-star"><div id="circle-boy-3"></div></a>
+								<a target="_blank" href="http://www.soundcloud.com/varsity-star"><div id="circle-boy-3"></div></a>
 							</div>
 
 						</div>
@@ -100,7 +100,7 @@ class Contact extends React.Component {
 
 						<div className="grid fifth"><h2><a href="tel:+19787293655">Call</a></h2></div>
 
-						<div className="grid fifth"><h2><a href="http://www.soundcloud.com/varsitystar">Listen</a></h2></div>
+						<div className="grid fifth"><h2><a target="_blank" href="http://www.soundcloud.com/varsitystar">Listen</a></h2></div>
 
 						<div className="grid fifth">
 							<h2>Elliot <span className="contrast">Berman</span></h2>
