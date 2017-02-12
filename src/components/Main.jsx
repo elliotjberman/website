@@ -242,7 +242,7 @@ export default class AppComponent extends Component {
 	clickPing = (event) => {
 		this.clickCounter++;
 		let grayBox = document.getElementById('gray-box');
-		if (this.clickCounter > 6  && !grayBox.className) {
+		if (this.clickCounter > 1  && !grayBox.className) {
 			grayBox.className = 'solo-name';
 			// this.hue = 100/360;
 		}
