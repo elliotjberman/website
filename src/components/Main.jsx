@@ -380,8 +380,11 @@ export default class AppComponent extends Component {
 
 	toggleAudio = () => {
 		this.setState({audioOn: !this.state.audioOn});
-		if (this.stream.paused)
+		if (this.stream.paused) {
+			this.stream.gainNode.gain.value = -0.5;
 			this.stream.play();
+		}
+
 	}
 	stopStreams = (callback) => {
 		this.setState({audioOn: false});
