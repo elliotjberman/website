@@ -67,7 +67,7 @@ export default class AppComponent extends Component {
 		this.stream;
 
 		this.state = {
-			audioOn: false
+			audioOn: true
 		};
 
 	}
