@@ -41,13 +41,13 @@ export default class AudioPlayer extends Component {
 			this.color = "#98bd98";
 			this.collab = "by myself";
 			this.soundcloud = "https://www.soundcloud.com/varsity-star";
-			this.props.setHue(120/360);
+			this.props.setHue(110/360);
 		}
 		else{
 			this.color = "#c78584";
 			this.collab = "with some friends";
 			this.soundcloud = "https://www.soundcloud.com/elliotberman";
-			this.props.setHue(1/360);
+			this.props.setHue(10/360);
 		}
 		this.routes;
 		this.counter = 0;
