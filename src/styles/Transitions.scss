@@ -1,25 +1,25 @@
-.example-enter {
+.animate-enter {
   opacity: 0.01;
 	position: absolute;
 }
 
 
-.example-enter.example-enter-active {
+.animate-enter.animate-enter-active {
   opacity: 1;
   transition: opacity 500ms ease-in !important;
 	z-index: 0;
 	position: absolute;
 }
-.example-enter .radial-progress{
+.animate-enter .radial-progress{
 	opacity: 0 !important;
 }
 
-.example-leave {
+.animate-leave {
   opacity: 0.99;
 	position: absolute;
 }
 
-.example-leave.example-leave-active {
+.animate-leave.animate-leave-active {
   opacity: 0.01;
   transition: opacity 500ms ease-in !important;
 	transition-delay: 1s;

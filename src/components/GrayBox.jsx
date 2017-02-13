@@ -30,7 +30,7 @@ export default class GrayBox extends Component {
 		 (child) => React.cloneElement(child, {
 			 stopStreams: this.props.stopStreams,
 			 setGrayscale: this.props.setGrayscale,
-			 setHue: this.props.setHue,
+			 setColor: this.props.setColor,
 			 key: path
 		 })
 	 	)
@@ -41,7 +41,7 @@ export default class GrayBox extends Component {
 					<Link onClick={this.handleClick} to="choice" id="name">
 						Elliot<br/>Berman
 					</Link>
-					<ReactCSSTransitionGroup transitionName="example"
+					<ReactCSSTransitionGroup transitionName="animate"
 						transitionEnterTimeout={500} transitionLeaveTimeout={500}>
 						{childrenWithProps}
 					</ReactCSSTransitionGroup>

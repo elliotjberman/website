@@ -18,6 +18,7 @@ class Contact extends React.Component {
 
 	componentDidMount = () => {
 		this.props.setGrayscale(true);
+		document.getElementById('gray-box-container').className = 'containing gray';
 		document.getElementById('gray-box').className = 'full';
 		document.getElementById('name').style.opacity = 0;
 		document.getElementById('name').style.zIndex = 0;
@@ -121,7 +122,7 @@ class Contact extends React.Component {
 						<div className="grid fifth"><h2><a target="_blank" href="http://www.soundcloud.com/varsity-star">Listen</a></h2></div>
 
 						<div className="grid fifth">
-							<h2>Elliot <span className="contrast">Berman</span></h2>
+							<h2 className="contrast">Elliot Berman</h2>
 
 							<p>
 								<span className="contrast">is a Brooklyn-based musician currently living in Berlin. </span>

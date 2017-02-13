@@ -14,18 +14,34 @@ import Radial from './Radial.jsx';
 import StreamTeam from 'streamteam';
 
 let ghosts = {
-	url: "https://s3.amazonaws.com/elliot-berman-media/solo/ghosts_mix_4.1.mp3",
-	artwork: ghostsArtwork,
-	runningTime: 201
+	title: "Ghosts",
+	date: "March 2016",
+	runningTime: 201,
+	url: "https://s3.amazonaws.com/elliot-berman-media/solo/ghosts_mix_4.1.mp3"
 }
 
-let umbrella = {
-	url: "https://s3.amazonaws.com/elliot-berman-media/solo/UmbrellaFinal_3.mp3",
-	artwork: umbrellaArtwork,
-	runningTime: 319
+let ballet = {
+	title: "Ballet",
+	date: "January 2017",
+	runningTime: 186,
+	url: "https://s3.amazonaws.com/elliot-berman-media/solo/ballet_mix3.2.mp3"
 }
 
-var songs = [ghosts, umbrella]
+let woods = {
+	title: "Woods",
+	date: "September 2015",
+	runningTime: 201,
+}
+
+let nothing_special = {
+	title: "Nothing Special",
+	date: "February 2016",
+	runningTime: 319,
+}
+
+var solo = [ghosts, ballet];
+
+var group = [woods, nothing_special];
 
 export default class AudioPlayer extends Component {
 
@@ -39,23 +55,27 @@ export default class AudioPlayer extends Component {
 		}
 		if (this.props.location.pathname.includes('solo')) {
 			this.color = "#98bd98";
-			this.collab = "by myself";
+			this.textColor = "#557d55";
+			this.collab = "solo";
 			this.soundcloud = "https://www.soundcloud.com/varsity-star";
-			this.props.setHue(110/360);
+			this.songs = solo;
+			this.props.setColor(110/360, 0.25);
 		}
 		else{
 			this.color = "#c78584";
-			this.collab = "with some friends";
+			this.textColor = "#7f4544";
+			this.collab = "with friends";
+			this.songs = group;
 			this.soundcloud = "https://www.soundcloud.com/elliotberman";
-			this.props.setHue(10/360);
+			this.props.setColor(10/360, 0.25);
 		}
 		this.routes;
 		this.counter = 0;
 	}
 
-	handleClick = () => {
-		if (this.stream){
-			if (this.stream.paused){
+	toggleSong = () => {
+		if (this.stream) {
+			if (this.stream.paused) {
 				this.props.stopStreams();
 				this.stream.play();
 				this.setState({button: 'Pause'})
@@ -67,11 +87,11 @@ export default class AudioPlayer extends Component {
 		}
 		else {
 			this.stream  = new StreamTeam({
-				url: songs[this.state.songIndex].url,
+				url: this.songs[this.state.songIndex].url,
 				chunkSize: 300, // size of chunks to stream in (in seconds)
 				bitRate: 40000,
 				smoothTime: true
-			})
+			});
 			this.stream.setStartTime(0);
 			this.stream.gainNode.gain.value = 0;
 			this.props.stopStreams();
@@ -85,7 +105,7 @@ export default class AudioPlayer extends Component {
 	componentDidMount = () => {
 			// this.props.setGrayscale(true);
 			document.getElementById('gray-box').className = 'full';
-			document.getElementById('gray-box-container').className = 'containing';
+			document.getElementById('gray-box-container').className = 'containing gray';
 			document.getElementById('name').style.opacity = 0;
 			document.getElementById('name').style.zIndex = 0;
 	}
@@ -99,7 +119,7 @@ export default class AudioPlayer extends Component {
 
 	nextSong = () => {
 		this.reset();
-		if (this.state.songIndex + 1 >= songs.length) {
+		if (this.state.songIndex + 1 >= this.songs.length) {
 			browserHistory.push('/choice');
 		}
 		else{
@@ -130,36 +150,79 @@ export default class AudioPlayer extends Component {
 	}
 
 	visualize = () => {
-			var progress = this.stream.getCurrentTime()/songs[this.state.songIndex].runningTime
-			progress = progress*1000
-			this.setState({progress: Math.round(progress)});
+			var progress = this.stream.getCurrentTime()/this.songs[this.state.songIndex].runningTime;
+			progress *= 1000;
+			this.setState({progress: Math.round(progress)/10});
 			window.requestAnimationFrame(this.visualize);
 	}
 
 	render = () => {
 
-		let audioStyle = {
-			backgroundImage: 'url(' + songs[this.state.songIndex].artwork + ')'
-		}
-
-		let style = {color: this.color}
+		let containerStyle = {background: this.color}
+		let textStyle = {color: this.textColor}
 
 		return (
-			<div id="audio-container">
-				<h1 id="audio-header">This is music I made <a target="_blank" href={this.soundcloud} style={style}>{this.collab}</a></h1>
-				<div id="audio-player">
-					<span onClick={this.prevSong} className="chevron">Back</span>
+			<div id="audio-container" style={containerStyle}>
+				<div className="grid whole">
+					<h1 id="audio-header">This is music I made <a target="_blank" href={this.soundcloud} style={textStyle}>{this.collab}</a></h1>
+				</div>
 
-					<div id="song-container">
-						<Radial progress={this.state.progress}>
-							<div onClick={this.handleClick} style={audioStyle} className="song">
-								<div id="control-overlay">{this.state.button}</div>
-							</div>
-						</Radial>
+				<div className="flexContainer">
+					<div className="row">
+						<div className="grid fifth">
+
+						</div>
 					</div>
 
-					<span onClick={this.nextSong} className="chevron">Next</span>
+					<div className="row">
+						<div className="grid fifth">
+							<div onClick={this.toggleSong} className={"graphic-square " + this.songs[this.state.songIndex].title.toLowerCase()}>
+								<div style={{height : this.state.progress + "%"}} className="fill"></div>
+							</div>
+						</div>
+						<div className="grid fifth">
+							<div className={"graphic-square " + this.songs[this.state.songIndex].title.toLowerCase()}></div>
+						</div>
+
+						<div className="grid fifth space-1">
+							<h2 id="title">
+								{this.songs[this.state.songIndex].title}
+							</h2>
+							<p>
+								Music and engineering by Elliot Berman. {this.songs[this.state.songIndex].date}.
+							</p>
+						</div>
+					</div>
+
+
+
+					<div className="row">
+						<div className="grid fifth">
+							<div className={"graphic-square " + this.songs[this.state.songIndex].title.toLowerCase()}></div>
+						</div>
+						<div className="grid fifth">
+							<div className={"graphic-square " + this.songs[this.state.songIndex].title.toLowerCase()}></div>
+						</div>
+
+						<div className="grid fifth space-1">
+							<h2 onClick={this.toggleSong} id="next">
+								{this.state.button}
+							</h2>
+						</div>
+
+						<div className="grid fifth">
+							<h2 onClick={this.nextSong} id="next">
+								Next
+							</h2>
+							<p className="fore">
+								{this.songs[this.state.songIndex + 1] ? this.songs[this.state.songIndex + 1].title: null}
+							</p>
+						</div>
+					</div>
+
 				</div>
+
+
 			</div>
 		);
 	}

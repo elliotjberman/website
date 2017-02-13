@@ -43,6 +43,7 @@ export default class AppComponent extends Component {
 		this.composer;
 		this.grayscale;
 		this.hue = 26/360;
+		this.saturation = 0.9;
 
 		// Camera scrim
 		this.windowHalfX = window.innerWidth / 2;
@@ -188,6 +189,8 @@ export default class AppComponent extends Component {
 			let pColor = particleExplosion.particleMaterial.color.getHSL();
 			let cColor = this.renderer.getClearColor().getHSL();
 
+
+				// Hue
 				if (pColor.h > this.hue) {
 						pColor.h -= 1/360;
 				}
@@ -200,6 +203,21 @@ export default class AppComponent extends Component {
 				}
 				else if (cColor.h < this.hue) {
 					cColor.h += 1/360;
+				}
+
+				// Saturation
+				if (pColor.s > this.saturation) {
+						pColor.s -= 0.05;
+				}
+				else if (pColor.s < this.saturation) {
+					pColor.s += 0.05;
+				}
+
+				if (cColor.s > this.saturation) {
+					cColor.s -= 0.05;
+				}
+				else if (cColor.s < this.saturation) {
+					cColor.s += 0.05;
 				}
 
 				var clear = new THREE.Color();
@@ -309,7 +327,7 @@ export default class AppComponent extends Component {
 			// // itemSize = 3 because there are 3 values (components) per vertex
 
 			particleExplosion.particleMaterial = new THREE.PointsMaterial( { size: 0.65, sizeAttenuation: true, map: this.sprite, alphaTest: 0.3, transparent: true } );
-			particleExplosion.particleMaterial.color.setHSL(this.hue, 0.9, (Math.random()/2+0.5) );
+			particleExplosion.particleMaterial.color.setHSL(this.hue, this.saturation, (Math.random()/2+0.5) );
 
 			particleExplosion.particleGeometry.addAttribute( 'position', new THREE.BufferAttribute( particleExplosion.vertices, 3 , false) );
 
@@ -398,8 +416,9 @@ export default class AppComponent extends Component {
 		this.grayscale = grayscale;
 	}
 
-	setHue = (hue) => {
+	setColor = (hue, saturation) => {
 		this.hue = hue;
+		this.saturation = saturation;
 	}
 
 
@@ -408,7 +427,7 @@ export default class AppComponent extends Component {
 		 (child) => React.cloneElement(child, {
 			 stopStreams: this.stopStreams,
 			 setGrayscale: this.setGrayscale,
-			 setHue: this.setHue
+			 setColor: this.setColor
 		 })
 	 	)
     return (
