@@ -26,7 +26,7 @@ $spacing: 1.8%;
 		font-size: 28px;
 		color: $foreColor;
 		letter-spacing: -1.5px;
-		line-height: 0.8;
+		line-height: 0.9;
 		float: left;
 		width: 100%;
 
@@ -49,6 +49,8 @@ $spacing: 1.8%;
 			text-decoration: none;
 			color: initial;
 			cursor: pointer;
+			word-wrap: break-word;
+			font-family: 'GT-Walsheim', Helvetica;
 		}
 
 
@@ -62,6 +64,11 @@ $spacing: 1.8%;
 		// background: -webkit-linear-gradient($contrast, gray);
 		// -webkit-background-clip: text;
 		// -webkit-text-fill-color: transparent;
+		color: black;
+
+		a {
+			text-decoration: none;
+		}
 	}
 
 	#intro {
@@ -92,27 +99,7 @@ $spacing: 1.8%;
 
 	}
 
-	.grid {
-		padding-left: $spacing;
-		padding-right: $spacing;
-		float: left;
-		box-sizing: border-box;
-		position: relative;
-	}
 
-	.whole {
-		width: 100%;
-	}
-
-	.quarter {
-		width: 25%;
-		height: 100%;
-	}
-	.fifth {
-		width: 20%;
-		height: 100%;
-		// border-left: 1px solid $foreColor;
-	}
 
 	.circle-container {
 		width: 100%;

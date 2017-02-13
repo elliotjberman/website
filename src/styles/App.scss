@@ -12,6 +12,35 @@
 $paleOrange: #fff1e7;
 $transition: 1.5s cubic-bezier(0.59, 0.14, 0.57, 1.2);
 
+
+/* Live in the Grid */
+
+$spacing: 1.8%;
+
+.grid {
+	padding-left: $spacing;
+	padding-right: $spacing;
+	float: left;
+	box-sizing: border-box;
+	position: relative;
+}
+
+.whole {
+	width: 100%;
+}
+
+.quarter {
+	width: 25%;
+}
+
+.fifth {
+	width: 20%;
+}
+
+.tenth {
+	width: 10%;
+}
+
 /* Base Application Styles */
 #gray-box-container {
 	position: absolute;
@@ -46,12 +75,12 @@ $transition: 1.5s cubic-bezier(0.59, 0.14, 0.57, 1.2);
 	font-family: 'GT-Walsheim';
 	font-weight: 400;
 	width: 0;
-	height: 202px;
+	height: 210px;
 	transition: $transition;
 	z-index: 0;
   background: #444444;
-	padding-top: 20px;
-	padding-bottom: 20px;
+	padding-top: $spacing;
+	padding-bottom: $spacing;
 	overflow: hidden;
 	box-sizing: border-box;
 	display: flex;
