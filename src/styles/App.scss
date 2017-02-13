@@ -41,7 +41,18 @@ $spacing: 1.8%;
 	width: 10%;
 }
 
+@for $i from 1 through 4 {
+	.fifth.space-#{$i} {
+		margin-left: 20% * $i;
+	}
+}
+
 /* Base Application Styles */
+.row {
+	width: 100%;
+	float: left;
+}
+
 #gray-box-container {
 	position: absolute;
 	transition: $transition;
@@ -94,7 +105,7 @@ $spacing: 1.8%;
 	-o-user-select: none;
 	user-select: none;
 
-	a#name{
+	a#name {
 		display: block;
 		color: white;
 		font-size: 90px;
@@ -138,7 +149,7 @@ $spacing: 1.8%;
 		left: 0;
 		display: flex;
 
-		a#name{
+		a#name {
 			// position: absolute;
 			top: 20px;
 			color: $paleOrange;
@@ -150,5 +161,17 @@ $spacing: 1.8%;
 		#choices{
 			display: flex;
 		}
+	}
+}
+
+p {
+	font-size: 16px;
+	font-weight: 300;
+	font-family: 'Baskerville';
+	line-height: 1.3;
+	color: black;
+
+	a {
+		text-decoration: none;
 	}
 }
