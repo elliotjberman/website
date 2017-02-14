@@ -43,6 +43,7 @@ $transition: 1.5s cubic-bezier(0.59, 0.14, 0.57, 1.2);
 	color: $contrast;
 	font-size: 60px;
 	letter-spacing: -3px;
+	line-height: 1;
 }
 
 #next {
@@ -104,17 +105,30 @@ $transition: 1.5s cubic-bezier(0.59, 0.14, 0.57, 1.2);
 }
 
 .row:nth-of-type(2) {
+	.grid:first-of-type .ballet {
+		transform-origin: top right;
+		transform: rotate(-45deg);
+	}
 	.grid:nth-of-type(2) .ballet {
+		transform-origin: center left;
 		transform: rotate(45deg);
-		transform-origin: top left;
 	}
 }
 .row:nth-of-type(3) {
+	.grid:first-of-type .ballet {
+		transform: rotate(45deg);
+		transform-origin: bottom right;
+
+	}
 	.grid:nth-of-type(2) .ballet {
+		// transform: rotate(90deg);
+		transform-origin: center left;
 		transform: rotate(-45deg);
-		transform-origin: bottom left;
 	}
 }
+
+
+
 
 
 .fill {

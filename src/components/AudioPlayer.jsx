@@ -16,27 +16,23 @@ import StreamTeam from 'streamteam';
 let ghosts = {
 	title: "Ghosts",
 	date: "March 2016",
-	runningTime: 201,
 	url: "https://s3.amazonaws.com/elliot-berman-media/solo/ghosts_mix_4.1.mp3"
 }
 
 let ballet = {
 	title: "Ballet",
 	date: "January 2017",
-	runningTime: 186,
 	url: "https://s3.amazonaws.com/elliot-berman-media/solo/ballet_mix3.2.mp3"
 }
 
 let woods = {
 	title: "Woods",
 	date: "September 2015",
-	runningTime: 201,
 }
 
 let nothing_special = {
 	title: "Nothing Special",
 	date: "February 2016",
-	runningTime: 319,
 }
 
 var solo = [ghosts, ballet];
@@ -86,14 +82,8 @@ export default class AudioPlayer extends Component {
 			}
 		}
 		else {
-			this.stream  = new StreamTeam({
-				url: this.songs[this.state.songIndex].url,
-				chunkSize: 300, // size of chunks to stream in (in seconds)
-				bitRate: 40000,
-				smoothTime: true
-			});
-			this.stream.setStartTime(0);
-			this.stream.gainNode.gain.value = 0;
+			this.stream  = new Audio(this.songs[this.state.songIndex].url);
+
 			this.props.stopStreams();
 			this.stream.play();
 			this.setState({button: 'Pause'});
@@ -150,10 +140,20 @@ export default class AudioPlayer extends Component {
 	}
 
 	visualize = () => {
-			var progress = this.stream.getCurrentTime()/this.songs[this.state.songIndex].runningTime;
+			var progress = this.stream.currentTime/this.stream.duration;
 			progress *= 1000;
 			this.setState({progress: Math.round(progress)/10});
 			window.requestAnimationFrame(this.visualize);
+	}
+
+	timecode = (seconds) => {
+		if (!seconds)
+			return
+
+		let minutes = Math.floor(seconds/60);
+		let remainder = Math.round(seconds % 60);
+		remainder = remainder < 10 ? "0" + remainder : remainder;
+		return minutes + ":" + remainder;
 	}
 
 	render = () => {
@@ -204,13 +204,16 @@ export default class AudioPlayer extends Component {
 							<div className={"graphic-square " + this.songs[this.state.songIndex].title.toLowerCase()}></div>
 						</div>
 
-						<div className="grid fifth space-1">
+						<div className="grid fifth stick-text space-1">
 							<h2 onClick={this.toggleSong} id="next">
 								{this.state.button}
 							</h2>
+							<p className="fore">
+								{this.stream ? this.timecode(this.stream.currentTime) + "/" + this.timecode(this.stream.duration) : null}
+							</p>
 						</div>
 
-						<div className="grid fifth">
+						<div className="grid fifth stick-text">
 							<h2 onClick={this.nextSong} id="next">
 								Next
 							</h2>

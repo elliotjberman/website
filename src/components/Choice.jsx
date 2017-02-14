@@ -31,7 +31,7 @@ export default class Choice extends Component {
 					<span>Varsity<br/>Star</span>
 				</Link>
 				<Link onClick={this.toggleLeaving} to="multiplayer" className="choice">
-					<span>Multi-<br/>player</span>
+					<span>Acoustic</span>
 				</Link>
 				<Link onClick={this.toggleLeaving} to="contact" className="choice">
 					<span>Contact</span>
