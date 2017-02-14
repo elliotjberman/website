@@ -2,6 +2,8 @@ $spacing: 1.8%;
 $foreColor: rgb(240, 240, 240);
 $contrast: rgb(40, 40, 40);
 
+$heading: 4vw;
+
 $transition: 1.5s cubic-bezier(0.59, 0.14, 0.57, 1.2);
 
 
@@ -17,7 +19,34 @@ $transition: 1.5s cubic-bezier(0.59, 0.14, 0.57, 1.2);
 	display: flex;
 	flex-direction: column;
 	// background: #c78584;
+
+	.flexContainer {
+		justify-content: space-between;
+	}
+
+	.row:nth-of-type(1) {
+		margin-bottom: 1%;
+	}
+
+	.row {
+		height: 48%;
+	}
+
+	.fifth {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+
+		&.graphic {
+			justify-content: flex-end;
+		}
+	}
 }
+
+#rows-container {
+	height: 100%;
+}
+
 
 #audio-header {
 	text-align: left;
@@ -39,16 +68,20 @@ $transition: 1.5s cubic-bezier(0.59, 0.14, 0.57, 1.2);
 	}
 }
 
-#title {
-	color: $contrast;
-	font-size: 60px;
+.heading {
+	font-size: $heading;
 	letter-spacing: -3px;
 	line-height: 1;
+	margin-bottom: 0;
+	margin-top: 10px;
+
 }
 
-#next {
-	font-size: 60px;
-	letter-spacing: -3px;
+#title {
+	color: $contrast;
+}
+
+.control {
 	color: $foreColor;
 	cursor: pointer;
 	opacity: 0.5;
@@ -80,10 +113,11 @@ $transition: 1.5s cubic-bezier(0.59, 0.14, 0.57, 1.2);
 	transition: $transition;
 	position: relative;
 	overflow: hidden;
+	border-color: transparent;
 	// border: 1px solid transparent;
 
 	&:first-of-type {
-		margin-bottom: 10%;
+		// margin-bottom: 10%;
 		// transform: rotate(30deg);
 	}
 
@@ -92,38 +126,32 @@ $transition: 1.5s cubic-bezier(0.59, 0.14, 0.57, 1.2);
 		border-top-left-radius: 50%;
 	}
 
-	&.ballet {
-		width: 25%;
-		transform-origin: bottom right;
-
-	}
-
-
 	&.woods {
 		width: 50%;
 	}
 }
 
-.row:nth-of-type(2) {
-	.grid:first-of-type .ballet {
-		transform-origin: top right;
-		transform: rotate(-45deg);
-	}
-	.grid:nth-of-type(2) .ballet {
-		transform-origin: center left;
-		transform: rotate(45deg);
+ .grid .ballet {
+	background: rgba(255, 255, 255, 0);
+	border-left: 5vw solid transparent;
+	border-right: 5vw solid transparent;
+	box-sizing: border-box;
+	padding: 0;
+}
+
+.row:nth-of-type(1) .grid {
+	.ballet {
+		border-bottom: 3vw solid white;
 	}
 }
-.row:nth-of-type(3) {
-	.grid:first-of-type .ballet {
-		transform: rotate(45deg);
-		transform-origin: bottom right;
-
-	}
-	.grid:nth-of-type(2) .ballet {
-		// transform: rotate(90deg);
-		transform-origin: center left;
-		transform: rotate(-45deg);
+.row:nth-of-type(2) .grid {
+	.ballet {
+		width: 0;
+		border-top: 14vw solid white;
+		margin: 0 auto;
+		border-left: 1.4vw solid transparent;
+		border-right: 1.4vw solid transparent;
+		height: 100%;
 	}
 }
 

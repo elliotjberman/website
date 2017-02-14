@@ -148,12 +148,18 @@ export default class AudioPlayer extends Component {
 
 	timecode = (seconds) => {
 		if (!seconds)
-			return
+			return "0:00"
 
 		let minutes = Math.floor(seconds/60);
 		let remainder = Math.round(seconds % 60);
 		remainder = remainder < 10 ? "0" + remainder : remainder;
+
 		return minutes + ":" + remainder;
+	}
+
+	fadeUpdate = (progress) => {
+		let val = progress ? 240 - 2 * progress : 240;
+		return {borderBottomColor: 'rgb(' + val + ', ' + val + ', ' + val + ')'}
 	}
 
 	render = () => {
@@ -168,60 +174,59 @@ export default class AudioPlayer extends Component {
 				</div>
 
 				<div className="flexContainer">
-					<div className="row">
-						<div className="grid fifth">
 
-						</div>
-					</div>
+					<div id="rows-container">
+						<div className="row">
+							<div className="grid fifth graphic">
+								<div style={this.fadeUpdate(this.state.progress)} onClick={this.toggleSong} id="triangle-1" className={"graphic-square " + this.songs[this.state.songIndex].title.toLowerCase()}>
+									<div style={{height : this.state.progress + "%"}} className="fill"></div>
+								</div>
+							</div>
+							<div className="grid fifth graphic">
+								<div style={this.fadeUpdate(this.state.progress)} id="triangle-2" className={"graphic-square " + this.songs[this.state.songIndex].title.toLowerCase()}></div>
+							</div>
 
-					<div className="row">
-						<div className="grid fifth">
-							<div onClick={this.toggleSong} className={"graphic-square " + this.songs[this.state.songIndex].title.toLowerCase()}>
-								<div style={{height : this.state.progress + "%"}} className="fill"></div>
+							<div className="grid fifth space-1">
+								<h2 id="title" className="heading">
+									{this.songs[this.state.songIndex].title}
+								</h2>
+								<p>
+									Music and engineering by Elliot Berman. {this.songs[this.state.songIndex].date}.
+								</p>
 							</div>
 						</div>
-						<div className="grid fifth">
-							<div className={"graphic-square " + this.songs[this.state.songIndex].title.toLowerCase()}></div>
+
+
+
+						<div className="row">
+							<div className="grid fifth graphic">
+								<div className={"graphic-square " + this.songs[this.state.songIndex].title.toLowerCase()}></div>
+							</div>
+							<div className="grid fifth graphic">
+								<div className={"graphic-square " + this.songs[this.state.songIndex].title.toLowerCase()}></div>
+							</div>
+
+							<div className="grid fifth space-1">
+								<h2 onClick={this.toggleSong} className="heading control">
+									{this.state.button}
+								</h2>
+								<p className="fore">
+									{this.stream ? this.timecode(this.stream.currentTime) + "/" + this.timecode(this.stream.duration) : null}
+								</p>
+							</div>
+
+							<div className="grid fifth">
+								<h2 onClick={this.nextSong} className="heading control">
+									Next
+								</h2>
+								<p className="fore">
+									{this.songs[this.state.songIndex + 1] ? this.songs[this.state.songIndex + 1].title: null}
+								</p>
+							</div>
 						</div>
 
-						<div className="grid fifth space-1">
-							<h2 id="title">
-								{this.songs[this.state.songIndex].title}
-							</h2>
-							<p>
-								Music and engineering by Elliot Berman. {this.songs[this.state.songIndex].date}.
-							</p>
-						</div>
 					</div>
 
-
-
-					<div className="row">
-						<div className="grid fifth">
-							<div className={"graphic-square " + this.songs[this.state.songIndex].title.toLowerCase()}></div>
-						</div>
-						<div className="grid fifth">
-							<div className={"graphic-square " + this.songs[this.state.songIndex].title.toLowerCase()}></div>
-						</div>
-
-						<div className="grid fifth stick-text space-1">
-							<h2 onClick={this.toggleSong} id="next">
-								{this.state.button}
-							</h2>
-							<p className="fore">
-								{this.stream ? this.timecode(this.stream.currentTime) + "/" + this.timecode(this.stream.duration) : null}
-							</p>
-						</div>
-
-						<div className="grid fifth stick-text">
-							<h2 onClick={this.nextSong} id="next">
-								Next
-							</h2>
-							<p className="fore">
-								{this.songs[this.state.songIndex + 1] ? this.songs[this.state.songIndex + 1].title: null}
-							</p>
-						</div>
-					</div>
 
 				</div>
 
