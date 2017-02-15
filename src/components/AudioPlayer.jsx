@@ -143,6 +143,10 @@ export default class AudioPlayer extends Component {
 			var progress = this.stream.currentTime/this.stream.duration;
 			progress *= 1000;
 			this.setState({progress: Math.round(progress)/10});
+			if (progress >= 1000) {
+				this.setState({button: 'Play'});
+				return
+			}
 			window.requestAnimationFrame(this.visualize);
 	}
 
