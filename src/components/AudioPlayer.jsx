@@ -28,16 +28,18 @@ let ballet = {
 let woods = {
 	title: "Woods",
 	date: "September 2015",
+	url: "https://s3.amazonaws.com/elliot-berman-media/group/woods_bounce2.mp3"
 }
 
-let nothing_special = {
+let nothingSpecial = {
 	title: "Nothing Special",
 	date: "February 2016",
+	url: "https://s3.amazonaws.com/elliot-berman-media/group/nothingspecial_ozone.mp3"
 }
 
 var solo = [ghosts, ballet];
 
-var group = [woods, nothing_special];
+var group = [woods, nothingSpecial];
 
 export default class AudioPlayer extends Component {
 
@@ -185,6 +187,7 @@ export default class AudioPlayer extends Component {
 								<div style={this.fadeUpdate(this.state.progress)} onClick={this.toggleSong} id="triangle-1" className={"graphic-square " + this.songs[this.state.songIndex].title.toLowerCase()}>
 									<div style={{height : this.state.progress + "%"}} className="fill"></div>
 								</div>
+
 							</div>
 							<div className="grid fifth graphic">
 								<div style={this.fadeUpdate(this.state.progress)} id="triangle-2" className={"graphic-square " + this.songs[this.state.songIndex].title.toLowerCase()}></div>
@@ -196,6 +199,16 @@ export default class AudioPlayer extends Component {
 								</h2>
 								<p>
 									Music and engineering by Elliot Berman. {this.songs[this.state.songIndex].date}.
+								</p>
+							</div>
+
+							<div className="grid fifth">
+								<h2>&nbsp;</h2>
+								<p>
+									Elliot Berman - Bass <br />
+									Elliot Berman - Bass <br />
+									Elliot Berman - Bass <br />
+									Elliot Berman - Bass <br />
 								</p>
 							</div>
 						</div>

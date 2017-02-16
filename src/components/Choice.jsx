@@ -18,6 +18,10 @@ export default class Choice extends Component {
 		document.getElementById('gray-box-container').className = 'containing';
 		document.getElementById('name').style.opacity = 1;
 		document.getElementById('name').style.display = 'block';
+
+		if (!this.props.audioOn) {
+			this.props.toggleAudio();
+		}
 	}
 
 	toggleLeaving = (event) => {

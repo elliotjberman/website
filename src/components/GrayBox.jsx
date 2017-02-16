@@ -31,6 +31,8 @@ export default class GrayBox extends Component {
 			 stopStreams: this.props.stopStreams,
 			 setGrayscale: this.props.setGrayscale,
 			 setColor: this.props.setColor,
+			 toggleAudio: this.props.toggleAudio,
+			 audioOn: this.props.audioOn,
 			 key: path
 		 })
 	 	)

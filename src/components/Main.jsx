@@ -399,11 +399,19 @@ export default class AppComponent extends Component {
 	toggleAudio = () => {
 		this.setState({audioOn: !this.state.audioOn});
 		if (this.stream.paused) {
-			this.stream.gainNode.gain.value = -0.5;
+			this.stream.gainNode.gain.value = -1;
 			this.stream.play();
+			this.fadeStream();
 		}
-
 	}
+
+	fadeStream = () => {
+		this.stream.gainNode.gain.value += 0.005;
+		if (this.stream.gainNode.gain.value >=-0.5)
+			return
+		requestAnimationFrame(this.fadeStream);
+	}
+
 	stopStreams = (callback) => {
 		this.setState({audioOn: false});
 		this.stream.pause();
@@ -427,14 +435,16 @@ export default class AppComponent extends Component {
 		 (child) => React.cloneElement(child, {
 			 stopStreams: this.stopStreams,
 			 setGrayscale: this.setGrayscale,
-			 setColor: this.setColor
+			 setColor: this.setColor,
+ 			 audioOn: this.state.audioOn,
+			 toggleAudio: this.toggleAudio
 		 })
 	 	)
     return (
       <div onClick={this.clickPing} className="index" id="index">
-					<span id="audio-toggle" onClick={this.toggleAudio}>
+					{/*<span id="audio-toggle" onClick={this.toggleAudio}>
 						{this.state.audioOn ? "On" :  "Off"}
-					</span>
+					</span> */}
 					{childrenWithProps}
       </div>
     );
