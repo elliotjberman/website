@@ -359,7 +359,7 @@ export default class AppComponent extends Component {
 	}
 
 	initPostprocessing = () => {
-		var amount = 0.0;
+		var amount = 0.003;
 		var grayscaleIntensity = 0.0
 		if (this.composer) {
 			amount = this.composer.passes[2].uniforms.amount.value;
@@ -374,7 +374,7 @@ export default class AppComponent extends Component {
 		film.uniforms['noiseIntensity'].value = 0.5;
 		film.uniforms['grayscaleIntensity'].value = grayscaleIntensity;
 
-		film.uniforms['scanlineIntensity'].value = 0.0;
+		film.uniforms['scanlineIntensity'].value = 0.2;
 		film.uniforms['scanlineCount'].value = window.innerHeight*8.5;
 
 		this.composer.addPass( film );
