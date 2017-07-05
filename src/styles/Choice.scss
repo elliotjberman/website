@@ -34,9 +34,9 @@ $darkGray: #2d2d2d;
 	margin-left: 40px;
 	margin-right: 20px;
 
-	&:hover{
+	&:hover {
 		color: $darkGray;
-		justify-content: left !important;
+		// justify-content: left !important;
 		// border-color: $paleOrange;
 
 		&:nth-of-type(1) {
@@ -54,6 +54,5 @@ $darkGray: #2d2d2d;
 	span{
 		text-align: left;
 		display: inline-block;
-
 	}
 }

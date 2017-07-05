@@ -4,7 +4,7 @@ const host = '0.0.0.0';
 const port = '3000';
 
 const app = express();
-app.use(express.static(__dirname+ "/dist"))
+app.use(express.static(__dirname + "/dist"))
 
 app.listen(port, host, (err) => {
 	if(err) console.log(err);

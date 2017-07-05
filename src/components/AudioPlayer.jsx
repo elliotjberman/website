@@ -176,7 +176,7 @@ export default class AudioPlayer extends Component {
 		return (
 			<div id="audio-container" style={containerStyle}>
 				<div className="grid whole">
-					<h1 id="audio-header">This is music I made <a target="_blank" href={this.soundcloud} style={textStyle}>{this.collab}</a></h1>
+					<h1 id="audio-header">Varsity Star is <a target="_blank" href={this.soundcloud} style={textStyle}> music for the home</a></h1>
 				</div>
 
 				<div className="flexContainer">

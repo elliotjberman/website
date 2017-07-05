@@ -32,10 +32,10 @@ export default class Choice extends Component {
 		return (
 			<div id="choices">
 				<Link onClick={this.toggleLeaving} to="solo" className="choice">
-					<span>Varsity<br/>Star</span>
+					<span>Music</span>
 				</Link>
 				<Link onClick={this.toggleLeaving} to="multiplayer" className="choice">
-					<span>Acoustic</span>
+					<span>Web</span>
 				</Link>
 				<Link onClick={this.toggleLeaving} to="contact" className="choice">
 					<span>Contact</span>
