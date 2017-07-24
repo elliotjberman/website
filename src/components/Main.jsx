@@ -293,14 +293,14 @@ export default class AppComponent extends Component {
 			}
 
 		//Particle shit
-			var particleExplosion = {}
+			let particleExplosion = {}
 			particleExplosion.counter = 0;
 			particleExplosion.particleGeometry = new THREE.BufferGeometry();
 
 			let aspectRatio = window.innerWidth/window.innerHeight
 
 			const particleCount = 100;
-			var xRange = 4 * aspectRatio;
+			let xRange = 4 * aspectRatio;
 			const yRange = 5;
 			const zRange = 20;
 

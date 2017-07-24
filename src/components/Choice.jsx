@@ -31,10 +31,10 @@ export default class Choice extends Component {
 	render = () => {
 		return (
 			<div id="choices">
-				<Link onClick={this.toggleLeaving} to="solo" className="choice">
+				<Link onClick={this.toggleLeaving} to="music" className="choice">
 					<span>Music</span>
 				</Link>
-				<Link onClick={this.toggleLeaving} to="multiplayer" className="choice">
+				<Link onClick={this.toggleLeaving} to="web" className="choice">
 					<span>Web</span>
 				</Link>
 				<Link onClick={this.toggleLeaving} to="contact" className="choice">

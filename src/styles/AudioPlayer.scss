@@ -167,3 +167,31 @@ $transition: 1.5s cubic-bezier(0.59, 0.14, 0.57, 1.2);
 	position: absolute;
 	// border-top: rgb(80, 80, 80) solid 5px;
 }
+
+.code, .text {
+	transition: all 200ms ease;
+	min-width: 100%;
+	bottom: 0;
+	position: absolute;
+	height: 100%;
+}
+
+.text {
+	color: #282828;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 24px;
+}
+
+.code {
+	font-family: monospace;
+	color: white;
+	background: #282828;
+	opacity: 0;
+}
+
+.graphic-square:hover {
+	.code {opacity: 1}
+	.text {opacity: 0}
+}

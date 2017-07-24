@@ -13,6 +13,7 @@ import Main from './components/Main';
 import GrayBox from './components/GrayBox';
 import Choice from './components/Choice';
 import AudioPlayer from './components/AudioPlayer';
+import Web from './components/Web';
 import Contact from './components/Contact';
 
 
@@ -23,8 +24,8 @@ ReactDOM.render((
 		<Route component={Main}>
 			<Route path="/" component={GrayBox}>
 				<Route path="choice" component={Choice}></Route>
-				<Route path="solo" component={AudioPlayer}></Route>
-				<Route path="multiplayer" component={AudioPlayer}></Route>
+				<Route path="music" component={AudioPlayer}></Route>
+				<Route path="web" component={Web}></Route>
 				<Route path="contact" component={Contact}></Route>
 			</Route>
 		</Route>
